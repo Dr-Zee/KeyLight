@@ -233,7 +233,7 @@ void colorFucker(byte r, byte g, byte b, byte w) {
   b = pgm_read_byte(&gamma8[b]);
 
   //color sharing
-  //Theoretically you can use pure white to make up for this value, making clearer colors and reducing energy use.
+
   //By a series of devlish challenges, determine the smallest color value.
   int smallest;
   if(r < g && r < b && r < w) {smallest = r;} else if (g < r && g < b && g < w)  {smallest = g;} else if (b < r && b < g && b < w) {smallest = b;} else {smallest = w;}
