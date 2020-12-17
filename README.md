@@ -1,2 +1,2 @@
 # KeyLight
-Reactive light program for USB midi
+Reactive light program for 88 key USB midi keyboards
