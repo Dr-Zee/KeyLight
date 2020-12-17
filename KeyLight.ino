@@ -142,7 +142,8 @@ void theBigFade() {
       
       uint32_t elapsed = millis() - keyBuffer[i].lastReleased;
       
-      // Transition Steps. Soon to be replaced. 
+      // manual transition Steps. Soon to be replaced with dynamic functions.
+      
        if(elapsed > TRANSITION_TIME * .95 & elapsed < TRANSITION_TIME * .96) {
         int index = i;
           for(int i = 0; i < 2; i++) {
