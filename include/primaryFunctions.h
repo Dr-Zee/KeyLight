@@ -8,6 +8,10 @@ void setDefaultData() {
     keyBuffer[i].keyLight[0] = (i * 2) - 2;
     keyBuffer[i].keyLight[1] = keyBuffer[i].keyLight[0] + 1;
     keyBuffer[i].isDown = keyBuffer[i].recentlyReleased = keyBuffer[i].runOnce = false;
+    //prevBgColor[i].r = x;
+    //prevBgColor[i].g = x;
+    //prevBgColor[i].b = x;
+    //prevBgColor[i].w = x;
   }
 }
 
@@ -76,6 +80,10 @@ void keyStrikes(byte key) {
   if((keyBuffer[key].isDown == true) & (keyBuffer[key].runOnce == false)) {
     for(int i = 0; i < 2; i++) {
       strip.setPixelColor(keyBuffer[key].keyLight[i], strip.Color( 255, 0, 0, 0));
+      //prevKeyColor[i].r = x;
+      //prevKeyColor[i].g = x;
+      //prevKeyColor[i].b = x;
+      //prevKeyColor[i].w = x;
     }
     strip.show();
 

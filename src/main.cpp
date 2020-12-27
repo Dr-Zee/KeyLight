@@ -1,3 +1,4 @@
+// Arduino Framework
 #include <Arduino.h>
 
 // Libraries
@@ -6,11 +7,11 @@
 #include <usbh_midi.h>
 #include <Adafruit_NeoPixel.h>
 
-//Datastructure
+// Datastructure
 #include <dataStructure.h>
 #include <declarations.h>
 
-//Functions
+// Functions
 #include <NeopixelFunctions.h>
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
