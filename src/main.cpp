@@ -11,7 +11,7 @@
 #include <declarations.h>
 
 //Functions
-#include <Neopixelfunctions.h>
+#include <NeopixelFunctions.h>
 #include <stepFadeFunctions.h>
 #include <mainFunctions.h>
 
