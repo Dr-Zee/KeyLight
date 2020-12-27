@@ -1,15 +1,18 @@
 #include <Arduino.h>
+
 // Libraries
 #include <SPI.h>
 #include <usbhub.h>
 #include <usbh_midi.h>
 #include <Adafruit_NeoPixel.h>
 
+//Datastructure
 #include <dataStructure.h>
 #include <declarations.h>
-//#include "stepFade.h"
 
+//Functions
 #include <Neopixelfunctions.h>
+#include <stepFade.h>
 #include <functions.h>
 
 void setup()
