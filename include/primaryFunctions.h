@@ -75,7 +75,7 @@ void keyOffHousekeeping(int i) {
 void keyStrikes(byte key) {
   if((keyBuffer[key].isDown == true) & (keyBuffer[key].runOnce == false)) {
     for(int i = 0; i < 2; i++) {
-      strip.setPixelColor(keyBuffer[key].keyLight[i], strip.Color( keyColor.r, keyColor.g, keyColor.b, keyColor.w));
+      strip.setPixelColor(keyBuffer[key].keyLight[i], strip.Color(keyColor.r, keyColor.g, keyColor.b, keyColor.w));
 
       // Set this as the previous pixel color for use in the fade.
       prevKeyColor[i].r = keyColor.r; prevKeyColor[i].g = keyColor.g; prevKeyColor[i].b = keyColor.b; prevKeyColor[i].w = keyColor.w;
