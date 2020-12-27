@@ -13,7 +13,7 @@
 //Functions
 #include <NeopixelFunctions.h>
 #include <stepFadeFunctions.h>
-#include <mainFunctions.h>
+#include <primaryFunctions.h>
 
 void setup()
 {
