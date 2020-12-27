@@ -63,10 +63,10 @@ void MIDI_poll() {
 
 // keyOn and keyOff housekeeping tasks.
 void keyOnHousekeeping(int key) {
-  if(colorSteps > 5) {
-    colorSteps = 0;
+  if(colorSkips > 5) {
+    colorSkips = 0;
   }
-  colorSteps++;
+  colorSkips++;
   keyBuffer[key].runOnce = true;
 }
 void keyOffHousekeeping(int i) {
@@ -96,49 +96,18 @@ void keyStrikes(byte key) {
 void theBigFade() {
   for (int i = 1; i < 88; i++) {
     if(keyBuffer[i].recentlyReleased == true) {
-
+      
+      // Time since keyUp
       uint32_t elapsed = millis() - keyBuffer[i].lastReleased;
 
-      // manual transition Steps. Soon to be replaced with dynamic functions.
+      if((elapsed >= fadeDelay) & (elapsed < fadeDelay + fadeDuration)) {
+        
+        // Run the fade
+        colorFade(fadeDuration, fadeDelay, i);
+      }
+      if(elapsed >= fadeDelay + fadeDuration) {
 
-       if((elapsed > TRANSITION_TIME * .95) & (elapsed < TRANSITION_TIME * .96)) {
-        int index = i;
-          for(int i = 0; i < 2; i++) {
-            strip.setPixelColor(keyBuffer[index].keyLight[i], strip.Color(222, 6, 0, 1));
-          }
-        strip.show();
-        }
-        else if((elapsed > TRANSITION_TIME * .96) & (elapsed < TRANSITION_TIME * .97)) {
-         int index = i;
-           for(int i = 0; i < 2; i++) {
-            strip.setPixelColor(keyBuffer[index].keyLight[i], strip.Color(189, 12, 0, 2));
-           }
-          strip.show();
-        }
-        else if((elapsed > TRANSITION_TIME *.97) & (elapsed < TRANSITION_TIME * .98)) {
-         int index = i;
-           for(int i = 0; i < 2; i++) {
-            strip.setPixelColor(keyBuffer[index].keyLight[i], strip.Color(156, 18, 0, 3));
-           }
-          strip.show();
-        }
-        else if((elapsed > TRANSITION_TIME *.98) & (elapsed < TRANSITION_TIME *.99)) {
-         int index = i;
-           for(int i = 0; i < 2; i++) {
-            strip.setPixelColor(keyBuffer[index].keyLight[i], strip.Color(123, 24, 0, 4));
-           }
-          strip.show();
-        }
-
-      //End of the line
-      if(elapsed > TRANSITION_TIME) {
-        int index = i;
-        for(int i = 0; i < 2; i++) {
-          strip.setPixelColor(keyBuffer[index].keyLight[i], strip.Color(90, 30, 0, 5));
-        }
-        strip.show();
-
-        // Do Housekeeping.
+        // Do housekeeping
         keyOffHousekeeping(i);
       }
     }

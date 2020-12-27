@@ -31,12 +31,16 @@ Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRBW + NEO_KHZ800);
 // USB
 USB Usb;
 USBH_MIDI  Midi(&Usb);
-void MIDI_poll();
 boolean bFirst;
 uint16_t pid, vid;
 
 // Variables
 byte event;
 byte key;
-byte colorSteps = 1;
-uint32_t fadeDelay = 0;
+
+// Sets number of skip keys for multicolor patterns
+byte colorSkips = 1;
+
+// Delay variables
+uint32_t fadeDelay;
+uint32_t fadeDuration;
