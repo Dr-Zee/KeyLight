@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "dataStructure.h"
 //#include "Neopixelfunctions.h"
 //#include "stepFade.h"
@@ -21,7 +22,7 @@
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRBW + NEO_KHZ800);
 
-// USB 
+// USB
 USB Usb;
 USBH_MIDI  Midi(&Usb);
 void MIDI_poll();
@@ -44,7 +45,7 @@ void setup()
     while (1); //halt
   }
   delay(200);
-  initializeStrip();        
+  initializeStrip();
 }
 
 void loop()
@@ -52,18 +53,18 @@ void loop()
   // Initialize USB.
   Usb.Task();
   if ( Usb.getUsbTaskState() == USB_STATE_RUNNING ) {
-    
+
     // Listen for Midi.
     MIDI_poll();
-    
+
     //  Light the keys
     keyStrikes(key);
-    
+
     // Debounce the event.
     if(event != 0) {
      event = 0;
     }
-    
+
     // Do the big fade.
     theBigFade();
   }
@@ -86,7 +87,7 @@ void setDefaultData() {
 void initializeStrip() {
   strip.begin();
   stripOn(strip.Color(90, 30, 0, 5));
-  strip.show();       
+  strip.show();
 }
 
 // Midi Listener.
@@ -110,7 +111,7 @@ void MIDI_poll() {
 }
 
 // Set event properties
-void setEventProperties(byte key, byte event) {    
+void setEventProperties(byte key, byte event) {
   if (event == 9) {
     keyBuffer[key].isDown = true;
     keyBuffer[key].recentlyReleased = keyBuffer[key].runOnce = false;
@@ -129,7 +130,7 @@ void keyStrikes(byte key) {
       strip.setPixelColor(keyBuffer[key].keyLight[i], strip.Color( 255, 0, 0, 0));
     }
     strip.show();
-    
+
     // Do Housekeeping
     keyOnHousekeeping(key);
   }
@@ -139,11 +140,11 @@ void keyStrikes(byte key) {
 void theBigFade() {
   for (int i = 1; i < 88; i++) {
     if(keyBuffer[i].recentlyReleased == true) {
-      
+
       uint32_t elapsed = millis() - keyBuffer[i].lastReleased;
-      
+
       // manual transition Steps. Soon to be replaced with dynamic functions.
-      
+
        if(elapsed > TRANSITION_TIME * .95 & elapsed < TRANSITION_TIME * .96) {
         int index = i;
           for(int i = 0; i < 2; i++) {
@@ -206,7 +207,7 @@ void stripOn(uint32_t color) {
   for(int i=0; i<strip.numPixels(); i++) {
     strip.setPixelColor(i, color);
   }
-  strip.show();  
+  strip.show();
 }
 
 void colorDefinitions() {
@@ -223,7 +224,7 @@ void colorFucker(byte r, byte g, byte b, byte w) {
   g = round(whiteBalance[WHITE_BALANCE].g * g);
   b = round(whiteBalance[WHITE_BALANCE].b * b);
   w = round(whiteBalance[WHITE_BALANCE].w * w);
-  
+
   //Make sure there are no negative numbers.
   if(r < 0) {r = 0;} if (g < 0) {g = 0;} if (b < 0) {b = 0;} if (w < 0) {w = 0;}
 
@@ -247,18 +248,18 @@ void colorFucker(byte r, byte g, byte b, byte w) {
   //Or this I guess https://stackoverflow.com/questions/21117842/converting-an-rgbw-color-to-a-standard-rgb-hsb-representation
   //M = max(Ri,Gi,Bi)
   //m = min(Ri,Gi,Bi)
-  
-  //Wo = if (m/M < 0.5) use ( (m*M) / (M-m) ) else M 
+
+  //Wo = if (m/M < 0.5) use ( (m*M) / (M-m) ) else M
   //Q = 255
   //K = (Wo + M) / m
   //Ro = floor( [ ( K * Ri ) - Wo ] / Q )
   //Go = floor( [ ( K * Gi ) - Wo ] / Q )
   //Bo = floor( [ ( K * Bi ) - Wo ] / Q )
-  
-  
+
+
   //Check for negatives.
   if(r < 0) {r = 0;} if (g < 0) {g = 0;} if (b < 0) {b = 0;} if (w < 0) {w = 0;}
-  
+
   return;
-  
+
 }
