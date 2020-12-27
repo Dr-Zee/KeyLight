@@ -1,6 +1,10 @@
 //Primary key data
 keyState  keyBuffer[88];
 
+//Active Color Values
+colorDef keyColor;
+colorDef bgColor;
+
 //Saved color values for fade reference.
 colorDef prevKeyColor[88];
 colorDef prevBgColor[88];

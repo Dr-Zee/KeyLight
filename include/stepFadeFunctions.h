@@ -1,7 +1,7 @@
 void colorFade(uint32_t fadeDuration, uint32_t fadeDelay, byte i) {
   
   //convert seconds to milliseconds
-  fadeDuration    = fadeDuration    * 1000;
+  fadeDuration = fadeDuration * 1000;
 
   if(fadeDelay >= keyBuffer[i].lastReleased) {
     //Get the number of steps needed for each pixel transition then divide the fade duration to get step length.

@@ -8,16 +8,13 @@ void setDefaultData() {
     keyBuffer[i].keyLight[0] = (i * 2) - 2;
     keyBuffer[i].keyLight[1] = keyBuffer[i].keyLight[0] + 1;
     keyBuffer[i].isDown = keyBuffer[i].recentlyReleased = keyBuffer[i].runOnce = false;
-    //prevBgColor[i].r = x;
-    //prevBgColor[i].g = x;
-    //prevBgColor[i].b = x;
-    //prevBgColor[i].w = x;
+    prevBgColor[i].r = bgColor.r; prevBgColor[i].g = bgColor.g; prevBgColor[i].b = bgColor.b; prevBgColor[i].w = bgColor.w;
   }
 }
 
 void stripOn(uint32_t color) {
-  for(int i=0; i<strip.numPixels(); i++) {
-    strip.setPixelColor(i, color);
+  for(int i=0; i < strip.numPixels(); i++) {
+    strip.setPixelColor(i, strip.Color(bgColor.r, bgColor.g, bgColor.b, bgColor.w));
   }
   strip.show();
 }
@@ -25,7 +22,7 @@ void stripOn(uint32_t color) {
 // Initialize light strip.
 void initializeStrip() {
   strip.begin();
-  stripOn(strip.Color(90, 30, 0, 5));
+  stripOn(strip.Color(bgColor.r, bgColor.g, bgColor.b, bgColor.w));
   strip.show();
 }
 
@@ -72,18 +69,16 @@ void keyOnHousekeeping(int key) {
 void keyOffHousekeeping(int i) {
   keyBuffer[i].recentlyReleased = false;
   keyBuffer[i].lastReleased = 0;
- // currKeyColor[i].r = currKeyColor[i].g = currKeyColor[i].b = CurrKeyColor[i].w = 0;
 }
 
-// push a color to the keys only once.
+// Push a color to the keys only once.
 void keyStrikes(byte key) {
   if((keyBuffer[key].isDown == true) & (keyBuffer[key].runOnce == false)) {
     for(int i = 0; i < 2; i++) {
-      strip.setPixelColor(keyBuffer[key].keyLight[i], strip.Color( 255, 0, 0, 0));
-      //prevKeyColor[i].r = x;
-      //prevKeyColor[i].g = x;
-      //prevKeyColor[i].b = x;
-      //prevKeyColor[i].w = x;
+      strip.setPixelColor(keyBuffer[key].keyLight[i], strip.Color( keyColor.r, keyColor.g, keyColor.b, keyColor.w));
+
+      // Set this as the previous pixel color for use in the fade.
+      prevKeyColor[i].r = keyColor.r; prevKeyColor[i].g = keyColor.g; prevKeyColor[i].b = keyColor.b; prevKeyColor[i].w = keyColor.w;
     }
     strip.show();
 
@@ -101,7 +96,7 @@ void theBigFade() {
       uint32_t elapsed = millis() - keyBuffer[i].lastReleased;
 
       if((elapsed >= fadeDelay) & (elapsed < fadeDelay + fadeDuration)) {
-        
+
         // Run the fade
         colorFade(fadeDuration, fadeDelay, i);
       }
