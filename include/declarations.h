@@ -1,3 +1,20 @@
+//Primary key data
+keyState  keyBuffer[88];
+
+//Saved color values for fade reference.
+colorDef prevKeyColor[88];
+colorDef prevBgColor[88];
+
+//Define a set of custom colors
+colorDef colorDefs[20];
+
+//White Balance Profiles
+whiteBalances whiteBalance[5];
+
+//For tracking fade steps
+timers pixelTimers;
+timers rgbwSteps;
+
 // LEDs
 #define LED_PIN     8
 #define LED_COUNT  175
