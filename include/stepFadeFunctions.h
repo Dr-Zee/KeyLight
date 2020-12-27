@@ -47,6 +47,7 @@ void colorFade(uint32_t fadeDuration, uint32_t fadeDelay, byte i) {
       Serial.print("Rub one out.");
       Serial.println("");
       Serial.println("");
+      keyOffHousekeeping(i);
     }
   }
 }

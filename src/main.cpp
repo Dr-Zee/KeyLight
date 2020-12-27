@@ -13,6 +13,7 @@
 
 // Functions
 #include <NeopixelFunctions.h>
+#include <housekeepingFunctions.h>
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
 
