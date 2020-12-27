@@ -39,3 +39,4 @@ uint16_t pid, vid;
 byte event;
 byte key;
 byte colorSteps = 1;
+uint32_t fadeDelay = 0;
