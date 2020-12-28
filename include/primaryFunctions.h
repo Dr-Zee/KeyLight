@@ -1,5 +1,6 @@
 // Set default key data.
-void setDefaultData() {
+void setDefaultData() 
+{
   for (int i = 1; i < 88; i++) {
 
     //the 88th key only has one LED... intentionally.
@@ -16,16 +17,19 @@ void setDefaultData() {
 }
 
 // Initialize light strip.
-void initializeStrip() {
+void initializeStrip() 
+{
   strip.begin();
-  for(int i=0; i < strip.numPixels(); i++) {
+  for(int i=0; i < strip.numPixels(); i++) 
+  {
     strip.setPixelColor(i, strip.Color(bgColor.r, bgColor.g, bgColor.b, bgColor.w));
   }
   strip.show();
 }
 
 // Set event properties.
-void setEventProperties(byte key, byte event) {
+void setEventProperties(byte key, byte event) 
+{
   if (event == 9) {
     keyBuffer[key].isDown = true;
     keyBuffer[key].recentlyReleased = keyBuffer[key].runOnce = false;
@@ -38,14 +42,17 @@ void setEventProperties(byte key, byte event) {
 }
 
 // Midi Listener.
-void MIDI_poll() {
+void MIDI_poll() 
+{
   uint8_t bufMidi[64];
   uint16_t  rcvd;
-  if ((Midi.vid != vid) | (Midi.pid != pid)) {
+  if ((Midi.vid != vid) | (Midi.pid != pid)) 
+  {
     vid = Midi.vid;
     pid = Midi.pid;
   }
-  if (Midi.RecvData( &rcvd,  bufMidi) == 0 ) {
+  if (Midi.RecvData( &rcvd,  bufMidi) == 0 ) 
+  {
     event = bufMidi[0];
 
     // Unused but useful.
@@ -59,9 +66,12 @@ void MIDI_poll() {
 }
 
 // Push a color to the keys only once.
-void keyStrikes(byte key) {
-  if((keyBuffer[key].isDown == true) & (keyBuffer[key].runOnce == false)) {
-    for(int i = 0; i < 2; i++) {
+void keyStrikes(byte key) 
+{
+  if((keyBuffer[key].isDown == true) & (keyBuffer[key].runOnce == false)) 
+  {
+    for(int i = 0; i < 2; i++) 
+    {
       strip.setPixelColor(keyBuffer[key].keyLight[i], strip.Color(keyColor.r, keyColor.g, keyColor.b, keyColor.w));
 
       // Set this as the previous pixel color for use in the fade.
@@ -75,14 +85,17 @@ void keyStrikes(byte key) {
 }
 
 // Fade out loop for non-blocking transitions out
-void theBigFade() {
-  for (int i = 1; i < 88; i++) {
-    if(keyBuffer[i].recentlyReleased == true) {
+void theBigFade() 
+{
+  for (int i = 1; i < 88; i++) 
+  {
+    if(keyBuffer[i].recentlyReleased == true) 
+    {
       
       // Time since keyUp
       uint32_t elapsed = millis() - keyBuffer[i].lastReleased;
 
-      if((elapsed >= fadeDelay) & (elapsed < fadeDelay + fadeDuration)) {
+      if((elapsed >= fadeDelay)) {
 
         // Run the fade
         colorFade(fadeDuration, fadeDelay, i);
@@ -91,7 +104,8 @@ void theBigFade() {
   }
 }
 
-void colorDefinitions() {
+void colorDefinitions() 
+{
 
   // (colorDefs[x].r, colorDefs[x].g, colorDefs[x].b, colorDefs[x].w)
   // 0 = Color Corrected Warm White
@@ -100,7 +114,8 @@ void colorDefinitions() {
   colorDefs[1].r = 0; colorDefs[1].g = 0; colorDefs[1].b = 70; colorDefs[1].w = 255;
 }
 
-void colorFucker(byte r, byte g, byte b, byte w) {
+void colorFucker(byte r, byte g, byte b, byte w) 
+{
 
   //Run all the values through the white balancer and round them.
   r = round(whiteBalance[WHITE_BALANCE].r * r);

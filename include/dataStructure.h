@@ -1,6 +1,6 @@
 typedef struct{
   byte     keyLight[2];
-  bool     isDown, recentlyReleased, runOnce;
+  boolean     isDown, recentlyReleased, runOnce;
   uint32_t lastReleased;
 }keyState;
 
