@@ -1,23 +1,28 @@
-typedef struct{
+typedef struct
+{
   byte     keyLight[2];
   boolean     isDown, recentlyReleased, runOnce;
   uint32_t lastReleased;
 }keyState;
 
-typedef struct{
+typedef struct
+{
   byte  r, g, b, w;
 }colorDef;
 
-typedef struct{
+typedef struct
+{
   float  r, g, b, w;
 }whiteBalances;
 
-typedef struct{
+typedef struct
+{
   uint32_t  rfunc, gfunc, bfunc, wfunc;
 }timers;
 
 //Gamma correction lookup table.
-const uint8_t PROGMEM gamma8[] = {
+const uint8_t PROGMEM gamma8[] = 
+{
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,
     1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  2,  2,
@@ -33,4 +38,5 @@ const uint8_t PROGMEM gamma8[] = {
   115,117,119,120,122,124,126,127,129,131,133,135,137,138,140,142,
   144,146,148,150,152,154,156,158,160,162,164,167,169,171,173,175,
   177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
-  215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 };
+  215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 
+  };
