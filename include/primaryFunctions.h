@@ -45,6 +45,25 @@ void setEventProperties(byte key, byte event)
   }
 }
 
+void readInputs()
+{
+
+  // Booleans
+  onOff =             digitalRead(p_onOff);
+  reset =             digitalRead(p_reset);
+  hueButton =         digitalRead(p_hueButton);
+  brightnessButton =  digitalRead(p_brightnessButton);
+  saturationButton =  digitalRead(p_saturationButton);
+
+  // Encoders
+  bgHue =             digitalRead(p_bgHue);
+  keyHue =            digitalRead(p_keyHue);
+  bgBrightness =      digitalRead(p_bgBrightness);
+  keyBrightness =     digitalRead(p_keyBrightness);
+  bgSaturation =      digitalRead(p_bgSaturation);
+  keySaturation =     digitalRead(p_keySaturation);
+}
+
 // Midi Listener.
 void MIDI_poll() 
 {

@@ -18,6 +18,26 @@
 void setup()
 {
   Serial.begin(115200);
+  
+  // Inputs
+  // Booleans
+  pinMode(p_onOff, INPUT);
+  pinMode(p_reset, INPUT);
+  pinMode(p_hueButton, );
+  pinMode(p_brightnessButton, INPUT);
+  pinMode(p_saturationButton, INPUT);
+
+  // Encoders
+  pinMode(p_bgHue, INPUT);
+  pinMode(p_keyHue, INPUT);
+  pinMode(p_bgBrightness, INPUT);
+  pinMode(p_keyBrightness, INPUT);
+  pinMode(p_bgSaturation, INPUT);
+  pinMode(p_keySaturation, INPUT);
+
+  // Outputs
+  pinMode(LED_PIN, OUTPUT);
+
   bFirst = true;
   vid = pid = 0;
 
@@ -31,6 +51,21 @@ void setup()
   keyColor.g = 0;
   keyColor.b = 0;
   keyColor.w = 0;
+
+  // Booleans
+  onOff = true;
+  reset = false;
+  hueButton = false;
+  brightnessButton = false;
+  saturationButton = false;
+
+  // Encoders
+  bgHue = 0;
+  keyHue = 0;
+  bgBrightness = 0;
+  keyBrightness = 0;
+  bgSaturation = 0;
+  keySaturation = 0;
   
   setDefaultData();
   if (Usb.Init() == -1) 
@@ -43,6 +78,8 @@ void setup()
 
 void loop()
 {
+  //Read Inputs
+  readInputs();
 
   // Initialize USB.
   Usb.Task();
