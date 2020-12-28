@@ -12,9 +12,9 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug",
-            "executable": "/home/josh/Arduino/KeyLight/.pio/build/esp32doit-devkit-v1/firmware.elf",
+            "executable": "/Users/jothorne/arduino/KeyLight/.pio/build/esp32doit-devkit-v1/firmware.elf",
             "projectEnvName": "esp32doit-devkit-v1",
-            "toolchainBinDir": "/home/josh/.platformio/packages/toolchain-xtensa32@2.50200.80/bin",
+            "toolchainBinDir": "/Users/jothorne/.platformio/packages/toolchain-xtensa32/bin",
             "preLaunchTask": {
                 "type": "PlatformIO",
                 "task": "Pre-Debug"
@@ -25,9 +25,9 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (skip Pre-Debug)",
-            "executable": "/home/josh/Arduino/KeyLight/.pio/build/esp32doit-devkit-v1/firmware.elf",
+            "executable": "/Users/jothorne/arduino/KeyLight/.pio/build/esp32doit-devkit-v1/firmware.elf",
             "projectEnvName": "esp32doit-devkit-v1",
-            "toolchainBinDir": "/home/josh/.platformio/packages/toolchain-xtensa32@2.50200.80/bin",
+            "toolchainBinDir": "/Users/jothorne/.platformio/packages/toolchain-xtensa32/bin",
             "internalConsoleOptions": "openOnSessionStart"
         }
     ]
