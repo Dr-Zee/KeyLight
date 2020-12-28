@@ -1,10 +1,12 @@
 // Set default key data.
 void setDefaultData() 
 {
-  for (int i = 1; i < 88; i++) {
+  for (int i = 1; i < 88; i++) 
+  {
 
     //the 88th key only has one LED... intentionally.
-    if(i == 88) {
+    if(i == 88) 
+    {
       keyBuffer[i].keyLight[0] = keyBuffer[i].keyLight[1] = 176;
     }
     keyBuffer[i].keyLight[0] = (i * 2) - 2;
@@ -30,11 +32,13 @@ void initializeStrip()
 // Set event properties.
 void setEventProperties(byte key, byte event) 
 {
-  if (event == 9) {
+  if (event == 9) 
+  {
     keyBuffer[key].isDown = true;
     keyBuffer[key].recentlyReleased = keyBuffer[key].runOnce = false;
   }
-  if (event == 8) {
+  if (event == 8) 
+  {
     keyBuffer[key].runOnce = keyBuffer[key].recentlyReleased = true;
     keyBuffer[key].isDown = false;
     keyBuffer[key].lastReleased = millis();
@@ -58,7 +62,8 @@ void MIDI_poll()
     // Unused but useful.
     // Channel = bufMidi[1];
     // Velocity = bufMidi[3];
-    if ((event == 8) | (event == 9)) {
+    if ((event == 8) | (event == 9)) 
+    {
       key = bufMidi[2] - 20;
       setEventProperties(key, event);
     }
@@ -95,7 +100,8 @@ void theBigFade()
       // Time since keyUp
       uint32_t elapsed = millis() - keyBuffer[i].lastReleased;
 
-      if((elapsed >= fadeDelay)) {
+      if((elapsed >= fadeDelay)) 
+      {
 
         // Run the fade
         colorFade(fadeDuration, fadeDelay, i);
@@ -156,6 +162,4 @@ void colorFucker(byte r, byte g, byte b, byte w)
 
   //Check for negatives.
   if(r < 0) {r = 0;} if (g < 0) {g = 0;} if (b < 0) {b = 0;} if (w < 0) {w = 0;}
-
-
 }

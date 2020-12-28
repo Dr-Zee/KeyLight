@@ -33,7 +33,8 @@ void setup()
   keyColor.w = 0;
   
   setDefaultData();
-  if (Usb.Init() == -1) {
+  if (Usb.Init() == -1) 
+  {
     while (1); //halt
   }
   delay(200);
@@ -45,7 +46,8 @@ void loop()
 
   // Initialize USB.
   Usb.Task();
-  if ( Usb.getUsbTaskState() == USB_STATE_RUNNING ) {
+  if ( Usb.getUsbTaskState() == USB_STATE_RUNNING ) 
+  {
 
     // Listen for Midi.
     MIDI_poll();
@@ -54,7 +56,8 @@ void loop()
     keyStrikes(key);
 
     // Debounce the event.
-    if(event != 0) {
+    if(event != 0) 
+    {
      event = 0;
     }
 
