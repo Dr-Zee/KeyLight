@@ -1,6 +1,7 @@
 // Set default key data.
 void setDefaultData() {
   for (int i = 1; i < 88; i++) {
+
     //the 88th key only has one LED... intentionally.
     if(i == 88) {
       keyBuffer[i].keyLight[0] = keyBuffer[i].keyLight[1] = 176;
@@ -8,25 +9,22 @@ void setDefaultData() {
     keyBuffer[i].keyLight[0] = (i * 2) - 2;
     keyBuffer[i].keyLight[1] = keyBuffer[i].keyLight[0] + 1;
     keyBuffer[i].isDown = keyBuffer[i].recentlyReleased = keyBuffer[i].runOnce = false;
+
+    // Set previous bg color as current bg color, mainly for future proofing
     prevBgColor[i].r = bgColor.r; prevBgColor[i].g = bgColor.g; prevBgColor[i].b = bgColor.b; prevBgColor[i].w = bgColor.w;
   }
-}
-
-void stripOn(uint32_t color) {
-  for(int i=0; i < strip.numPixels(); i++) {
-    strip.setPixelColor(i, strip.Color(bgColor.r, bgColor.g, bgColor.b, bgColor.w));
-  }
-  strip.show();
 }
 
 // Initialize light strip.
 void initializeStrip() {
   strip.begin();
-  stripOn(strip.Color(bgColor.r, bgColor.g, bgColor.b, bgColor.w));
-  strip.show();
+  for(int i=0; i < strip.numPixels(); i++) {
+    strip.setPixelColor(i, strip.Color(bgColor.r, bgColor.g, bgColor.b, bgColor.w));
+  }
+  //strip.show();
 }
 
-// Set event properties
+// Set event properties.
 void setEventProperties(byte key, byte event) {
   if (event == 9) {
     keyBuffer[key].isDown = true;
@@ -49,8 +47,10 @@ void MIDI_poll() {
   }
   if (Midi.RecvData( &rcvd,  bufMidi) == 0 ) {
     event = bufMidi[0];
-    //channel = bufMidi[1];
-    //velocity = bufMidi[3];
+
+    // Unused but useful.
+    // Channel = bufMidi[1];
+    // Velocity = bufMidi[3];
     if ((event == 8) | (event == 9)) {
       key = bufMidi[2] - 20;
       setEventProperties(key, event);
@@ -92,6 +92,7 @@ void theBigFade() {
 }
 
 void colorDefinitions() {
+
   // (colorDefs[x].r, colorDefs[x].g, colorDefs[x].b, colorDefs[x].w)
   // 0 = Color Corrected Warm White
   // 1 = RGBW Cool White
@@ -100,6 +101,7 @@ void colorDefinitions() {
 }
 
 void colorFucker(byte r, byte g, byte b, byte w) {
+
   //Run all the values through the white balancer and round them.
   r = round(whiteBalance[WHITE_BALANCE].r * r);
   g = round(whiteBalance[WHITE_BALANCE].g * g);
@@ -115,7 +117,6 @@ void colorFucker(byte r, byte g, byte b, byte w) {
   b = pgm_read_byte(&gamma8[b]);
 
   //color sharing
-
   //By a series of devlish challenges, determine the smallest color value.
   int smallest;
   if(r < g && r < b && r < w) {smallest = r;} else if (g < r && g < b && g < w)  {smallest = g;} else if (b < r && b < g && b < w) {smallest = b;} else {smallest = w;}
@@ -141,6 +142,5 @@ void colorFucker(byte r, byte g, byte b, byte w) {
   //Check for negatives.
   if(r < 0) {r = 0;} if (g < 0) {g = 0;} if (b < 0) {b = 0;} if (w < 0) {w = 0;}
 
-  return;
 
 }
