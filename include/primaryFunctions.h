@@ -84,12 +84,12 @@ void keyStrikes(byte key)
     }
     strip.show();
 
-    // Do Housekeeping
+    // Do Housekeeping.
     keyOnHousekeeping(key);
   }
 }
 
-// Fade out loop for non-blocking transitions out
+// Fade out loop for non-blocking transitions out.
 void theBigFade() 
 {
   for (int i = 1; i < 88; i++) 
@@ -103,7 +103,7 @@ void theBigFade()
       if((elapsed >= fadeDelay)) 
       {
 
-        // Run the fade
+        // Run the fade.
         colorFade(fadeDuration, fadeDelay, i);
       }
     }
