@@ -1,18 +1,18 @@
 typedef struct
 {
   byte     keyLight[2];
-  boolean     isDown, recentlyReleased, runOnce;
+  boolean  isDown, recentlyReleased, runOnce;
   uint32_t lastReleased;
 }keyState;
 
 typedef struct
 {
-  byte  r, g, b, w;
+  byte      r, g, b, w;
 }colorDef;
 
 typedef struct
 {
-  float  r, g, b, w;
+  float     r, g, b, w;
 }whiteBalances;
 
 typedef struct
