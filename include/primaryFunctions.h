@@ -33,7 +33,7 @@ void setEventProperties(byte key, byte event) {
   if (event == 8) {
     keyBuffer[key].runOnce = keyBuffer[key].recentlyReleased = true;
     keyBuffer[key].isDown = false;
-    keyBuffer[key].lastReleased = micros();
+    keyBuffer[key].lastReleased = millis();
   }
 }
 
@@ -80,7 +80,7 @@ void theBigFade() {
     if(keyBuffer[i].recentlyReleased == true) {
       
       // Time since keyUp
-      uint32_t elapsed = micros() - keyBuffer[i].lastReleased;
+      uint32_t elapsed = millis() - keyBuffer[i].lastReleased;
 
       if((elapsed >= fadeDelay) & (elapsed < fadeDelay + fadeDuration)) {
 

@@ -3,7 +3,7 @@ void colorFade(uint32_t fadeDuration, uint32_t fadeDelay, byte i) {
   //convert seconds to milliseconds
   fadeDuration = fadeDuration * 1000;
 
-  if(fadeDelay >= keyBuffer[i].lastReleased) {
+  if(millis() - keyBuffer[i].lastReleased >= fadeDelay) {
     //Get the number of steps needed for each pixel transition then divide the fade duration to get step length.
     if (prevBgColor[i].r > prevKeyColor[i].r)rgbwSteps.rfunc = fadeDuration / (prevBgColor[i].r - prevKeyColor[i].r); else rgbwSteps.rfunc = fadeDuration / (prevKeyColor[i].r -prevBgColor[i].r);
     if (prevBgColor[i].g > prevKeyColor[i].g)rgbwSteps.gfunc = fadeDuration / (prevBgColor[i].g - prevKeyColor[i].g); else rgbwSteps.gfunc = fadeDuration / (prevKeyColor[i].g -prevBgColor[i].g);
@@ -14,24 +14,24 @@ void colorFade(uint32_t fadeDuration, uint32_t fadeDelay, byte i) {
     if((prevKeyColor[i].r != prevBgColor[i].r) || (prevKeyColor[i].g != prevBgColor[i].g) || (prevKeyColor[i].b != prevBgColor[i].b) || (prevKeyColor[i].w != prevBgColor[i].w)) {
       
       //if the elapsed time is greater than the step duration
-      if (micros() - pixelTimers.rfunc >= rgbwSteps.rfunc) {
+      if (millis() - pixelTimers.rfunc >= rgbwSteps.rfunc) {
         
         //increment or decrement the pixel value
         if (prevKeyColor[i].r < prevBgColor[i].r) prevKeyColor[i].r++; else if (prevKeyColor[i].r > prevBgColor[i].r) prevKeyColor[i].r--;
           //and reset the pixel timer
-          pixelTimers.rfunc = micros();
+          pixelTimers.rfunc = millis();
         }
-        if (micros() - pixelTimers.gfunc >= rgbwSteps.gfunc) {
+        if (millis() - pixelTimers.gfunc >= rgbwSteps.gfunc) {
           if (prevKeyColor[i].g < prevBgColor[i].g) prevKeyColor[i].g++; else if (prevKeyColor[i].g > prevBgColor[i].g) prevKeyColor[i].g--;
-          pixelTimers.gfunc = micros();
+          pixelTimers.gfunc = millis();
         }
-        if (micros() - pixelTimers.bfunc >= rgbwSteps.bfunc) {
+        if (millis() - pixelTimers.bfunc >= rgbwSteps.bfunc) {
           if (prevKeyColor[i].b < prevBgColor[i].b) prevKeyColor[i].b++; else if (prevKeyColor[i].b > prevBgColor[i].b) prevKeyColor[i].b--;
-          pixelTimers.bfunc = micros();
+          pixelTimers.bfunc = millis();
         }
-        if (micros() - pixelTimers.wfunc >= rgbwSteps.wfunc) {
+        if (millis() - pixelTimers.wfunc >= rgbwSteps.wfunc) {
           if (prevKeyColor[i].w < prevBgColor[i].w) prevKeyColor[i].w++; else if (prevKeyColor[i].w > prevBgColor[i].w) prevKeyColor[i].w--;
-          pixelTimers.wfunc = micros();
+          pixelTimers.wfunc = millis();
         }
       
       //Write to the strip
