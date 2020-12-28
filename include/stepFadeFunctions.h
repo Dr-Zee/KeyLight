@@ -14,24 +14,24 @@ void colorFade(uint32_t fadeDuration, uint32_t fadeDelay, byte i) {
     if((prevKeyColor[i].r != prevBgColor[i].r) || (prevKeyColor[i].g != prevBgColor[i].g) || (prevKeyColor[i].b != prevBgColor[i].b) || (prevKeyColor[i].w != prevBgColor[i].w)) {
       
       //if the elapsed time is greater than the step duration
-      if (millis() - pixelTimers.rfunc >= rgbwSteps.rfunc) {
+      if (micros() - pixelTimers.rfunc >= rgbwSteps.rfunc) {
         
         //increment or decrement the pixel value
         if (prevKeyColor[i].r < prevBgColor[i].r) prevKeyColor[i].r++; else if (prevKeyColor[i].r > prevBgColor[i].r) prevKeyColor[i].r--;
           //and reset the pixel timer
-          pixelTimers.rfunc = millis();
+          pixelTimers.rfunc = micros();
         }
-        if (millis() - pixelTimers.gfunc >= rgbwSteps.gfunc) {
+        if (micros() - pixelTimers.gfunc >= rgbwSteps.gfunc) {
           if (prevKeyColor[i].g < prevBgColor[i].g) prevKeyColor[i].g++; else if (prevKeyColor[i].g > prevBgColor[i].g) prevKeyColor[i].g--;
-          pixelTimers.gfunc = millis();
+          pixelTimers.gfunc = micros();
         }
-        if (millis() - pixelTimers.bfunc >= rgbwSteps.bfunc) {
+        if (micros() - pixelTimers.bfunc >= rgbwSteps.bfunc) {
           if (prevKeyColor[i].b < prevBgColor[i].b) prevKeyColor[i].b++; else if (prevKeyColor[i].b > prevBgColor[i].b) prevKeyColor[i].b--;
-          pixelTimers.bfunc = millis();
+          pixelTimers.bfunc = micros();
         }
-        if (millis() - pixelTimers.wfunc >= rgbwSteps.wfunc) {
+        if (micros() - pixelTimers.wfunc >= rgbwSteps.wfunc) {
           if (prevKeyColor[i].w < prevBgColor[i].w) prevKeyColor[i].w++; else if (prevKeyColor[i].w > prevBgColor[i].w) prevKeyColor[i].w--;
-          pixelTimers.wfunc = millis();
+          pixelTimers.wfunc = micros();
         }
       
       //Write to the strip

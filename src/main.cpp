@@ -11,7 +11,6 @@
 #include <declarations.h>
 
 // Functions
-//#include <NeopixelFunctions.h>
 #include <housekeepingFunctions.h>
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
@@ -32,7 +31,7 @@ void setup()
   keyColor.g = 0;
   keyColor.b = 0;
   keyColor.w = 0;
-
+  
   setDefaultData();
   if (Usb.Init() == -1) {
     while (1); //halt
