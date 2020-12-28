@@ -1,6 +1,6 @@
 .pio
 .pio/*
-.clang_complete
-.gcc-flags.json
 .vscode
 .vscode/*
+.clang_complete
+.gcc-flags.json
