@@ -45,9 +45,17 @@ byte key;
 // Sets number of skip keys for multicolor patterns
 byte colorSkips = 1;
 
+// When the encoder toggle is clicked, the program will wait this many 
+// milliseconds before registering another click.
+uint16_t toggleButtonTimeout = 500;
+
 // Delay variables
 uint32_t fadeDelay;
 uint32_t fadeDuration;
+uint32_t hueButtonTimer;
+uint32_t saturationButtonTimer;
+uint32_t brightnessButtonTimer;
+
 
 // Buttons
 #define p_onOff 17
@@ -62,6 +70,18 @@ boolean reset = false;
 boolean hueButton = false;
 boolean brightnessButton = false;
 boolean saturationButton = false;
+
+// Toggle Buttons
+boolean readHueButton = true;
+boolean readSaturationButton = true;
+boolean readBrightnessButton = true;
+
+// Program select
+boolean hueSelect = false;
+boolean saturationSelect = false;
+boolean brightnessSelect = false;
+
+//Encoder values
 uint16_t bgHue = 0;
 uint16_t keyHue = 0;
 uint16_t bgBrightness = 0;
