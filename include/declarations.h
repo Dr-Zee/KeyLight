@@ -2,12 +2,12 @@
 keyState  keyBuffer[88];
 
 //Active Color Values
-colorDef keyColor;
-colorDef bgColor;
+colorDef keyColor, 
+         bgColor;
 
 //Saved color values for fade reference.
-colorDef prevKeyColor[88];
-colorDef prevBgColor[88];
+colorDef prevKeyColor[88], 
+         prevBgColor[88];
 
 //Define a set of custom colors
 colorDef colorDefs[20];
@@ -16,8 +16,8 @@ colorDef colorDefs[20];
 whiteBalances whiteBalance[5];
 
 //For tracking fade steps
-timers pixelTimers;
-timers rgbwSteps;
+timers  pixelTimers, 
+        rgbwSteps;
 
 // USB
 USB Usb;
@@ -26,13 +26,10 @@ boolean bFirst;
 uint16_t pid, vid;
 
 // Variables
-byte event;
-byte key;
+byte event, key;
 
 // Store time since last toggle press
-uint32_t hueButtonTimer;
-uint32_t saturationButtonTimer;
-uint32_t brightnessButtonTimer;
+uint32_t hueButtonTimer, saturationButtonTimer, brightnessButtonTimer;
 
 
 // Buttons
@@ -49,30 +46,31 @@ MD_REncoder saturation = MD_REncoder(32, 33);
 
 // Define global input variables
 boolean onOff = true;
-boolean reset = false;
-boolean hueButton = false;
-boolean brightnessButton = false;
-boolean saturationButton = false;
+boolean reset, 
+        hueButton, 
+        brightnessButton, 
+        saturationButton = false;
 
 // Toggle Buttons
-boolean readHueButton = true;
-boolean readSaturationButton = true;
-boolean readBrightnessButton = true;
+boolean readHueButton, 
+        readSaturationButton, 
+        readBrightnessButton = true;
 
 // Program select
-boolean hueSelect = false;
-boolean saturationSelect = false;
-boolean brightnessSelect = false;
+boolean hueSelect, 
+        saturationSelect, 
+        brightnessSelect, 
+        fadeSpeedSelect = false;
 
 //Encoder values
-uint16_t bgHue = 0;
-uint16_t keyHue = 0;
-uint16_t bgBrightness = 0;
-uint16_t keyBrightness = 0;
-uint16_t bgSaturation = 0;
-uint16_t keySaturation = 0;
+uint16_t bgHue, 
+        keyHue, 
+        bgBrightness, 
+        keyBrightness, 
+        bgSaturation, 
+        keySaturation = 0;
 
 // Reset encoders
-int32_t huePosition = -999;
-int32_t brightnessPosition = -999;
-int32_t saturationPosition = -999;
+int32_t huePosition, 
+        brightnessPosition, 
+        saturationPosition = -999;

@@ -40,3 +40,31 @@ const uint8_t PROGMEM gamma8[] =
   177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
   215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 
   };
+
+// Temp - example code
+struct config_t {
+  double Setpoint;
+  double consKp;
+  double consKi;
+  double consKd;
+  int MinPower;
+  byte Saved;
+} configuration;
+
+template <class T> int EEPROM_writeAnything(int ee, const T& value)
+{
+    const byte* p = (const byte*)(const void*)&value;
+    unsigned int i;
+    for (i = 0; i < sizeof(value); i++)
+    EEPROM.write(ee++, *p++);
+    return i;
+}
+
+template <class T> int EEPROM_readAnything(int ee, T& value)
+{
+    byte* p = (byte*)(void*)&value;
+    unsigned int i;
+    for (i = 0; i < sizeof(value); i++)
+    *p++ = EEPROM.read(ee++);
+    return i;
+}
