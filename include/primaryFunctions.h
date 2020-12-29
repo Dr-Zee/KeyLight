@@ -47,7 +47,6 @@ void setEventProperties(byte key, byte event)
 
 void readInputs()
 {
-
   // Booleans
   onOff =             digitalRead(p_onOff);
   reset =             digitalRead(p_reset);
@@ -55,13 +54,49 @@ void readInputs()
   brightnessButton =  digitalRead(p_brightnessButton);
   saturationButton =  digitalRead(p_saturationButton);
 
-  // Encoders
-  bgHue =             digitalRead(p_bgHue);
-  keyHue =            digitalRead(p_keyHue);
-  bgBrightness =      digitalRead(p_bgBrightness);
-  keyBrightness =     digitalRead(p_keyBrightness);
-  bgSaturation =      digitalRead(p_bgSaturation);
-  keySaturation =     digitalRead(p_keySaturation);
+  if(digitalRead(p_onOff) == false)
+  {
+    onOff = false;
+  }
+  if(digitalRead(p_reset) == true)
+  {
+    digitalWrite(p_reset, HIGH));
+  }
+  if(digitalRead(p_hueButton) == true)
+  {
+    hueButton = true;
+  }
+  if(digitalRead(p_brightnessButton) == true)
+  {
+    saturationButton = true;
+  }
+  if(digitalRead(p_saturationButton) == true)
+  {
+    saturationButton = true;
+  }
+
+  int32_t newHuePosition = hue.read();
+  int32_t newBrightnessPosition = brightness.read();
+  int32_t newSaturationPosition = saturation.read();
+
+  if (newHuePosition != huePosition) {
+    huePosition = newHuePosition;
+    Serial.print("New hue position: ");
+    Serial.println(newHuePosition);
+    Serial.println("");
+  }
+  if (newBrightnessPosition != brightnessPosition) {
+    brightnessPosition = newBrightnessPosition;
+    Serial.print("New brightness position: ");
+    Serial.println(newBrightnessPosition);
+    Serial.println("");
+  }
+  if (newSaturationosition != saturationPosition) {
+    saturationPosition = newSaturationPosition;
+    Serial.print("New saturation position: ");
+    Serial.println(newSaturationPosition);
+    Serial.println("");
+  }
 }
 
 // Midi Listener.

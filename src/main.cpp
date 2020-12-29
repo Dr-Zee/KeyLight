@@ -4,6 +4,8 @@
 // Libraries
 #include <usbhub.h>
 #include <usbh_midi.h>
+#define ENCODER_DO_NOT_USE_INTERRUPTS
+#include <Encoder.h>
 #include <Adafruit_NeoPixel.h>
 
 // Datastructure
@@ -18,7 +20,7 @@
 void setup()
 {
   Serial.begin(115200);
-  
+
   // Inputs
   // Booleans
   pinMode(p_onOff, INPUT);
@@ -28,12 +30,12 @@ void setup()
   pinMode(p_saturationButton, INPUT);
 
   // Encoders
-  pinMode(p_bgHue, INPUT);
-  pinMode(p_keyHue, INPUT);
-  pinMode(p_bgBrightness, INPUT);
-  pinMode(p_keyBrightness, INPUT);
-  pinMode(p_bgSaturation, INPUT);
-  pinMode(p_keySaturation, INPUT);
+  pinMode(21, INPUT);
+  pinMode(22, INPUT);
+  pinMode(23, INPUT);
+  pinMode(24, INPUT);
+  pinMode(25, INPUT);
+  pinMode(26, INPUT);
 
   // Outputs
   pinMode(LED_PIN, OUTPUT);
@@ -51,21 +53,6 @@ void setup()
   keyColor.g = 0;
   keyColor.b = 0;
   keyColor.w = 0;
-
-  // Booleans
-  onOff = true;
-  reset = false;
-  hueButton = false;
-  brightnessButton = false;
-  saturationButton = false;
-
-  // Encoders
-  bgHue = 0;
-  keyHue = 0;
-  bgBrightness = 0;
-  keyBrightness = 0;
-  bgSaturation = 0;
-  keySaturation = 0;
   
   setDefaultData();
   if (Usb.Init() == -1) 

@@ -49,34 +49,30 @@ byte colorSkips = 1;
 uint32_t fadeDelay;
 uint32_t fadeDuration;
 
-// Inputs
-// Buttons and encoders
+// Buttons
 #define p_onOff 17
 #define p_reset 3
-
-// Hue
 #define p_hueButton 18
-#define p_bgHue 19
-#define p_keyHue 20
-
-// Brightness
 #define p_brightnessButton 21
-#define p_bgBrightness 22
-#define p_keyBrightness 23
-
-// Saturation
 #define p_saturationButton 24
-#define p_keySaturation 25
-#define p_bgSaturation 26
 
-boolean onOff;
-boolean reset;
-boolean hueButton;
-uint16_t bgHue;
-uint16_t keyHue;
-boolean brightnessButton;
-uint16_t bgBrightness;
-uint16_t keyBrightness;
-boolean saturationButton;
-uint16_t bgSaturation;
-uint16_t keySaturation;
+// Define global input variables
+boolean onOff = true;
+boolean reset = false;
+boolean hueButton = false;
+boolean brightnessButton = false;
+boolean saturationButton = false;
+uint16_t bgHue = 0;
+uint16_t keyHue = 0;
+uint16_t bgBrightness = 0;
+uint16_t keyBrightness = 0;
+uint16_t bgSaturation = 0;
+uint16_t keySaturation = 0;
+
+// Define encoders
+Encoder hue(21, 22);
+Encoder brightness(23, 24);
+Encoder saturation(25, 26);
+
+// Reset encoders
+int32_t huePosition = int32_t brightnessPosition = int32_t saturationPosition = -999;
