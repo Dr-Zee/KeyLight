@@ -79,19 +79,22 @@ void readInputs()
   int32_t newBrightnessPosition = 0;
   int32_t newSaturationPosition = 0;
 
-  if (newHuePosition != huePosition) {
+  if (newHuePosition != huePosition) 
+  {
     huePosition = newHuePosition;
     Serial.print("New hue position: ");
     Serial.println(newHuePosition);
     Serial.println("");
   }
-  if (newBrightnessPosition != brightnessPosition) {
+  if (newBrightnessPosition != brightnessPosition) 
+  {
     brightnessPosition = newBrightnessPosition;
     Serial.print("New brightness position: ");
     Serial.println(newBrightnessPosition);
     Serial.println("");
   }
-  if (newSaturationPosition != saturationPosition) {
+  if (newSaturationPosition != saturationPosition) 
+  {
     saturationPosition = newSaturationPosition;
     Serial.print("New saturation position: ");
     Serial.println(newSaturationPosition);

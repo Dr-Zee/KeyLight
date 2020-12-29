@@ -16,7 +16,7 @@
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
 
-void setup()
+void setup() 
 {
   Serial.begin(115200);
 
@@ -35,10 +35,10 @@ void setup()
   // Encoders
   pinMode(21, INPUT);
   pinMode(22, INPUT);
-  pinMode(23, INPUT);
-  pinMode(24, INPUT);
   pinMode(25, INPUT);
   pinMode(26, INPUT);
+  pinMode(32, INPUT);
+  pinMode(33, INPUT);
 
   // Outputs
   pinMode(LED_PIN, OUTPUT);
@@ -56,11 +56,11 @@ void setup()
   keyColor.g = 0;
   keyColor.b = 0;
   keyColor.w = 0;
-  
+
   setDefaultData();
   if (Usb.Init() == -1) 
   {
-    while (1); //halt
+      while (1); //halt
   }
   delay(200);
   initializeStrip();
