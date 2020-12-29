@@ -60,7 +60,7 @@ void readInputs()
   }
   if(digitalRead(p_reset) == true)
   {
-    digitalWrite(p_reset, HIGH));
+    digitalWrite(p_reset, HIGH);
   }
   if(digitalRead(p_hueButton) == true)
   {
@@ -75,9 +75,9 @@ void readInputs()
     saturationButton = true;
   }
 
-  int32_t newHuePosition = hue.read();
-  int32_t newBrightnessPosition = brightness.read();
-  int32_t newSaturationPosition = saturation.read();
+  int32_t newHuePosition = 0;
+  int32_t newBrightnessPosition = 0;
+  int32_t newSaturationPosition = 0;
 
   if (newHuePosition != huePosition) {
     huePosition = newHuePosition;
@@ -91,7 +91,7 @@ void readInputs()
     Serial.println(newBrightnessPosition);
     Serial.println("");
   }
-  if (newSaturationosition != saturationPosition) {
+  if (newSaturationPosition != saturationPosition) {
     saturationPosition = newSaturationPosition;
     Serial.print("New saturation position: ");
     Serial.println(newSaturationPosition);
