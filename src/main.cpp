@@ -12,9 +12,11 @@
 // Datastructure
 #include <dataStructure.h>
 #include <declarations.h>
+#include <adjustableVariables.h>
 
 // Functions
 #include <housekeepingFunctions.h>
+#include <colorFunctions.h>
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
 
