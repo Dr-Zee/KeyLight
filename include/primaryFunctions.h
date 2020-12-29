@@ -54,50 +54,46 @@ void readInputs()
   brightnessButton =  digitalRead(p_brightnessButton);
   saturationButton =  digitalRead(p_saturationButton);
 
-  if(digitalRead(p_onOff) == false)
-  {
-    onOff = false;
+  // First attempt at a non-blocking toggle button.
+  // Debounce by accepting the first HIGH signal and not reading again for 500 milliseconds. 
+  // Then, reset the button timer and read the button.
+  if(readHueButton == true) {
+    if(digitalRead(p_hueButton) == HIGH)
+    {
+      hueSelect = !hueSelect;
+      readHueButton = false;
+      hueButtonTimer = millis();
+    }
   }
-  if(digitalRead(p_reset) == true)
+  if(millis() - hueButtonTimer >= toggleButtonTimeout) 
   {
-    digitalWrite(p_reset, HIGH);
-  }
-  if(digitalRead(p_hueButton) == true)
-  {
-    hueButton = true;
-  }
-  if(digitalRead(p_brightnessButton) == true)
-  {
-    saturationButton = true;
-  }
-  if(digitalRead(p_saturationButton) == true)
-  {
-    saturationButton = true;
+    readHueButton = true;
+    hueButtonTimer = 0;
   }
 
   int32_t newHuePosition = 0;
   int32_t newBrightnessPosition = 0;
   int32_t newSaturationPosition = 0;
 
-  if (newHuePosition != huePosition) 
+  if(newHuePosition != huePosition) 
   {
     huePosition = newHuePosition;
     Serial.print("New hue position: ");
-    Serial.println(newHuePosition);
+    Serial.print(newHuePosition);
     Serial.println("");
   }
-  if (newBrightnessPosition != brightnessPosition) 
+  if(newBrightnessPosition != brightnessPosition) 
   {
     brightnessPosition = newBrightnessPosition;
     Serial.print("New brightness position: ");
-    Serial.println(newBrightnessPosition);
+    Serial.print(newBrightnessPosition);
     Serial.println("");
   }
-  if (newSaturationPosition != saturationPosition) 
+  if(newSaturationPosition != saturationPosition) 
   {
     saturationPosition = newSaturationPosition;
     Serial.print("New saturation position: ");
-    Serial.println(newSaturationPosition);
+    Serial.print(newSaturationPosition);
     Serial.println("");
   }
 }
@@ -176,6 +172,32 @@ void colorDefinitions()
   colorDefs[0].r = 255; colorDefs[0].g = 140; colorDefs[0].b = 100; colorDefs[0].w = 0;
   colorDefs[1].r = 0; colorDefs[1].g = 0; colorDefs[1].b = 70; colorDefs[1].w = 255;
 }
+
+// void HSBtoRGB() 
+// {
+//   float fract(float x) 
+//   {
+//     return x - int(x);
+//   }
+
+//   float mix(float a, float b, float t) 
+//   {
+//     return a + (b - a) * t; 
+//   }
+
+//   float step(float e, float x) 
+//   {
+//     return x < e ? 0.0 : 1.0; 
+//   }
+
+//   float* hsv2rgb(float h, float s, float b, float* rgb) 
+//   {
+//     rgb[0] = b * mix(1.0, constrain(abs(fract(h + 1.0) * 6.0 - 3.0) - 1.0, 0.0, 1.0), s);
+//     rgb[1] = b * mix(1.0, constrain(abs(fract(h + 0.6666666) * 6.0 - 3.0) - 1.0, 0.0, 1.0), s);
+//     rgb[2] = b * mix(1.0, constrain(abs(fract(h + 0.3333333) * 6.0 - 3.0) - 1.0, 0.0, 1.0), s);
+//     return rgb;
+//   }
+// }
 
 void colorFucker(byte r, byte g, byte b, byte w) 
 {

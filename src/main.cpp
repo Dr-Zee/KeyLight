@@ -4,7 +4,7 @@
 // Libraries
 #include <usbhub.h>
 #include <usbh_midi.h>
-#include <ESP32Encoder.h>
+//#include <ESP32Encoder.h>
 #include <Adafruit_NeoPixel.h>
 
 // Datastructure
@@ -27,10 +27,6 @@ void setup()
   pinMode(p_hueButton, INPUT);
   pinMode(p_brightnessButton, INPUT);
   pinMode(p_saturationButton, INPUT);
-
-  hue.attachHalfQuad(21, 22);
-  brightness.attachHalfQuad(25, 26);
-  saturation.attachHalfQuad(32, 33);
 
   // Encoders
   pinMode(21, INPUT);
