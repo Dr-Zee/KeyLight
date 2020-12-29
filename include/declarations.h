@@ -69,12 +69,11 @@ uint16_t keyBrightness = 0;
 uint16_t bgSaturation = 0;
 uint16_t keySaturation = 0;
 
-// Define encoders
-ESP32Encoder hue;
-ESP32Encoder brightness;
-ESP32Encoder saturation;
-
 // Reset encoders
 int32_t huePosition = -999;
 int32_t brightnessPosition = -999;
 int32_t saturationPosition = -999;
+
+MD_REncoder hue = MD_REncoder(21, 22);
+MD_REncoder brightness = MD_REncoder(25, 26);
+MD_REncoder saturation = MD_REncoder(32, 33);
