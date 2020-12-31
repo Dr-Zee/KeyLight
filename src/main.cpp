@@ -70,6 +70,7 @@ void loop()
 {
   //Read Inputs
   readInputs();
+  programstrip.show();
 
   // Initialize USB.
   Usb.Task();

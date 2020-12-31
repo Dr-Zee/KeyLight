@@ -7,6 +7,13 @@
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRBW + NEO_KHZ800);
 
+// Program LEDs
+#define PROGRAM_LED_COUNT 8
+#define PROGRAM_LED_PIN 4
+#define PROGRAM_LED_BRIGHTNESS 10
+
+Adafruit_NeoPixel programstrip(PROGRAM_LED_COUNT, PROGRAM_LED_PIN, NEO_GRBW + NEO_KHZ800);
+
 // Set length of delay before fade and length of fade.
 uint32_t fadeDelay = 900;
 uint32_t fadeDuration = 900;

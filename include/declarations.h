@@ -43,6 +43,7 @@ uint32_t hueButtonTimer, saturationButtonTimer, brightnessButtonTimer;
 MD_REncoder hue = MD_REncoder(21, 22);
 MD_REncoder brightness = MD_REncoder(25, 26);
 MD_REncoder saturation = MD_REncoder(32, 33);
+MD_REncoder timing = MD_REncoder(12, 13);
 
 // Define global input variables
 boolean onOff = true;
