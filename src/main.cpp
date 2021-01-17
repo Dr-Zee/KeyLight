@@ -1,11 +1,13 @@
 #include <Arduino.h>
+#include <Wire.h>
 #include <SPI.h>
-#include <EEPROM.h>
+#include <ESP32Encoder.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 
 // Libraries
 #include <usbhub.h>
 #include <usbh_midi.h>
-//#include <ESP32Encoder.h>
 #include <MD_REncoder.h>
 #include <Adafruit_NeoPixel.h>
 
@@ -19,6 +21,7 @@
 #include <colorFunctions.h>
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
+#include <OLEDFunctions.h>
 
 void setup() 
 {
@@ -57,12 +60,30 @@ void setup()
   keyColor.b = 0;
   keyColor.w = 0;
 
+  // Initialize Encoder.
+  ESP32Encoder::useInternalWeakPullResistors=UP;
+  encoder.attachHalfQuad(25, 26);
+  encoder.setCount(0);
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println(F("SSD1306 allocation failed"));
+    for(;;);
+  }
+
+  //Initialize Display
+  showLogo();
+
+  // Set default Data
   setDefaultData();
+
+  //Get USB Data
   if (Usb.Init() == -1) 
   {
       while (1); //halt
   }
+
   delay(200);
+  
+  // Initialize lights
   initializeStrip();
 }
 
@@ -91,5 +112,6 @@ void loop()
 
     // Do the big fade.
     theBigFade();
+    displayController();
   }
 }
