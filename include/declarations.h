@@ -34,7 +34,7 @@ uint32_t hueButtonTimer, saturationButtonTimer, brightnessButtonTimer;
 
 // Buttons
 #define p_onOff 17
-#define p_reset 3
+#define p_reset -1
 #define p_hueButton 18
 #define p_brightnessButton 21
 #define p_saturationButton 24
@@ -75,3 +75,16 @@ uint16_t bgHue,
 int32_t huePosition, 
         brightnessPosition, 
         saturationPosition = -999;
+
+// SSD 1306 OLED display
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 32
+#define OLED_RESET     -1
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+
+// Demo Encoder
+ESP32Encoder encoder;
+uint8_t count = 0; 
+uint8_t oldCount = 0;
+uint32_t lastChange = 0;
