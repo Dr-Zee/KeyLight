@@ -20,6 +20,13 @@ typedef struct
   uint32_t  rfunc, gfunc, bfunc, wfunc;
 }timers;
 
+typedef struct
+{
+  ESP32Encoder  encoder;
+  uint8_t count, oldCount;
+  uint32_t lastChange;
+}encoderArray;
+
 //Gamma correction lookup table.
 const uint8_t PROGMEM gamma8[] = 
 {
@@ -41,7 +48,7 @@ const uint8_t PROGMEM gamma8[] =
   215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 
   };
 
-// Temp - example code
+// Temp - example code EEPROM
 struct config_t {
   double Setpoint;
   double consKp;

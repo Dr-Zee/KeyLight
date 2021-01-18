@@ -42,3 +42,6 @@ void colorDefinitions()
 
 // Sets logarithmic divisor for rotary encoders. (not yet implemented)
 byte encoderSpeedDivisor = 10;
+
+// Amount of time before the display returns to the logo.
+uint16_t logoDelay = 4000;

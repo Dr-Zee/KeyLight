@@ -1,21 +1,24 @@
-//Primary key data
+// Primary key data
 keyState  keyBuffer[88];
 
-//Active Color Values
+// Active Color Values
 colorDef keyColor, 
          bgColor;
 
-//Saved color values for fade reference.
+// Saved color values for fade reference.
 colorDef prevKeyColor[88], 
          prevBgColor[88];
 
-//Define a set of custom colors
+// Define a set of custom colors
 colorDef colorDefs[20];
 
-//White Balance Profiles
+// White Balance Profiles
 whiteBalances whiteBalance[5];
 
-//For tracking fade steps
+// Encoders
+encoderArray encoders[4];
+
+// For tracking fade steps
 timers  pixelTimers, 
         rgbwSteps;
 
@@ -38,12 +41,7 @@ uint32_t hueButtonTimer, saturationButtonTimer, brightnessButtonTimer;
 #define p_hueButton 18
 #define p_brightnessButton 21
 #define p_saturationButton 24
-
-// Encoders
-MD_REncoder hue = MD_REncoder(21, 22);
-MD_REncoder brightness = MD_REncoder(25, 26);
-MD_REncoder saturation = MD_REncoder(32, 33);
-MD_REncoder timing = MD_REncoder(12, 13);
+#define p_delayButton 20
 
 // Define global input variables
 boolean onOff = true;
@@ -82,9 +80,5 @@ int32_t huePosition,
 #define OLED_RESET     -1
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-
 // Demo Encoder
-ESP32Encoder encoder;
-uint8_t count = 0; 
-uint8_t oldCount = 0;
-uint32_t lastChange = 0;
+ESP32Encoder hue, saturation, brightness, duration;

@@ -34,7 +34,7 @@ void displayController(void) {
     oldCount = count;
     lastChange = millis();
   }
-  if (millis() - lastChange > 4000) {
+  if (millis() - lastChange > logoDelay) {
     showLogo();
   }
 }

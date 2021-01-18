@@ -1,13 +1,13 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <SPI.h>
-#include <ESP32Encoder.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
 
 // Libraries
 #include <usbhub.h>
 #include <usbh_midi.h>
+#include <ESP32Encoder.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 #include <MD_REncoder.h>
 #include <Adafruit_NeoPixel.h>
 
@@ -21,6 +21,8 @@
 #include <colorFunctions.h>
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
+// #include <eepromFunctions.h>
+#include <encoderFunctions.h>
 #include <OLEDFunctions.h>
 
 void setup() 
@@ -34,14 +36,7 @@ void setup()
   pinMode(p_hueButton, INPUT);
   pinMode(p_brightnessButton, INPUT);
   pinMode(p_saturationButton, INPUT);
-
-  // Encoders
-  pinMode(21, INPUT);
-  pinMode(22, INPUT);
-  pinMode(25, INPUT);
-  pinMode(26, INPUT);
-  pinMode(32, INPUT);
-  pinMode(33, INPUT);
+  pinMode(p_delayButton, INPUT);
 
   // Outputs
   pinMode(LED_PIN, OUTPUT);
@@ -61,24 +56,24 @@ void setup()
   keyColor.w = 0;
 
   // Initialize Encoder.
-  ESP32Encoder::useInternalWeakPullResistors=UP;
-  encoder.attachHalfQuad(25, 26);
-  encoder.setCount(0);
+  initializeEncoders();
+
+  // Make sure the display is working.
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println(F("SSD1306 allocation failed"));
     for(;;);
   }
 
-  //Initialize Display
+  // Initialize Display.
   showLogo();
 
-  // Set default Data
+  // Set default Data.
   setDefaultData();
 
-  //Get USB Data
+  // Get USB Data
   if (Usb.Init() == -1) 
   {
-      while (1); //halt
+    while (1); //halt
   }
 
   delay(200);
@@ -89,9 +84,10 @@ void setup()
 
 void loop()
 {
-  //Read Inputs
+  // Read Inputs
   readInputs();
-  programstrip.show();
+
+  // programStrip.show();
 
   // Initialize USB.
   Usb.Task();
@@ -101,7 +97,7 @@ void loop()
     // Listen for Midi.
     MIDI_poll();
 
-    //  Light the keys.
+    // Light the keys.
     keyStrikes(key);
 
     // Debounce the event.
