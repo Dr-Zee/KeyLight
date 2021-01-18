@@ -16,10 +16,10 @@
 
 
     // Define encoders.
-    hue.attachHalfQuad(25, 26);
-    brightness.attachHalfQuad(28, 29);
-    saturation.attachHalfQuad(23, 24);
-    duration.attachHalfQuad(30, 31);
+    encoders[0].encoder.attachHalfQuad(25, 26);
+    encoders[1].encoder.attachHalfQuad(28, 29);
+    encoders[2].encoder.attachHalfQuad(23, 24);
+    encoders[3].encoder.attachHalfQuad(30, 31);
 
     for(int i = 0; i >= 3; i++) {
       

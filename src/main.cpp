@@ -36,7 +36,7 @@ void setup()
   pinMode(p_hueButton, INPUT);
   pinMode(p_brightnessButton, INPUT);
   pinMode(p_saturationButton, INPUT);
-  pinMode(p_delayButton, INPUT);
+  pinMode(p_durationButton, INPUT);
 
   // Outputs
   pinMode(LED_PIN, OUTPUT);

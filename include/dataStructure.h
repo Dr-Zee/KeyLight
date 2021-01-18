@@ -23,8 +23,9 @@ typedef struct
 typedef struct
 {
   ESP32Encoder  encoder;
-  uint8_t count, oldCount;
-  uint32_t lastChange;
+  uint8_t count[2], oldCount[2];
+  uint32_t lastChange[2];
+  boolean program;
 }encoderArray;
 
 //Gamma correction lookup table.

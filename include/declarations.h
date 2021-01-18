@@ -41,7 +41,7 @@ uint32_t hueButtonTimer, saturationButtonTimer, brightnessButtonTimer;
 #define p_hueButton 18
 #define p_brightnessButton 21
 #define p_saturationButton 24
-#define p_delayButton 20
+#define p_durationButton 20
 
 // Define global input variables
 boolean onOff = true;
@@ -80,5 +80,21 @@ int32_t huePosition,
 #define OLED_RESET     -1
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
+
 // Demo Encoder
-ESP32Encoder hue, saturation, brightness, duration;
+ESP32Encoder encoder;
+uint8_t count = 0; 
+uint8_t oldCount = 0;
+uint32_t lastChange = 0;
+
+ESP32Encoder hue;
+ESP32Encoder brightness;
+ESP32Encoder saturation;
+ESP32Encoder duration;
+
+// Set encoder properties.
+encoders[0].encoder = hue;
+//encoders[1].encoder = brightness;
+//encoders[2].encoder = saturation;
+//encoders[3].encoder = duration;
+
