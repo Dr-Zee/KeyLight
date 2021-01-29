@@ -153,6 +153,11 @@ void encoderProgram() {
             Serial.println(" ");
         }
         programstrip.setPixelColor(1, programstrip.gamma32(programstrip.ColorHSV(count1, count2, count3)));
+
+        //hue = hue value
+        //value = proportionally scale until any RGB  value hits 255
+        //saturation = scale up white independently of rgb until it hits 255, then scale down rgb proportionally
+
         lastInputChange = 0;
     }
     if (millis() - lastInputChange > 40000) {
