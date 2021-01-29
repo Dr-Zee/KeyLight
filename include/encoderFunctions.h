@@ -22,10 +22,10 @@ void initializeEncoders() {
 
 void encoderProgram() {
 
-    count1 = encoder1.getCount();
+    count1 = encoder1.getCount() * 100;
     count2 = encoder2.getCount();
     count3 = encoder3.getCount();
-    count4 = encoder4.getCount();
+    count4 = encoder4.getCount() * 1000;
 
     bool button1 = digitalRead(e_button1);
     bool button2 = digitalRead(e_button2);
@@ -37,41 +37,70 @@ void encoderProgram() {
 
         // Find the change
         if (count1 != oldCount1) {
-            count1 = count1 * 100;
-            
-            programstrip.show();
             oldCount1 = count1;
-            Serial.print("encoder 1: ");
-            Serial.print(count1);
-            Serial.println(" ");
+
+            display.clearDisplay();
+            display.setCursor(0,0);
+            display.setTextColor(SSD1306_WHITE);
+            
+            display.setTextSize(1);
+            display.println("Background Hue");
+        
+            display.println("");
+            
+            display.setTextSize(2);
+            display.println(count1);
+            
+            display.display();
         }
         if (count2 != oldCount2) {
-            count2 = count2 * 5;
-            //programstrip.setPixelColor(0, programstrip.gamma32(programstrip.ColorHSV(count1, count2, count3)));
-            programstrip.show();
             oldCount2 = count2;
-            Serial.print("encoder 2: ");
-            Serial.print(count2);
-            Serial.println(" ");
+            display.clearDisplay();
+            display.setCursor(0,0);
+            display.setTextColor(SSD1306_WHITE);
+            
+            display.setTextSize(1);
+            display.println("Background Saturation");
+        
+            display.println("");
+            
+            display.setTextSize(2);
+            display.println(count2);
+            
+            display.display();
 
         }
         if (count3 != oldCount3) {
-            count3 = count3 * 5;
-            //programstrip.setPixelColor(2, programstrip.gamma32(programstrip.ColorHSV(count1, count2, count3)));
-            programstrip.show();
             oldCount3 = count3;
-            Serial.print("encoder 3: ");
-            Serial.print(count3);
-            Serial.println(" ");
+            display.clearDisplay();
+            display.setCursor(0,0);
+            display.setTextColor(SSD1306_WHITE);
+            
+            display.setTextSize(1);
+            display.println("Background Brightness");
+        
+            display.println("");
+            
+            display.setTextSize(2);
+            display.println(count3);
+            
+            display.display();
         }
         if (count4 != oldCount4) {
-            count4 = count4 * 100;
-            //programstrip.setPixelColor(3, programstrip.gamma32(programstrip.ColorHSV(count4)));
-            programstrip.show();
             oldCount4 = count4;
-            Serial.print("encoder 4: ");
-            Serial.print(count4);
-            Serial.println(" ");
+            display.clearDisplay();
+            display.setCursor(0,0);
+            display.setTextColor(SSD1306_WHITE);
+            
+            display.setTextSize(1);
+            display.println("Duration");
+        
+            display.println("");
+            
+            display.setTextSize(4);
+            display.println(count1);
+            
+            display.display();
         }
 
         if (button1 == 0) {

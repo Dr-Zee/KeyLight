@@ -99,6 +99,6 @@ encoderProgram();
 
     // Do the big fade.
     theBigFade();
-    displayController();
+    //displayController();
   }
 }
