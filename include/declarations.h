@@ -15,9 +15,6 @@ colorDef colorDefs[20];
 // White Balance Profiles
 whiteBalances whiteBalance[5];
 
-// Encoders
-encoderArray encoders[4];
-
 // For tracking fade steps
 timers  pixelTimers, 
         rgbwSteps;
@@ -36,19 +33,17 @@ uint32_t hueButtonTimer, saturationButtonTimer, brightnessButtonTimer;
 
 
 // Buttons
-#define p_onOff 17
 #define p_reset -1
-#define p_hueButton 18
-#define p_brightnessButton 21
-#define p_saturationButton 24
-#define p_durationButton 20
+#define p_hueButton 26
+#define p_brightnessButton 32
+#define p_saturationButton 15
+#define p_durationButton 13
 
 // Define global input variables
-boolean onOff = true;
-boolean reset, 
-        hueButton, 
+boolean hueButton, 
         brightnessButton, 
-        saturationButton = false;
+        saturationButton,
+        durationButton = false;
 
 // Toggle Buttons
 boolean readHueButton, 
@@ -82,19 +77,19 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 
 // Demo Encoder
-ESP32Encoder encoder;
-uint8_t count = 0; 
-uint8_t oldCount = 0;
+ESP32Encoder encoder1;
+ESP32Encoder encoder2;
+ESP32Encoder encoder3;
+ESP32Encoder encoder4;
+
+uint16_t count1,
+         count2,
+         count3,
+         count4,
+         oldCount1,
+         oldCount2,
+         oldCount3,
+         oldCount4 = 0;
+
+uint16_t oldCount = 0;
 uint32_t lastChange = 0;
-
-ESP32Encoder hue;
-ESP32Encoder brightness;
-ESP32Encoder saturation;
-ESP32Encoder duration;
-
-// Set encoder properties.
-encoders[0].encoder = hue;
-//encoders[1].encoder = brightness;
-//encoders[2].encoder = saturation;
-//encoders[3].encoder = duration;
-

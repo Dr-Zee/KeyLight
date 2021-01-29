@@ -22,11 +22,17 @@ void setDefaultData()
 void initializeStrip() 
 {
   strip.begin();
+  programstrip.begin();
   for(int i=0; i < strip.numPixels(); i++) 
   {
     strip.setPixelColor(i, strip.Color(bgColor.r, bgColor.g, bgColor.b, bgColor.w));
   }
+  for(int i=0; i < programstrip.numPixels(); i++) 
+  {
+    programstrip.setPixelColor(i, programstrip.Color(bgColor.r, bgColor.g, bgColor.b, bgColor.w));
+  }
   strip.show();
+  programstrip.show();
 }
 
 // Set event properties.
@@ -42,59 +48,6 @@ void setEventProperties(byte key, byte event)
     keyBuffer[key].runOnce = keyBuffer[key].recentlyReleased = true;
     keyBuffer[key].isDown = false;
     keyBuffer[key].lastReleased = millis();
-  }
-}
-
-void readInputs()
-{
-  // Booleans
-  onOff =             digitalRead(p_onOff);
-  reset =             digitalRead(p_reset);
-  hueButton =         digitalRead(p_hueButton);
-  brightnessButton =  digitalRead(p_brightnessButton);
-  saturationButton =  digitalRead(p_saturationButton);
-
-  // First attempt at a non-blocking toggle button.
-  // Debounce by accepting the first HIGH signal and not reading again for 500 milliseconds. 
-  // Then, reset the button timer and read the button.
-  if(readHueButton == true) {
-    if(digitalRead(p_hueButton) == HIGH)
-    {
-      hueSelect = !hueSelect;
-      readHueButton = false;
-      hueButtonTimer = millis();
-    }
-  }
-  if(millis() - hueButtonTimer >= toggleButtonTimeout) 
-  {
-    readHueButton = true;
-    hueButtonTimer = 0;
-  }
-
-  int32_t newHuePosition = 0;
-  int32_t newBrightnessPosition = 0;
-  int32_t newSaturationPosition = 0;
-
-  if(newHuePosition != huePosition) 
-  {
-    huePosition = newHuePosition;
-    Serial.print("New hue position: ");
-    Serial.print(newHuePosition);
-    Serial.println("");
-  }
-  if(newBrightnessPosition != brightnessPosition) 
-  {
-    brightnessPosition = newBrightnessPosition;
-    Serial.print("New brightness position: ");
-    Serial.print(newBrightnessPosition);
-    Serial.println("");
-  }
-  if(newSaturationPosition != saturationPosition) 
-  {
-    saturationPosition = newSaturationPosition;
-    Serial.print("New saturation position: ");
-    Serial.print(newSaturationPosition);
-    Serial.println("");
   }
 }
 
@@ -128,9 +81,11 @@ void keyStrikes(byte key)
 {
   if((keyBuffer[key].isDown == true) & (keyBuffer[key].runOnce == false)) 
   {
+    
     for(int i = 0; i < 2; i++) 
     {
-      strip.setPixelColor(keyBuffer[key].keyLight[i], strip.Color(keyColor.r, keyColor.g, keyColor.b, keyColor.w));
+
+      strip.setPixelColor(keyBuffer[key].keyLight[i], strip.Color(0, 30, 90, 20));
 
       // Set this as the previous pixel color for use in the fade.
       prevKeyColor[i].r = keyColor.r; prevKeyColor[i].g = keyColor.g; prevKeyColor[i].b = keyColor.b; prevKeyColor[i].w = keyColor.w;

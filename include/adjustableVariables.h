@@ -1,15 +1,15 @@
 // Adjustable variables
 
 // LEDs
-#define LED_PIN 8
-#define LED_COUNT  175
+#define LED_PIN 4
+#define LED_COUNT  176
 #define BRIGHTNESS 10
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRBW + NEO_KHZ800);
 
 // Program LEDs
-#define PROGRAM_LED_COUNT 8
-#define PROGRAM_LED_PIN 4
+#define PROGRAM_LED_PIN 2
+#define PROGRAM_LED_COUNT 4
 #define PROGRAM_LED_BRIGHTNESS 10
 
 Adafruit_NeoPixel programstrip(PROGRAM_LED_COUNT, PROGRAM_LED_PIN, NEO_GRBW + NEO_KHZ800);

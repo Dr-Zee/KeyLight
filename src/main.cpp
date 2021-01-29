@@ -8,7 +8,7 @@
 #include <ESP32Encoder.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <MD_REncoder.h>
+//#include <MD_REncoder.h>
 #include <Adafruit_NeoPixel.h>
 
 // Datastructure
@@ -21,7 +21,6 @@
 #include <colorFunctions.h>
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
-// #include <eepromFunctions.h>
 #include <encoderFunctions.h>
 #include <OLEDFunctions.h>
 
@@ -31,29 +30,26 @@ void setup()
 
   // Inputs
   // Booleans
-  pinMode(p_onOff, INPUT);
-  pinMode(p_reset, INPUT);
   pinMode(p_hueButton, INPUT);
   pinMode(p_brightnessButton, INPUT);
   pinMode(p_saturationButton, INPUT);
   pinMode(p_durationButton, INPUT);
 
+  pinMode(14, INPUT);
+  pinMode(27, INPUT);
+  pinMode(25, INPUT);
+  pinMode(33, INPUT);
+  pinMode(35, INPUT);
+  pinMode(34, INPUT);
+  pinMode(36, INPUT);
+  pinMode(39, INPUT);
+
   // Outputs
   pinMode(LED_PIN, OUTPUT);
+  pinMode(PROGRAM_LED_PIN, OUTPUT);
 
   bFirst = true;
   vid = pid = 0;
-
-  //Temp Color Values
-  bgColor.r = 0;
-  bgColor.g = 0;
-  bgColor.b = 0;
-  bgColor.w = 0;
-
-  keyColor.r = 0;
-  keyColor.g = 0;
-  keyColor.b = 0;
-  keyColor.w = 0;
 
   // Initialize Encoder.
   initializeEncoders();
@@ -63,7 +59,6 @@ void setup()
     Serial.println(F("SSD1306 allocation failed"));
     for(;;);
   }
-
   // Initialize Display.
   showLogo();
 
@@ -84,11 +79,7 @@ void setup()
 
 void loop()
 {
-  // Read Inputs
-  readInputs();
-
-  // programStrip.show();
-
+encoderProgram();
   // Initialize USB.
   Usb.Task();
   if ( Usb.getUsbTaskState() == USB_STATE_RUNNING ) 

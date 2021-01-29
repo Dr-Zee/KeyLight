@@ -1,6 +1,6 @@
 void showLogo() {
   display.clearDisplay();
-
+  display.setRotation(2);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(150,0);
 
@@ -9,14 +9,12 @@ void showLogo() {
 
   display.setTextSize(2);
   display.println("keyLight");
-  
+
   display.display();
 }
 
 void displayController(void) {
-  count = encoder.getCount();
-  if(count != oldCount) {
-    
+  if(count1 != oldCount) {
     display.clearDisplay();
     display.setCursor(0,0);
     display.setTextColor(SSD1306_WHITE);
@@ -27,11 +25,11 @@ void displayController(void) {
     display.println("");
     
     display.setTextSize(2);
-    display.println(count);
+    display.println(count1);
     
     display.display();
-    
-    oldCount = count;
+
+    oldCount = count1;
     lastChange = millis();
   }
   if (millis() - lastChange > logoDelay) {
