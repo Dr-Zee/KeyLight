@@ -37,7 +37,8 @@ void encoderProgram() {
 
         // Find the change
         if (count1 != oldCount1) {
-            programstrip.setPixelColor(1, programstrip.gamma32(programstrip.ColorHSV(52536)));
+            count1 = count1 * 100;
+            
             programstrip.show();
             oldCount1 = count1;
             Serial.print("encoder 1: ");
@@ -45,7 +46,8 @@ void encoderProgram() {
             Serial.println(" ");
         }
         if (count2 != oldCount2) {
-            programstrip.setPixelColor(0, programstrip.gamma32(programstrip.ColorHSV(count2)));
+            count2 = count2 * 5;
+            //programstrip.setPixelColor(0, programstrip.gamma32(programstrip.ColorHSV(count1, count2, count3)));
             programstrip.show();
             oldCount2 = count2;
             Serial.print("encoder 2: ");
@@ -54,7 +56,8 @@ void encoderProgram() {
 
         }
         if (count3 != oldCount3) {
-            programstrip.setPixelColor(2, programstrip.gamma32(programstrip.ColorHSV(count3)));
+            count3 = count3 * 5;
+            //programstrip.setPixelColor(2, programstrip.gamma32(programstrip.ColorHSV(count1, count2, count3)));
             programstrip.show();
             oldCount3 = count3;
             Serial.print("encoder 3: ");
@@ -62,7 +65,8 @@ void encoderProgram() {
             Serial.println(" ");
         }
         if (count4 != oldCount4) {
-            programstrip.setPixelColor(3, programstrip.gamma32(programstrip.ColorHSV(count4)));
+            count4 = count4 * 100;
+            //programstrip.setPixelColor(3, programstrip.gamma32(programstrip.ColorHSV(count4)));
             programstrip.show();
             oldCount4 = count4;
             Serial.print("encoder 4: ");
@@ -90,6 +94,7 @@ void encoderProgram() {
             Serial.print(button4);
             Serial.println(" ");
         }
+        programstrip.setPixelColor(1, programstrip.gamma32(programstrip.ColorHSV(count1, count2, count3)));
         lastInputChange = 0;
     }
     if (millis() - lastInputChange > 40000) {
