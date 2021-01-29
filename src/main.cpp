@@ -18,7 +18,7 @@
 
 // Functions
 #include <housekeepingFunctions.h>
-#include <colorFunctions.h>
+//#include <colorFunctions.h>
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
 #include <encoderFunctions.h>

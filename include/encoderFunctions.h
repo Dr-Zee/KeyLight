@@ -32,14 +32,17 @@ void encoderProgram() {
     bool button3 = digitalRead(e_button3);
     bool button4 = digitalRead(e_button4);
 
+    // If there is any input change
     if ((count1 != oldCount1) || (count2 != oldCount2) || (count3 != oldCount3) || (count4 != oldCount4) || (button1 != 1) || (button2 != 1) || (button3 != 1) || (button4 != 1)) {
+
+        // Find the change
         if (count1 != oldCount1) {
-        programstrip.setPixelColor(1, programstrip.gamma32(programstrip.ColorHSV(count1)));
-        programstrip.show();
-        oldCount1 = count1;
-        Serial.print("encoder 1: ");
-        Serial.print(count1);
-        Serial.println(" ");
+            programstrip.setPixelColor(1, programstrip.gamma32(programstrip.ColorHSV(52536)));
+            programstrip.show();
+            oldCount1 = count1;
+            Serial.print("encoder 1: ");
+            Serial.print(count1);
+            Serial.println(" ");
         }
         if (count2 != oldCount2) {
             programstrip.setPixelColor(0, programstrip.gamma32(programstrip.ColorHSV(count2)));

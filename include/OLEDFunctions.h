@@ -30,10 +30,12 @@ void displayController(void) {
     display.display();
 
     oldCount1 = count1;
-    lastChange = millis();
+    //lastChange = millis();
   }
-  // TODO update the variables below
-  if (millis() - lastChange > logoDelay) {
-    showLogo();
- }
+  // TODO update the variables below.
+  //After timeout period, show logo.
+  //then after another timeout period, deactivate screen.
+  //if (millis() - lastChange > logoDelay) {
+  //  showLogo();
+ //}
 }

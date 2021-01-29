@@ -1,16 +1,16 @@
-void colorFucker(byte r, byte g, byte b, byte w) 
-{
-
-  //Run all the values through the white balancer and round them.
-  void whiteBalancer() {
+ void whiteBalancer(byte r, byte g, byte b, byte w) {
     r = round(whiteBalance[WHITE_BALANCE].r * r);
     g = round(whiteBalance[WHITE_BALANCE].g * g);
     b = round(whiteBalance[WHITE_BALANCE].b * b);
     w = round(whiteBalance[WHITE_BALANCE].w * w);
-  };
 
-  //Make sure there are no negative numbers.
-  if(r < 0) {r = 0;} if (g < 0) {g = 0;} if (b < 0) {b = 0;} if (w < 0) {w = 0;}
+    //Run all the values through the white balancer and round them.
+    //Make sure there are no negative numbers.
+    if(r < 0) {r = 0;} if (g < 0) {g = 0;} if (b < 0) {b = 0;} if (w < 0) {w = 0;}
+  }
+
+void colorFucker(byte r, byte g, byte b, byte w) 
+{
 
   //Gamma Correct the resulting values.
   r = pgm_read_byte(&gamma8[r]);
@@ -32,7 +32,7 @@ void colorFucker(byte r, byte g, byte b, byte w)
   if(r < 0) {r = 0;} if (g < 0) {g = 0;} if (b < 0) {b = 0;} if (w < 0) {w = 0;}
 }
 
-uint32_t Adafruit_NeoPixel::MasterColor(uint16_t hue, uint8_t sat, uint8_t val) {
+uint32_t Adafruit_NeoPixel::ColorHSV(uint16_t hue, uint8_t sat, uint8_t val) {
 
 
   // INTENTION
