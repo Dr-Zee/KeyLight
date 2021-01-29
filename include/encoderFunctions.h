@@ -22,7 +22,7 @@ void initializeEncoders() {
 
 void valueWheels() {
     // Smooth Saturation wheel
-    if ((count2 > 255) && (count2 <= 510 ) {
+    if ((count2 > 255) && (count2 <= 510 )) {
 
         // Get the extra number
         uint8_t countWheel2 = count2 - 255;
@@ -35,7 +35,7 @@ void valueWheels() {
     }
 
     // Smooth Value Wheel
-    if ((count3 > 255) && (count3 <= 510 ) {
+    if ((count3 > 255) && (count3 <= 510 )) {
 
         // Get the extra number
         uint8_t countWheel3 = count3 - 255;
