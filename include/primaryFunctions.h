@@ -88,7 +88,7 @@ void keyStrikes(byte key)
       strip.setPixelColor(keyBuffer[key].keyLight[i], strip.Color(0, 30, 90, 20));
 
       // Set this as the previous pixel color for use in the fade.
-      prevKeyColor[i].r = keyColor.r; prevKeyColor[i].g = keyColor.g; prevKeyColor[i].b = keyColor.b; prevKeyColor[i].w = keyColor.w;
+      // prevKeyColor[i].r = keyColor.r; prevKeyColor[i].g = keyColor.g; prevKeyColor[i].b = keyColor.b; prevKeyColor[i].w = keyColor.w;
     }
     strip.show();
 

@@ -34,66 +34,62 @@ void encoderProgram() {
     count3 = encoder3.getCount();
     count4 = encoder4.getCount();
 
-    bool hue = digitalRead(p_hueButton);
-    bool brightness = digitalRead(p_brightnessButton);
-    bool saturation = digitalRead(p_saturationButton);
-    bool duration = digitalRead(p_durationButton);
+    bool button1 = digitalRead(p_hueButton);
+    bool button2 = digitalRead(p_brightnessButton);
+    bool button3 = digitalRead(p_saturationButton);
+    bool button4 = digitalRead(p_durationButton);
 
-    if (count1 != oldCount1) {
-        programstrip.setPixelColor(1, programstrip.gamma32(programstrip.ColorHSV(count1)));
-        programstrip.show();
-        oldCount1 = count1;
-        Serial.print("encoder 1: ");
-        Serial.print(count1);
-        Serial.println(" ");
-    }
-    if (count2 != oldCount2) {
-        programstrip.setPixelColor(0, programstrip.gamma32(programstrip.ColorHSV(count2)));
-        programstrip.show();
-        oldCount2 = count2;
-        Serial.print("encoder 2: ");
-        Serial.print(count2);
-        Serial.println(" ");
+    //count1 = (count1 * 1530L + 32768) / 65536;
+    if((count1 != oldCount1) || (count2 != oldCount2) || (count3 != oldCount3) || (count4 != oldCount4)) {
 
-    }
-    if (count3 != oldCount3) {
-        programstrip.setPixelColor(2, programstrip.gamma32(programstrip.ColorHSV(count3)));
-        programstrip.show();
-        oldCount3 = count3;
-        Serial.print("encoder 3: ");
-        Serial.print(count3);
-        Serial.println(" ");
-    }
-    if (count4 != oldCount4) {
-        programstrip.setPixelColor(3, programstrip.gamma32(programstrip.ColorHSV(count4)));
-        programstrip.show();
-        oldCount4 = count4;
-        Serial.print("encoder 4: ");
-        Serial.print(count4);
-        Serial.println(" ");
-    }
+        if (count1 != oldCount1) {
+            programstrip.setPixelColor(1, programstrip.gamma32(programstrip.ColorHSV(count2, 254, 254)));
+            programstrip.show();
+            oldCount1 = count1;
+            Serial.print("encoder 1: ");
+            Serial.print(count1);
+            Serial.println(" ");
+        }
+        if (count2 != oldCount2) {
+            programstrip.setPixelColor(0, programstrip.gamma32(programstrip.ColorHSV(count2, count2, 70)));
+            programstrip.show();
+            oldCount2 = count2;
+            Serial.print("encoder 2: ");
+            Serial.print(count2);
+            Serial.println(" ");
 
-    if (hue == 0) {
-        Serial.print("hue button: ");
-        Serial.print(hue);
-        Serial.println(" ");
-    }
-    if (brightness == 0) {
-        Serial.print("brightness button: ");
-        Serial.print(brightness);
-        Serial.println(" ");
-    }
-    if (saturation == 0) {
-        Serial.print("saturation button: ");
-        Serial.print(saturation);
-        Serial.println(" ");
-    }
-    if (duration == 0) {
-        Serial.print("duration button: ");
-        Serial.print(duration);
-        Serial.println(" ");
-    }
+        }
+        if (count3 != oldCount3) {
+            programstrip.setPixelColor(2, programstrip.gamma32(programstrip.ColorHSV(count3, 0, 70)));
+            programstrip.show();
+            oldCount3 = count3;
+            Serial.print("encoder 3: ");
+            Serial.print(count3);
+            Serial.println(" ");
+        }
+        if (count4 != oldCount4) {
+            programstrip.setPixelColor(3, programstrip.gamma32(programstrip.ColorHSV(count4, 0, 70)));
+            programstrip.show();
+            oldCount4 = count4;
+            Serial.print("encoder 4: ");
+            Serial.print(count4);
+            Serial.println(" ");
+        }
 
+
+        if ((button1State == 1) && (button1 == 0)) {
+            Serial.print("Button 1 Down");
+            Serial.print(button1);
+            Serial.println(" ");
+            button1State = !button1State;
+        } 
+        if ((button1State == 0) && (button1 == 1)) {
+            Serial.print("button 1 released");
+            Serial.print(button1);
+            Serial.println(" ");
+            button1State = !button1State;
+        }
+    }
 }
 
 
