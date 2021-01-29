@@ -20,6 +20,35 @@ void initializeEncoders() {
   
 }
 
+void valueWheels() {
+    // Smooth Saturation wheel
+    if ((count2 > 255) && (count2 <= 510 ) {
+
+        // Get the extra number
+        uint8_t countWheel2 = count2 - 255;
+
+        //remove that from the total
+        uint8_t adjustedCount2 = 255 - countWheel2;
+
+    } else if (count2 > 510) {
+        count2 = 0;
+    }
+
+    // Smooth Value Wheel
+    if ((count3 > 255) && (count3 <= 510 ) {
+
+        // Get the extra number
+        uint8_t countWheel3 = count3 - 255;
+
+        //remove that from the total
+        uint8_t adjustedCount3 = 255 - countWheel3;
+
+    } else if (count3 > 510) {
+        count3 = 0;
+    }
+}
+
+
 void encoderProgram() {
 
     count1 = encoder1.getCount() * 100;
