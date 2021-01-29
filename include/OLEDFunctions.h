@@ -14,7 +14,7 @@ void showLogo() {
 }
 
 void displayController(void) {
-  if(count1 != oldCount) {
+  if(count1 != oldCount1) {
     display.clearDisplay();
     display.setCursor(0,0);
     display.setTextColor(SSD1306_WHITE);
@@ -29,10 +29,11 @@ void displayController(void) {
     
     display.display();
 
-    oldCount = count1;
+    oldCount1 = count1;
     lastChange = millis();
   }
+  // TODO update the variables below
   if (millis() - lastChange > logoDelay) {
     showLogo();
-  }
+ }
 }

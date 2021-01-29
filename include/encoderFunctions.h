@@ -34,10 +34,10 @@ void encoderProgram() {
     count3 = encoder3.getCount();
     count4 = encoder4.getCount();
 
-    bool hue = digitalRead(p_hueButton);
-    bool brightness = digitalRead(p_brightnessButton);
-    bool saturation = digitalRead(p_saturationButton);
-    bool duration = digitalRead(p_durationButton);
+    bool hue        = digitalRead(e_button1);
+    bool brightness = digitalRead(e_button2);
+    bool saturation = digitalRead(e_button3);
+    bool duration   = digitalRead(e_button4);
 
     if (count1 != oldCount1) {
         programstrip.setPixelColor(1, programstrip.gamma32(programstrip.ColorHSV(count1)));
@@ -94,31 +94,4 @@ void encoderProgram() {
         Serial.println(" ");
     }
 
-}
-
-
-void readInputs()
-{
-  // Booleans
-  hueButton =         digitalRead(p_hueButton);
-  brightnessButton =  digitalRead(p_brightnessButton);
-  saturationButton =  digitalRead(p_saturationButton);
-  durationButton =  digitalRead(p_durationButton);
-
-  // First attempt at a non-blocking toggle button.
-  // Debounce by accepting the first HIGH signal and not reading again for 500 milliseconds. 
-  // Then, reset the button timer and read the button.
-  if(readHueButton == true) {
-    if(digitalRead(p_hueButton) == HIGH)
-    {
-      hueSelect = !hueSelect;
-      readHueButton = false;
-      hueButtonTimer = millis();
-    }
-  }
-  if(millis() - hueButtonTimer >= toggleButtonTimeout) 
-  {
-    readHueButton = true;
-    hueButtonTimer = 0;
-  }
 }

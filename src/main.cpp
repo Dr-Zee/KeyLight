@@ -30,10 +30,10 @@ void setup()
 
   // Inputs
   // Booleans
-  pinMode(p_hueButton, INPUT);
-  pinMode(p_brightnessButton, INPUT);
-  pinMode(p_saturationButton, INPUT);
-  pinMode(p_durationButton, INPUT);
+  pinMode(e_button1, INPUT);
+  pinMode(e_button2, INPUT);
+  pinMode(e_button3, INPUT);
+  pinMode(e_button4, INPUT);
 
   pinMode(14, INPUT);
   pinMode(27, INPUT);
