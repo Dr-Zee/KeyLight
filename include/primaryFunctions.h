@@ -14,7 +14,7 @@ void setDefaultData()
     keyBuffer[i].isDown = keyBuffer[i].recentlyReleased = keyBuffer[i].runOnce = false;
 
     // Set previous bg color as current bg color, mainly for future proofing
-    prevBgColor[i].r = bgColor.r; prevBgColor[i].g = bgColor.g; prevBgColor[i].b = bgColor.b; prevBgColor[i].w = bgColor.w;
+    // prevBgColor[i].r = bgColor.r; prevBgColor[i].g = bgColor.g; prevBgColor[i].b = bgColor.b; prevBgColor[i].w = bgColor.w;
   }
 }
 
@@ -65,7 +65,7 @@ void MIDI_poll()
   {
     event = bufMidi[0];
 
-    // Unused but useful.
+    // Unused
     // Channel = bufMidi[1];
     // Velocity = bufMidi[3];
     if ((event == 8) | (event == 9)) 
@@ -88,7 +88,7 @@ void keyStrikes(byte key)
       strip.setPixelColor(keyBuffer[key].keyLight[i], strip.Color(0, 30, 90, 20));
 
       // Set this as the previous pixel color for use in the fade.
-      // prevKeyColor[i].r = keyColor.r; prevKeyColor[i].g = keyColor.g; prevKeyColor[i].b = keyColor.b; prevKeyColor[i].w = keyColor.w;
+      prevKeyColor[i].r = keyColor.r; prevKeyColor[i].g = keyColor.g; prevKeyColor[i].b = keyColor.b; prevKeyColor[i].w = keyColor.w;
     }
     strip.show();
 

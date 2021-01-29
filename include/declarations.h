@@ -51,6 +51,7 @@ ESP32Encoder encoder2;
 ESP32Encoder encoder3;
 ESP32Encoder encoder4;
 
+//Encoder Counts
 uint16_t count1 = 0;
 uint16_t count2 = 0;
 uint16_t count3 = 0;
@@ -60,9 +61,11 @@ uint16_t oldCount2 = 0;
 uint16_t oldCount3 = 0;
 uint16_t oldCount4 = 0;
 
+// Encoder Button Toggles
 bool    button1State = 1;
 bool    button2State = 1;
 bool    button3State = 1;
 bool    button4State = 1;
 
-uint32_t lastChange = 0;
+// Store time since last input update
+uint32_t lastInputChange;

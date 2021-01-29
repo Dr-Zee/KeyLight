@@ -19,8 +19,6 @@ void colorFucker(byte r, byte g, byte b, byte w)
 
   //color sharing
   //By a series of devlish challenges, determine the smallest color value.
-
-
   int smallest;
   if(r < g && r < b) {smallest = r;} else if (g < r && g < b)  {smallest = g;} else if (b < r && b < g) {smallest = b;}
 

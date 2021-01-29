@@ -3,13 +3,6 @@
 
 // Encoders
 
-// Encoders from MD_REncoder library
-// Capable of getting a speed reading.
-// MD_REncoder hue = MD_REncoder(21, 22);
-// MD_REncoder brightness = MD_REncoder(25, 26);
-// MD_REncoder saturation = MD_REncoder(32, 33);
-// MD_REncoder timing = MD_REncoder(12, 13);
-
 void initializeEncoders() {
 
     ESP32Encoder::useInternalWeakPullResistors=UP;
@@ -34,64 +27,70 @@ void encoderProgram() {
     count3 = encoder3.getCount();
     count4 = encoder4.getCount();
 
-    bool hue        = digitalRead(e_button1);
-    bool brightness = digitalRead(e_button2);
-    bool saturation = digitalRead(e_button3);
-    bool duration   = digitalRead(e_button4);
+    bool button1 = digitalRead(e_button1);
+    bool button2 = digitalRead(e_button2);
+    bool button3 = digitalRead(e_button3);
+    bool button4 = digitalRead(e_button4);
 
-    if (count1 != oldCount1) {
+    if ((count1 != oldCount1) || (count2 != oldCount2) || (count3 != oldCount3) || (count4 != oldCount4) || (button1 != 1) || (button2 != 1) || (button3 != 1) || (button4 != 1)) {
+        if (count1 != oldCount1) {
         programstrip.setPixelColor(1, programstrip.gamma32(programstrip.ColorHSV(count1)));
         programstrip.show();
         oldCount1 = count1;
         Serial.print("encoder 1: ");
         Serial.print(count1);
         Serial.println(" ");
-    }
-    if (count2 != oldCount2) {
-        programstrip.setPixelColor(0, programstrip.gamma32(programstrip.ColorHSV(count2)));
-        programstrip.show();
-        oldCount2 = count2;
-        Serial.print("encoder 2: ");
-        Serial.print(count2);
-        Serial.println(" ");
+        }
+        if (count2 != oldCount2) {
+            programstrip.setPixelColor(0, programstrip.gamma32(programstrip.ColorHSV(count2)));
+            programstrip.show();
+            oldCount2 = count2;
+            Serial.print("encoder 2: ");
+            Serial.print(count2);
+            Serial.println(" ");
 
-    }
-    if (count3 != oldCount3) {
-        programstrip.setPixelColor(2, programstrip.gamma32(programstrip.ColorHSV(count3)));
-        programstrip.show();
-        oldCount3 = count3;
-        Serial.print("encoder 3: ");
-        Serial.print(count3);
-        Serial.println(" ");
-    }
-    if (count4 != oldCount4) {
-        programstrip.setPixelColor(3, programstrip.gamma32(programstrip.ColorHSV(count4)));
-        programstrip.show();
-        oldCount4 = count4;
-        Serial.print("encoder 4: ");
-        Serial.print(count4);
-        Serial.println(" ");
-    }
+        }
+        if (count3 != oldCount3) {
+            programstrip.setPixelColor(2, programstrip.gamma32(programstrip.ColorHSV(count3)));
+            programstrip.show();
+            oldCount3 = count3;
+            Serial.print("encoder 3: ");
+            Serial.print(count3);
+            Serial.println(" ");
+        }
+        if (count4 != oldCount4) {
+            programstrip.setPixelColor(3, programstrip.gamma32(programstrip.ColorHSV(count4)));
+            programstrip.show();
+            oldCount4 = count4;
+            Serial.print("encoder 4: ");
+            Serial.print(count4);
+            Serial.println(" ");
+        }
 
-    if (hue == 0) {
-        Serial.print("hue button: ");
-        Serial.print(hue);
-        Serial.println(" ");
+        if (button1 == 0) {
+            Serial.print("hue button: ");
+            Serial.print(button1);
+            Serial.println(" ");
+        }
+        if (button2 == 0) {
+            Serial.print("brightness button: ");
+            Serial.print(button2);
+            Serial.println(" ");
+        }
+        if (button3 == 0) {
+            Serial.print("saturation button: ");
+            Serial.print(button3);
+            Serial.println(" ");
+        }
+        if (button4 == 0) {
+            Serial.print("duration button: ");
+            Serial.print(button4);
+            Serial.println(" ");
+        }
+        lastInputChange = 0;
     }
-    if (brightness == 0) {
-        Serial.print("brightness button: ");
-        Serial.print(brightness);
-        Serial.println(" ");
+    if (millis() - lastInputChange > 40000) {
+        // If it's been a while since the last input change,
+        // Write values to EEPROM and sleep
     }
-    if (saturation == 0) {
-        Serial.print("saturation button: ");
-        Serial.print(saturation);
-        Serial.println(" ");
-    }
-    if (duration == 0) {
-        Serial.print("duration button: ");
-        Serial.print(duration);
-        Serial.println(" ");
-    }
-
 }
