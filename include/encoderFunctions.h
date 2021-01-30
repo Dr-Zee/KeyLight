@@ -51,10 +51,10 @@ void valueWheels() {
 
 void encoderProgram() {
 
-    count1 = encoder1.getCount() * 100;
-    count2 = encoder2.getCount();
-    count3 = encoder3.getCount();
-    count4 = encoder4.getCount() * 1000;
+    count1 = (encoder1.getCount() / 2) * 100;
+    count2 = encoder2.getCount() / 2;
+    count3 = encoder3.getCount() / 2;
+    count4 = (encoder4.getCount() / 2) * 1000;
 
     bool button1 = digitalRead(e_button1);
     bool button2 = digitalRead(e_button2);
@@ -153,6 +153,10 @@ void encoderProgram() {
             Serial.println(" ");
         }
         programstrip.setPixelColor(1, programstrip.gamma32(programstrip.ColorHSV(count1, count2, count3)));
+
+        Serial.print("HSV dump: ");
+        Serial.print(programstrip.ColorHSV(count1, count2, count3));
+        Serial.println(" ");
 
         //hue = hue value
         //value = proportionally scale until any RGB  value hits 255
