@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <SPI.h>
+#include <EEPROM.h>
 
 // Libraries
 #include <usbhub.h>
@@ -8,7 +9,6 @@
 #include <ESP32Encoder.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-//#include <MD_REncoder.h>
 #include <Adafruit_NeoPixel.h>
 
 // Datastructure

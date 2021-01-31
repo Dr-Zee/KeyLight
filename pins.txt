@@ -33,3 +33,36 @@ TX2
 35
 36
 39
+
+
+Data to store
+
+keyColor = uint32_t;
+bgColor = uint32_t;
+active program = bool
+
+current encoder counts = uiny16_t, byte, byte, float;
+current fade delay and duration = float, float;
+
+// nice to have
+prevbgcolor[88] = uint32_t * 88 ;
+prevkeycolor[88] = uint32_t * 88 ;
+
+for (uint i = 0; i < strip.getPixelCount; i++) {
+    if (prevbgcolor[i] != ) {
+
+    }
+    if (prevbgcolor[i] != ) {
+        
+    }
+    prevBgColor[88] = uint32_t * 88 ;
+    prevKeyColor[88] = uint32_t * 88 ;
+}
+
+// Active Color Values
+colorDef keyColor, 
+         bgColor;
+
+// Saved color values for fade reference.
+colorDef prevKeyColor[88], 
+         prevBgColor[88];
