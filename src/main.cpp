@@ -18,11 +18,12 @@
 
 // Functions
 #include <housekeepingFunctions.h>
-//#include <colorFunctions.h>
+#include <colorFunctions.h>
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
 #include <OLEDFunctions.h>
 #include <encoderFunctions.h>
+//#include <eepromFunctions.h>
 
 void setup() 
 {
@@ -79,7 +80,9 @@ void setup()
 
 void loop()
 {
-encoderProgram();
+  // Run input program.
+  encoderProgram();
+
   // Initialize USB.
   Usb.Task();
   if ( Usb.getUsbTaskState() == USB_STATE_RUNNING ) 
@@ -99,6 +102,5 @@ encoderProgram();
 
     // Do the big fade.
     theBigFade();
-    //displayController();
   }
 }

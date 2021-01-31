@@ -49,8 +49,8 @@ prevbgcolor[88] = uint32_t * 88 ;
 prevkeycolor[88] = uint32_t * 88 ;
 
 for (uint i = 0; i < strip.getPixelCount; i++) {
-    if (prevbgcolor[i] != ) {
-
+    if (prevbgcolor[i] != bgColor) {
+        // write it to memory
     }
     if (prevbgcolor[i] != ) {
         
@@ -59,10 +59,3 @@ for (uint i = 0; i < strip.getPixelCount; i++) {
     prevKeyColor[88] = uint32_t * 88 ;
 }
 
-// Active Color Values
-colorDef keyColor, 
-         bgColor;
-
-// Saved color values for fade reference.
-colorDef prevKeyColor[88], 
-         prevBgColor[88];

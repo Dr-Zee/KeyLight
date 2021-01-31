@@ -9,9 +9,6 @@ colorDef keyColor,
 colorDef prevKeyColor[88], 
          prevBgColor[88];
 
-// Define a set of custom colors
-colorDef colorDefs[20];
-
 // White Balance Profiles
 whiteBalances whiteBalance[5];
 
@@ -34,7 +31,6 @@ byte event, key;
 #define OLED_RESET     -1
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-
 // Encoders
 ESP32Encoder encoder1;
 ESP32Encoder encoder2;
@@ -49,14 +45,9 @@ ESP32Encoder encoder4;
 #define e_button4 26
 
 //Encoder Counts
-uint16_t count1;
-uint8_t count2;
-uint8_t count3;
-float count4;
-uint16_t oldCount1;
-uint8_t oldCount2;
-uint8_t oldCount3;
-float oldCount4;
+uint16_t count1, oldCount1;
+uint8_t  count2, count3, oldCount2, oldCount3;
+float   count4, oldCount4;
 
 // Encoder Button and program booleans.
 bool    btn1_down = false;
@@ -84,10 +75,6 @@ bool    btn3_prg2 = false;
 bool    btn4_prg1 = false;
 // Fade Delay
 bool    btn4_prg2 = false;
-
-// Store time since last toggle press
-uint32_t btn1_timer, btn2_timer, btn3_timer, btn4_timer;
-
 
 // Encoder Button Toggles
 bool    button1State = 1;

@@ -12,9 +12,6 @@ void setDefaultData()
     keyBuffer[i].keyLight[0] = (i * 2) - 2;
     keyBuffer[i].keyLight[1] = keyBuffer[i].keyLight[0] + 1;
     keyBuffer[i].isDown = keyBuffer[i].recentlyReleased = keyBuffer[i].runOnce = false;
-
-    // Set previous bg color as current bg color, mainly for future proofing
-    // prevBgColor[i].r = bgColor.r; prevBgColor[i].g = bgColor.g; prevBgColor[i].b = bgColor.b; prevBgColor[i].w = bgColor.w;
   }
 }
 
@@ -86,11 +83,7 @@ void keyStrikes(byte key)
     
     for(int i = 0; i < 2; i++) 
     {
-
-      strip.setPixelColor(keyBuffer[key].keyLight[i], strip.Color(0, 30, 90, 20));
-
-      // Set this as the previous pixel color for use in the fade.
-      prevKeyColor[i].r = keyColor.r; prevKeyColor[i].g = keyColor.g; prevKeyColor[i].b = keyColor.b; prevKeyColor[i].w = keyColor.w;
+      strip.setPixelColor(keyBuffer[key].keyLight[i], strip.Color(keyColor.r, keyColor.g, keyColor.b, keyColor.w));
     }
     strip.show();
 

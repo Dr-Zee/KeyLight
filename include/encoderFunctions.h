@@ -8,7 +8,7 @@ void initializeEncoders() {
     ESP32Encoder::useInternalWeakPullResistors=UP;
 
     // Define encoders.
-    encoder1.attachHalfQuad(39, 36);
+    encoder1.attachFullQuad(39, 36);
     encoder2.attachHalfQuad(35, 34);
     encoder3.attachHalfQuad(14, 27);
     encoder4.attachHalfQuad(25, 33);
@@ -18,56 +18,12 @@ void initializeEncoders() {
     encoder3.setCount(170);
     encoder4.setCount(200);
 
-    count1 = oldCount1 = (encoder1.getCount() / 2) * 200;
-    count2 = oldCount2 = (encoder2.getCount() / 2) * 5;
-    count3 = oldCount3 = (encoder3.getCount() / 2) * 5;
-    count4 = oldCount4 = (encoder4.getCount() / 2) * .1;
+    count1 = oldCount1 = encoder1.getCount();
+    count2 = oldCount2 = encoder2.getCount();
+    count3 = oldCount3 = encoder3.getCount();
+    count4 = oldCount4 = encoder4.getCount();
 }
 
-void valueWheels() {
-    // Smooth Saturation wheel
-    if ((count2 > 255) && (count2 <= 510 )) {
-
-        // Get the extra number
-        uint8_t countWheel2 = count2 - 255;
-
-        //remove that from the total
-        uint8_t adjustedCount2 = 255 - countWheel2;
-
-    } else if (count2 > 510) {
-        count2 = 0;
-    }
-
-    // Smooth Value Wheel
-    if ((count3 > 255) && (count3 <= 510 )) {
-
-        // Get the extra number
-        uint8_t countWheel3 = count3 - 255;
-
-        //remove that from the total
-        uint8_t adjustedCount3 = 255 - countWheel3;
-
-    } else if (count3 > 510) {
-        count3 = 0;
-    }
-}
-
-uint8_t Red(uint32_t color)
-    {
-        return (color >> 16) & 0xFF;
-    }
- 
-    // Returns the Green component of a 32-bit color
-    uint8_t Green(uint32_t color)
-    {
-        return (color >> 8) & 0xFF;
-    }
- 
-    // Returns the Blue component of a 32-bit color
-    uint8_t Blue(uint32_t color)
-    {
-        return color & 0xFF;
-    }
 
 void encoderProgram() {
 
@@ -93,6 +49,7 @@ void encoderProgram() {
         // Find the change
         if (count1 != oldCount1) {
             oldCount1 = count1;
+            
             display.println("Background Hue");
             display.println("");
             display.setTextSize(2);
@@ -130,27 +87,6 @@ void encoderProgram() {
                 encoder4.setCount(200);
             }
             oldCount4 = count4;
-        }
-
-        if (button1 == LOW) {
-            Serial.print("hue button: ");
-            Serial.print(button1);
-            Serial.println(" ");
-        }
-        if (button2 == LOW) {
-            Serial.print("brightness button: ");
-            Serial.print(button2);
-            Serial.println(" ");
-        }
-        if (button3 == LOW) {
-            Serial.print("saturation button: ");
-            Serial.print(button3);
-            Serial.println(" ");
-        }
-        if (button4 == LOW) {
-            Serial.print("duration button: ");
-            Serial.print(button4);
-            Serial.println(" ");
         }
 
         if ((btn1_down == false) && (button1 == LOW)) {
@@ -197,44 +133,39 @@ void encoderProgram() {
         display.display();
         lastInputChange = millis();
 
-        uint32_t returned_color = programstrip.gamma32(programstrip.ColorHSV(count1, count2, count3));
+            uint32_t returned_color = programstrip.gamma32(programstrip.ColorHSV(count1, count2, count3));
 
-        uint8_t r = Red(returned_color);
-        uint8_t g = Green(returned_color);
-        uint8_t b = Blue(returned_color);
-        uint8_t w = 0;
+                for (byte i = 0; i < programstrip.numPixels(); i++) {
 
-
-
-
-        //color sharing
-        //By a series of devlish challenges, determine the smallest color value.
-        int smallest = 0;
-        if(r <= g && r <= b) {smallest = r;} else if (g <= r && g <= b)  {smallest = g;} else if (b <= r && b <= g) {smallest = b;}
+            uint8_t r = Red(returned_color);
+            uint8_t g = Green(returned_color);
+            uint8_t b = Blue(returned_color);
+            uint8_t w = 0;
 
 
-        //Take the group's lowest common denomenator and remove it.
-        r = r - smallest;
-        g = g - smallest;
-        b = b - smallest;
-        w = smallest;
 
-        //Check for negatives.
-        if(r < 0) {r = 0;} if (g < 0) {g = 0;} if (b < 0) {b = 0;} if (w < 0) {w = 0;}
-        
-        for (byte i = 0; i < programstrip.numPixels(); i++) {
+
+            //color sharing
+            //By a series of devlish challenges, determine the smallest color value.
+            int smallest = 0;
+            if(r < g && r < b) {smallest = r;} else if (g < r && g < b)  {smallest = g;} else if (b < r && b < g) {smallest = b;}
+
+            //Take the group's lowest common denomenator and remove it.
+            r = r - smallest;
+            g = g - smallest;
+            b = b - smallest;
+            w = smallest;
+
+            //Check for negatives.
+            if(r < 0) {r = 0;} if (g < 0) {g = 0;} if (b < 0) {b = 0;} if (w < 0) {w = 0;}
+
+
+
+
 
             programstrip.setPixelColor(i, programstrip.Color(r, g, b, w)); 
-        }
-        for(int i=0; i < strip.numPixels(); i++) 
-        {
-            strip.setPixelColor(i, strip.Color(r, g, b, w)); 
-        }
-        
 
-    
-
-
+      
         programstrip.show();
         strip.show();
     }
@@ -244,6 +175,7 @@ void encoderProgram() {
         showLogo();
     }
     if (millis() - lastInputChange > 10000) {
+        clearDisplay();
         // If it's been a while since the last input change,
         // Write values to EEPROM and sleep
         //clearDisplay();
