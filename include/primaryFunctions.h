@@ -18,6 +18,8 @@ void setDefaultData()
   }
 }
 
+
+
 // Initialize light strip.
 void initializeStrip() 
 {

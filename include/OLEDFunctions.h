@@ -10,7 +10,12 @@ void showLogo() {
   display.setTextSize(2);
   display.println("keyLight");
 
- // display.display();
+  display.display();
+}
+
+void clearDisplay() {
+  display.clearDisplay();
+  display.display();
 }
 
 void displayController(void) {

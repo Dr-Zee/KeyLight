@@ -21,8 +21,8 @@
 //#include <colorFunctions.h>
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
-#include <encoderFunctions.h>
 #include <OLEDFunctions.h>
+#include <encoderFunctions.h>
 
 void setup() 
 {

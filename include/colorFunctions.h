@@ -111,7 +111,5 @@ uint32_t Adafruit_NeoPixel::ColorHSV(uint16_t hue, uint8_t sat, uint8_t val) {
   uint32_t v1 =   1 + val; // 1 to 256; allows >>8 instead of /255
   uint16_t s1 =   1 + sat; // 1 to 256; same reason
   uint8_t  s2 = 255 - sat; // 255 to 0
-  return ((((((r * s1) >> 8) + s2) * v1) & 0xff00) << 8) |
-          (((((g * s1) >> 8) + s2) * v1) & 0xff00)       |
-         ( ((((b * s1) >> 8) + s2) * v1)           >> 8);
+  return ((((((r * s1) >> 8) + s2) * v1) & 0xff00) << 8) | (((((g * s1) >> 8) + s2) * v1) & 0xff00) | ( ((((b * s1) >> 8) + s2) * v1) >> 8);
 }

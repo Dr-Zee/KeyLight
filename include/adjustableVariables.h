@@ -10,7 +10,7 @@ Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRBW + NEO_KHZ800);
 // Program LEDs
 #define PROGRAM_LED_PIN 2
 #define PROGRAM_LED_COUNT 4
-#define PROGRAM_LED_BRIGHTNESS 10
+#define PROGRAM_LED_BRIGHTNESS 255
 
 Adafruit_NeoPixel programstrip(PROGRAM_LED_COUNT, PROGRAM_LED_PIN, NEO_GRBW + NEO_KHZ800);
 
@@ -39,9 +39,6 @@ void colorDefinitions()
   colorDefs[0].r = 255; colorDefs[0].g = 140; colorDefs[0].b = 100; colorDefs[0].w = 0;
   colorDefs[1].r = 0; colorDefs[1].g = 0; colorDefs[1].b = 70; colorDefs[1].w = 255;
 }
-
-// Sets logarithmic divisor for rotary encoders. (not yet implemented)
-byte encoderSpeedDivisor = 10;
 
 // Amount of time before the display returns to the logo.
 uint16_t logoDelay = 4000;

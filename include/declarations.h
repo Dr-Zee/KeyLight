@@ -28,16 +28,6 @@ uint16_t pid, vid;
 // Variables
 byte event, key;
 
-// Store time since last toggle press
-uint32_t hueButtonTimer, saturationButtonTimer, brightnessButtonTimer;
-
-// Buttons
-#define p_reset -1
-#define e_button1 26
-#define e_button2 32
-#define e_button3 15
-#define e_button4 13
-
 // SSD 1306 OLED display
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 32
@@ -51,15 +41,53 @@ ESP32Encoder encoder2;
 ESP32Encoder encoder3;
 ESP32Encoder encoder4;
 
+// Buttons
+#define p_reset -1
+#define e_button1 15
+#define e_button2 13
+#define e_button3 32
+#define e_button4 26
+
 //Encoder Counts
-uint16_t count1 = 0;
-uint16_t count2 = 0;
-uint16_t count3 = 0;
-uint16_t count4 = 0;
-uint16_t oldCount1 = 0;
-uint16_t oldCount2 = 0;
-uint16_t oldCount3 = 0;
-uint16_t oldCount4 = 0;
+uint16_t count1;
+uint8_t count2;
+uint8_t count3;
+float count4;
+uint16_t oldCount1;
+uint8_t oldCount2;
+uint8_t oldCount3;
+float oldCount4;
+
+// Encoder Button and program booleans.
+bool    btn1_down = false;
+bool    btn2_down = false;
+bool    btn3_down = false;
+bool    btn4_down = false;
+
+// Programs
+// Key 1
+// DEFAULT - BG Color Selection
+bool    btn1_prg1 = true;
+// Key Color Selection
+bool    btn1_prg2 = false;
+
+// Key 2
+bool    btn2_prg1 = false;
+bool    btn2_prg2 = false;
+
+// Key 3
+bool    btn3_prg1 = false;
+bool    btn3_prg2 = false;
+
+//Key 4
+// Fade duration
+bool    btn4_prg1 = false;
+// Fade Delay
+bool    btn4_prg2 = false;
+
+// Store time since last toggle press
+uint32_t btn1_timer, btn2_timer, btn3_timer, btn4_timer;
+
 
 // Encoder Button Toggles
 bool    button1State = 1;
