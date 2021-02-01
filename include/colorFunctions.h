@@ -1,5 +1,8 @@
-
-// Get the RGB values from a packed 32bit value.
+// Get the RGBW values from a packed 32bit value.
+uint8_t White(uint32_t color)
+{
+  return (color >> 24) & 0xFF;
+}
 uint8_t Red(uint32_t color)
 {
   return (color >> 16) & 0xFF;
@@ -13,8 +16,7 @@ uint8_t Blue(uint32_t color)
   return color & 0xFF;
 }
 
-
-void colorProcessor(uint16_t hue, uint8_t sat, uint8_t val) 
+uint32_t colorProcessor(uint16_t hue, uint8_t sat, uint8_t val) 
 {
 
   // Get the Gamma corrected, RGB converted, 32bit packed color value from the encoder values
@@ -35,14 +37,6 @@ void colorProcessor(uint16_t hue, uint8_t sat, uint8_t val)
   g = g - smallest;
   b = b - smallest;
   w = smallest;
-  Serial.print("r: ");
-  Serial.print(r);
-  Serial.print(" g: ");
-  Serial.print(g);
-  Serial.print(" b: ");
-  Serial.print(b);
-  Serial.print(" w: ");
-  Serial.print(w);
 
   // White balance the result
   //r = round(whiteBalance[WHITE_BALANCE].r * r);
@@ -52,5 +46,8 @@ void colorProcessor(uint16_t hue, uint8_t sat, uint8_t val)
 
   //Check for negatives.
   if(r < 0) {r = 0;} if (g < 0) {g = 0;} if (b < 0) {b = 0;} if (w < 0) {w = 0;}
-  return (r, g, b, w);
+
+  return ((uint32_t)w << 24) | ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
+
 }
+

@@ -1,5 +1,15 @@
-void colorFade(uint32_t fadeDuration, uint32_t fadeDelay, byte i) 
+void colorFade(uint32_t prevKeyColor, uint32_t prevBgColor, uint32_t fadeDuration, uint32_t fadeDelay, byte i) 
 {
+
+  uint8_t BGR = Red(prevBgColor);
+  uint8_t BGG = Green(prevBgColor);
+  uint8_t BGB = Blue(prevBgColor);
+  uint8_t BGW = White(prevBgColor);
+
+  uint8_t KR = Red(prevKeyColor);
+  uint8_t KG = Green(prevKeyColor);
+  uint8_t KB = Blue(prevKeyColor);
+  uint8_t KW = White(prevKeyColor);
   
   //convert seconds to milliseconds
   fadeDuration = fadeDuration * 1000;
@@ -7,13 +17,13 @@ void colorFade(uint32_t fadeDuration, uint32_t fadeDelay, byte i)
   if(millis() - keyBuffer[i].lastReleased >= fadeDelay) 
   {
     //Get the number of steps needed for each pixel transition then divide the fade duration to get step length.
-    if (prevBgColor[i].r > prevKeyColor[i].r)rgbwSteps.rfunc = fadeDuration / (prevBgColor[i].r - prevKeyColor[i].r); else rgbwSteps.rfunc = fadeDuration / (prevKeyColor[i].r -prevBgColor[i].r);
-    if (prevBgColor[i].g > prevKeyColor[i].g)rgbwSteps.gfunc = fadeDuration / (prevBgColor[i].g - prevKeyColor[i].g); else rgbwSteps.gfunc = fadeDuration / (prevKeyColor[i].g -prevBgColor[i].g);
-    if (prevBgColor[i].b > prevKeyColor[i].b)rgbwSteps.bfunc = fadeDuration / (prevBgColor[i].b - prevKeyColor[i].b); else rgbwSteps.bfunc = fadeDuration / (prevKeyColor[i].b -prevBgColor[i].b);
-    if (prevBgColor[i].w > prevKeyColor[i].w)rgbwSteps.wfunc = fadeDuration / (prevBgColor[i].w - prevKeyColor[i].w); else rgbwSteps.wfunc = fadeDuration / (prevKeyColor[i].w -prevBgColor[i].w);
+    if (BGR > KR)rgbwSteps.rfunc = fadeDuration / (BGR - KR); else rgbwSteps.rfunc = fadeDuration / (KR -BGR);
+    if (BGG > KG)rgbwSteps.gfunc = fadeDuration / (BGG - KG); else rgbwSteps.gfunc = fadeDuration / (KG -BGG);
+    if (BGB > KB)rgbwSteps.bfunc = fadeDuration / (BGB - KB); else rgbwSteps.bfunc = fadeDuration / (KB -BGB);
+    if (BGW > KW)rgbwSteps.wfunc = fadeDuration / (BGW - KW); else rgbwSteps.wfunc = fadeDuration / (KW -BGW);
   
     //if the old and new values are different  
-    if((prevKeyColor[i].r != prevBgColor[i].r) || (prevKeyColor[i].g != prevBgColor[i].g) || (prevKeyColor[i].b != prevBgColor[i].b) || (prevKeyColor[i].w != prevBgColor[i].w)) 
+    if((KR != BGR) || (KG != BGG) || (KB != BGB) || (KW != BGW)) 
     {
       
       //if the elapsed time is greater than the step duration
@@ -21,23 +31,23 @@ void colorFade(uint32_t fadeDuration, uint32_t fadeDelay, byte i)
       {
         
         //increment or decrement the pixel value
-        if (prevKeyColor[i].r < prevBgColor[i].r) prevKeyColor[i].r++; else if (prevKeyColor[i].r > prevBgColor[i].r) prevKeyColor[i].r--;
+        if (KR < BGR) KR++; else if (KR > BGR) KR--;
           //and reset the pixel timer
           pixelTimers.rfunc = millis();
         }
         if (millis() - pixelTimers.gfunc >= rgbwSteps.gfunc) 
         {
-          if (prevKeyColor[i].g < prevBgColor[i].g) prevKeyColor[i].g++; else if (prevKeyColor[i].g > prevBgColor[i].g) prevKeyColor[i].g--;
+          if (KG < BGG) KG++; else if (KG > BGG) KG--;
           pixelTimers.gfunc = millis();
         }
         if (millis() - pixelTimers.bfunc >= rgbwSteps.bfunc) 
         {
-          if (prevKeyColor[i].b < prevBgColor[i].b) prevKeyColor[i].b++; else if (prevKeyColor[i].b > prevBgColor[i].b) prevKeyColor[i].b--;
+          if (KB < BGB) KB++; else if (KB > BGB) KB--;
           pixelTimers.bfunc = millis();
         }
         if (millis() - pixelTimers.wfunc >= rgbwSteps.wfunc) 
         {
-          if (prevKeyColor[i].w < prevBgColor[i].w) prevKeyColor[i].w++; else if (prevKeyColor[i].w > prevBgColor[i].w) prevKeyColor[i].w--;
+          if (KW < BGW) KW++; else if (KW > BGW) KW--;
           pixelTimers.wfunc = millis();
         }
       
@@ -45,13 +55,13 @@ void colorFade(uint32_t fadeDuration, uint32_t fadeDelay, byte i)
       int index = i;
       for(int i=0; i < 2; i++) 
       {
-        strip.setPixelColor(keyBuffer[index].keyLight[i], strip.Color(strip.gamma8(prevKeyColor[index].r), strip.gamma8(prevKeyColor[index].g), strip.gamma8(prevKeyColor[index].b), strip.gamma8(prevKeyColor[index].w)));
+        strip.setPixelColor(keyBuffer[index].keyLight[i], strip.Color(strip.gamma8(KR), strip.gamma8(KG), strip.gamma8(KB), strip.gamma8(KW)));
       }
       strip.show();
     }
     
     //if all the values match
-    if ((prevKeyColor[i].r == prevBgColor[i].r) && (prevKeyColor[i].g == prevBgColor[i].g) && (prevKeyColor[i].b == prevBgColor[i].b) && (prevKeyColor[i].w == prevBgColor[i].w)) 
+    if ((KR == BGR) && (KG == BGG) && (KB == BGB) && (KW == BGW)) 
     {
       Serial.print("Fade complete");
       Serial.println("");

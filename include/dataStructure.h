@@ -7,11 +7,6 @@ typedef struct
 
 typedef struct
 {
-  byte      r, g, b, w;
-}colorDef;
-
-typedef struct
-{
   float     r, g, b, w;
 }whiteBalances;
 

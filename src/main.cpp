@@ -17,13 +17,13 @@
 #include <adjustableVariables.h>
 
 // Functions
+#include <eepromFunctions.h>
 #include <housekeepingFunctions.h>
 #include <colorFunctions.h>
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
 #include <OLEDFunctions.h>
 #include <encoderFunctions.h>
-//#include <eepromFunctions.h>
 
 void setup() 
 {
@@ -48,6 +48,7 @@ void setup()
   // Outputs
   pinMode(LED_PIN, OUTPUT);
   pinMode(PROGRAM_LED_PIN, OUTPUT);
+
 
   bFirst = true;
   vid = pid = 0;
@@ -82,7 +83,6 @@ void loop()
 {
   // Run input program.
   encoderProgram();
-
   // Initialize USB.
   Usb.Task();
   if ( Usb.getUsbTaskState() == USB_STATE_RUNNING ) 

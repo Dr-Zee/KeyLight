@@ -7,30 +7,43 @@ void initializeEncoders() {
 
     ESP32Encoder::useInternalWeakPullResistors=UP;
 
+    uint16_t e1 = EEPROM.readUShort(3);
+    uint8_t e2 = EEPROM.readUInt(4);
+    uint8_t e3 = EEPROM.readUInt(5);
+    float e4 = EEPROM.readFloat(6);
+    Serial.print("e1 saved value: ");
+    Serial.println(e1);
+    Serial.print("e2 saved value: ");
+    Serial.println(e2);
+    Serial.print("e3 saved value: ");
+    Serial.println(e3);
+    Serial.print("e4 saved value: ");
+    Serial.println(e4);
+
     // Define encoders.
     encoder1.attachFullQuad(39, 36);
+    encoder1.setCount(e1);
     encoder2.attachHalfQuad(35, 34);
+    encoder2.setCount(e2);
     encoder3.attachHalfQuad(14, 27);
+    encoder3.setCount(e3);
     encoder4.attachHalfQuad(25, 33);
+    encoder4.setCount(e4);
+    count1 = oldCount1 = e1;
+    count2 = oldCount2 = e2;
+    count3 = oldCount3 = e3;
+    count4 = oldCount4 = e4;
 
-    encoder1.setCount(6336);
-    encoder2.setCount(380);
-    encoder3.setCount(170);
-    encoder4.setCount(200);
-
-    count1 = oldCount1 = encoder1.getCount();
-    count2 = oldCount2 = encoder2.getCount();
-    count3 = oldCount3 = encoder3.getCount();
-    count4 = oldCount4 = encoder4.getCount();
+   
 }
 
 
 void encoderProgram() {
 
-    count1 = (encoder1.getCount() / 2) * 200;
-    count2 = (encoder2.getCount() / 2) * 5;
-    count3 = (encoder3.getCount() / 2) * 5;
-    count4 = (encoder4.getCount() / 2) * .1;
+    count1 = encoder1.getCount();
+    count2 = encoder2.getCount();
+    count3 = encoder3.getCount();
+    count4 = encoder4.getCount();
 
     bool button1 = digitalRead(e_button1);
     bool button2 = digitalRead(e_button2);
@@ -39,6 +52,7 @@ void encoderProgram() {
 
     // If there is any input change
     if ((count1 != oldCount1) || (count2 != oldCount2) || (count3 != oldCount3) || (count4 != oldCount4) || (button1 != 1) || (button2 != 1) || (button3 != 1) || (button4 != 1)) {
+        dataSaved = !dataSaved;
 
         // Prepare the display.
         display.clearDisplay();
@@ -133,49 +147,24 @@ void encoderProgram() {
         display.display();
         lastInputChange = millis();
 
-            uint32_t returned_color = programstrip.gamma32(programstrip.ColorHSV(count1, count2, count3));
+        for(byte i = 0; i < programstrip.numPixels(); i++) {
+            programstrip.setPixelColor(i, colorProcessor(count1, count2, count3));
+        }
 
-                for (byte i = 0; i < programstrip.numPixels(); i++) {
-
-            uint8_t r = Red(returned_color);
-            uint8_t g = Green(returned_color);
-            uint8_t b = Blue(returned_color);
-            uint8_t w = 0;
-
-
-
-
-            //color sharing
-            //By a series of devlish challenges, determine the smallest color value.
-            int smallest = 0;
-            if(r < g && r < b) {smallest = r;} else if (g < r && g < b)  {smallest = g;} else if (b < r && b < g) {smallest = b;}
-
-            //Take the group's lowest common denomenator and remove it.
-            r = r - smallest;
-            g = g - smallest;
-            b = b - smallest;
-            w = smallest;
-
-            //Check for negatives.
-            if(r < 0) {r = 0;} if (g < 0) {g = 0;} if (b < 0) {b = 0;} if (w < 0) {w = 0;}
-
-
-
-
-
-            programstrip.setPixelColor(i, programstrip.Color(r, g, b, w)); 
-
-      
         programstrip.show();
         strip.show();
     }
-    if (millis() - lastInputChange > 5000) {
+    if (millis() - lastInputChange > 500) {
         // If it's been a while since the last input change,
         // Write values to EEPROM and sleep
-        showLogo();
+        if (dataSaved == false) {
+            showLogo();
+            setMemory();
+            dataSaved = !dataSaved;
+        }
     }
     if (millis() - lastInputChange > 10000) {
-        clearDisplay();
+        //clearDisplay();
         // If it's been a while since the last input change,
         // Write values to EEPROM and sleep
         //clearDisplay();

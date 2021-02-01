@@ -15,8 +15,6 @@ void setDefaultData()
   }
 }
 
-
-
 // Initialize light strip.
 void initializeStrip() 
 {
@@ -24,11 +22,11 @@ void initializeStrip()
   programstrip.begin();
   for(int i=0; i < strip.numPixels(); i++) 
   {
-    strip.setPixelColor(i, strip.Color(bgColor.r, bgColor.g, bgColor.b, bgColor.w));
+    strip.setPixelColor(i, colorProcessor(count1, count2, count3));
   }
   for(int i=0; i < programstrip.numPixels(); i++) 
   {
-    programstrip.setPixelColor(i, programstrip.Color(bgColor.r, bgColor.g, bgColor.b, bgColor.w));
+    programstrip.setPixelColor(i, colorProcessor(count1, count2, count3));
   }
   strip.show();
   programstrip.show();
@@ -83,7 +81,7 @@ void keyStrikes(byte key)
     
     for(int i = 0; i < 2; i++) 
     {
-      strip.setPixelColor(keyBuffer[key].keyLight[i], strip.Color(keyColor.r, keyColor.g, keyColor.b, keyColor.w));
+      strip.setPixelColor(keyBuffer[key].keyLight[i], keyColor);
     }
     strip.show();
 
@@ -107,7 +105,7 @@ void theBigFade()
       {
 
         // Run the fade.
-        colorFade(fadeDuration, fadeDelay, i);
+        colorFade(prevBgColor[i], prevKeyColor[i], fadeDuration, fadeDelay, i);
       }
     }
   }

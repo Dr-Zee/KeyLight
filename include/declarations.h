@@ -2,12 +2,11 @@
 keyState  keyBuffer[88];
 
 // Active Color Values
-colorDef keyColor, 
+uint32_t keyColor, 
          bgColor;
-
-// Saved color values for fade reference.
-colorDef prevKeyColor[88], 
-         prevBgColor[88];
+         
+uint32_t prevKeyColor[88];
+uint32_t prevBgColor[88];
 
 // White Balance Profiles
 whiteBalances whiteBalance[5];
@@ -44,6 +43,9 @@ ESP32Encoder encoder4;
 #define e_button3 32
 #define e_button4 26
 
+// EEPROM size in bytes
+#define EEPROM_SIZE 2000
+
 //Encoder Counts
 uint16_t count1, oldCount1;
 uint8_t  count2, count3, oldCount2, oldCount3;
@@ -54,6 +56,8 @@ bool    btn1_down = false;
 bool    btn2_down = false;
 bool    btn3_down = false;
 bool    btn4_down = false;
+
+bool dataSaved = true;
 
 // Programs
 // Key 1
@@ -75,12 +79,6 @@ bool    btn3_prg2 = false;
 bool    btn4_prg1 = false;
 // Fade Delay
 bool    btn4_prg2 = false;
-
-// Encoder Button Toggles
-bool    button1State = 1;
-bool    button2State = 1;
-bool    button3State = 1;
-bool    button4State = 1;
 
 // Store time since last input update
 uint32_t lastInputChange;
