@@ -23,10 +23,32 @@ void initializeEncoders() {
     count4 = oldCount4 = e4;
 }
 
-void countChangeListener() {
+void countChangeActions() {
 
     // Mark new Data
     dataSaved = !dataSaved;
+
+    // 4 arrays since we have multiple datatypes
+    uint8_t old8[4] = {oldCount2, oldCount3};
+    uint8_t cur8[4] = {oldCount2, oldCount3};
+
+    uint16_t old16[4] = {oldCount1, oldCount4};
+    uint16_t cur16[4] = {oldCount1, oldCount4};
+
+    // Loop through the 16 bit types
+    for (int i = 0; i < 2; i++) {
+        if(cur16[i] != old16[i]) {
+            old16[i] = cur16[i];
+        }
+    }
+
+    // Loop through the 8 bit types
+    for (int i = 0; i < 2; i++) {
+        if(cur8[i] != old8[i]) {
+            old8[i] = cur8[i];
+        }
+    }
+
 
     // Find the change
     if (count1 != oldCount1) {
@@ -73,47 +95,32 @@ void countChangeListener() {
     }
 }
 
-void buttonChangeListener(bool button1, bool button2, bool button3, bool button4) {
+void buttonChangeActions(bool button1, bool button2, bool button3, bool button4) {
+    bool btn[4] = {button1, button2, button3, button4};
+    for (int i = 0; i < 4; i++) {
+        if ((btnDown[i]) && (btn[i] == LOW)) {
+            btnDown[i] = !btnDown[i];
 
-    if ((btn1_down == false) && (button1 == LOW)) {
-        btn1_down = !btn1_down;
-
-        // toggle the program.
-        prg[0] = !prg[0];
-        prg[1] = !prg[1];
-    }
-    if ((btn1_down == true) && (button1 == HIGH)) {
-        btn1_down = !btn1_down;
-    }
-    if ((btn2_down == false) && (button2 == LOW)) {
-        btn2_down = !btn2_down;
-
-        // toggle the program.
-        prg[3] = !prg[3];
-        prg[2] = !prg[2];
-    } 
-    if ((btn2_down == true) && (button2 == HIGH)) {
-        btn2_down = !btn2_down;
-    }
-    if ((btn3_down == false) && (button3 == LOW)) {
-        btn3_down = !btn3_down;
-
-        // toggle the program.
-        prg[5] = !prg[5];
-        prg[4] = !prg[4];
-    }
-    if ((btn3_down == true) && (button3 == HIGH)) {
-        btn3_down = !btn3_down;
-    }
-    if ((btn4_down == false) && (button4 == LOW)) {
-        btn4_down = !btn4_down;
-
-        // toggle the program.
-        prg[7] = !prg[7];
-        prg[6] = !prg[6];
-    }
-    if ((btn4_down == true) && (button4 == HIGH)) {
-        btn4_down = !btn4_down;
+            if(btnDown[i] == btnDown[0]) {
+                prg[0] = !prg[0];
+                prg[1] = !prg[1];
+            }
+            if(btnDown[i] == btnDown[1]) {
+                prg[2] = !prg[2];
+                prg[3] = !prg[3];
+            }
+            if(btnDown[i] == btnDown[2]) {
+                prg[4] = !prg[4];
+                prg[5] = !prg[5];
+            }
+            if(btnDown[i] == btnDown[3]) {
+                prg[6] = !prg[6];
+                prg[7] = !prg[7];
+            }
+        }
+        if ((btnDown[i] == false) && (btn[i] == HIGH)) {
+            btnDown[i] = !btnDown[i];
+        }
     }
 }
 
@@ -148,10 +155,19 @@ void encoderProgram() {
     bool button3 = digitalRead(e_button3);
     bool button4 = digitalRead(e_button4);
 
+    //Watch for changes
     if ((count1 != oldCount1) || (count2 != oldCount2) || (count3 != oldCount3) || (count4 != oldCount4) || (button1 != 1) || (button2 != 1) || (button3 != 1) || (button4 != 1)) {
-        countChangeListener();
-        buttonChangeListener(button1, button2, button3, button4);
-        displayRest();
+        
+        // Manage Encoders
+        countChangeActions();
+
+        // Manage Buttons
+        buttonChangeActions(button1, button2, button3, button4);
+
+        // Reset Change Timer
         lastInputChange = millis();
+
+        // Rest
+        displayRest();
     }
 }

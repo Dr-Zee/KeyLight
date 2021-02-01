@@ -23,11 +23,6 @@ void showLogo() {
   display.display();
 }
 
-void clearDisplay() {
-  display.clearDisplay();
-  display.display();
-}
-
 void setMessage(uint16_t data, char * message) {
   display.clearDisplay();
   display.setCursor(0,0);
@@ -51,8 +46,16 @@ void setSplash(char * message) {
   display.display();
 }
 
+void clearDisplay() {
+  display.clearDisplay();
+  display.display();
+}
+
 void buttonDisplayController() {
-  if (btn1_down == true) {
+
+  // Set splash messages on program select
+  // Not really working.
+  if (btnDown[0] == true) {
     if (prg[0] == true) {
       setSplash(bg);
     }
@@ -60,28 +63,28 @@ void buttonDisplayController() {
       setSplash(ky);
     }
   }
-  if (btn2_down == true) {
+  if (btnDown[1] == true) {
     if (prg[2] == true) {
-      //setSplash(bg);
+      
     }
     if (prg[3] == true) {
-      //setSplash(ky);
+      
     }
   }
-  if (btn3_down == true) {
+  if (btnDown[2] == true) {
     if (prg[4] == true) {
-      //setSplash(bg);
+      
     }
     if (prg[5] == true) {
-      //setSplash(ky);
+      
     }
   }
-  if (btn4_down == true) {
+  if (btnDown[3] == true) {
     if (prg[6] == true) {
-      setSplash(fdur);
+      //setSplash(fdur);
     }
     if (prg[7] == true) {
-      setSplash(fdel);
+      //setSplash(fdel);
     }
   }
 }

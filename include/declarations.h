@@ -5,11 +5,23 @@ keyState  keyBuffer[88];
 uint32_t keyColor, 
          bgColor;
          
-uint32_t prevKeyColor[88];
-uint32_t prevBgColor[88];
+uint32_t prevKeyColor[88],
+         prevBgColor[88];
 
 // White Balance Profiles
 whiteBalances whiteBalance[5];
+
+// LEDs
+#define LED_PIN 4
+#define LED_COUNT  176
+
+Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRBW + NEO_KHZ800);
+
+// Program LEDs
+#define PROGRAM_LED_PIN 2
+#define PROGRAM_LED_COUNT 4
+
+Adafruit_NeoPixel programstrip(PROGRAM_LED_COUNT, PROGRAM_LED_PIN, NEO_GRBW + NEO_KHZ800);
 
 // For tracking fade steps
 timers  pixelTimers, 
@@ -21,7 +33,7 @@ USBH_MIDI  Midi(&Usb);
 boolean bFirst;
 uint16_t pid, vid;
 
-// Variables
+// MIDI event booleans.
 byte event, key;
 
 // SSD 1306 OLED display
@@ -44,19 +56,15 @@ ESP32Encoder encoder4;
 #define e_button4 26
 
 // EEPROM size in bytes
-#define EEPROM_SIZE 90
+#define EEPROM_SIZE 1024
 
 //Encoder Counts
 uint16_t count1, oldCount1, count4, oldCount4;
 uint8_t  count2, count3, oldCount2, oldCount3;
 
 // Encoder Button and program booleans.
-bool    btn1_down = false;
-bool    btn2_down = false;
-bool    btn3_down = false;
-bool    btn4_down = false;
-
-bool dataSaved = true;
+bool    btnDown[4] = {false};
+bool    dataSaved = true;
 
 // Programs
 // DEFAULT - 0 - BG Color Selection
