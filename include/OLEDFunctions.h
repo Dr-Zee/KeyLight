@@ -7,13 +7,9 @@ char ks[] = "Key Saturation";
 char kl[] = "Key Luminance";
 char fdel[] = "Fade Duration";
 char fdur[] = "Fade Delay";
-char bg[] = "Backround Color";
-char ky[] = "Key Color";
+char bg[] = "Backround";
+char ky[] = "Keys";
 char kskp[] = "Key Skips";
-
-void programDisplay() {
-  //program1.message1 = bh;
-}
 
 void showLogo() {
   display.clearDisplay();
@@ -53,22 +49,4 @@ void setSplash(char * message) {
 void clearDisplay() {
   display.clearDisplay();
   display.display();
-}
-
-void buttonDisplayController() {
-  // Set splash messages on program select
-  // Not really working.
-  if (btnDown[0] == true) {
-    if (program1.active == true) {
-      setSplash(program1.splash);
-    }
-    if (program2.active == true) {
-      setSplash(program2.splash);
-    }
-  }
-  if (btnDown[1] == true) {
-    if (program3.active == true) {
-      setSplash(program3.splash);
-    }
-  }
 }

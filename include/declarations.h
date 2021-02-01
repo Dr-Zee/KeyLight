@@ -66,9 +66,26 @@ program program1,
         program2,
         program3;
 
+// EEPROM Addresses. Ordered p1: hslda, p2: hslda p3: hslda
+uint8_t address[15] = {8, 10, 11, 13, 19, 14, 16, 17, 18, 20, 21, 23, 25, 26, 27};
+
 // Encoder Button and program booleans.
 bool    btnDown[4] = {false};
 bool    dataSaved = true;
 
 // Store time since last input update
 uint32_t lastInputChange;
+
+// DEPRECATED
+// Set length of delay before fade and length of fade.
+uint32_t fadeDelay = 900;
+uint32_t fadeDuration = 900;
+
+// Choose a white balance profile.
+// 0 = Cool Blue
+// 1 - Hot & Heavy
+byte WHITE_BALANCE = 0;
+
+
+// Amount of time before the display returns to the logo.
+uint16_t logoDelay = 4000;

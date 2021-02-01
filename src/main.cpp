@@ -14,7 +14,6 @@
 // Datastructure
 #include <dataStructure.h>
 #include <declarations.h>
-#include <adjustableVariables.h>
 
 // Functions
 #include <eepromFunctions.h>
