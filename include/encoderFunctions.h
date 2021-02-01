@@ -2,28 +2,35 @@ void initializeEncoders() {
 
     ESP32Encoder::useInternalWeakPullResistors=UP;
 
-    uint16_t e1 = EEPROM.readUShort(8);
-    uint8_t e2 = EEPROM.readUInt(10);
-    uint8_t e3 = EEPROM.readUInt(11);
-    uint16_t e4 = EEPROM.readUShort(13);
-
     // Define encoders.
     encoder1.attachFullQuad(39, 36);
-    encoder1.setCount(e1);
-
     encoder2.attachHalfQuad(35, 34);
-    encoder2.setCount(e2);
-
     encoder3.attachHalfQuad(14, 27);
-    encoder3.setCount(e3);
-    
     encoder4.attachHalfQuad(25, 33);
-    encoder4.setCount(e4);
 
-    count1 = oldCount1 = e1;
-    count2 = oldCount2 = e2;
-    count3 = oldCount3 = e3;
-    count4 = oldCount4 = e4;
+    if(program1.active == true) {
+        encoder1.setCount(program1.hue);
+        encoder2.setCount(program1.saturation);
+        encoder3.setCount(program1.luminance);
+        encoder4.setCount(program1.duration);
+    }
+    if(program2.active == true) {
+        encoder1.setCount(program2.hue);
+        encoder2.setCount(program2.saturation);
+        encoder3.setCount(program2.luminance);
+        encoder4.setCount(program2.duration);
+    }
+    if(program3.active == true) {
+        encoder1.setCount(program3.hue);
+        encoder2.setCount(program3.saturation);
+        encoder3.setCount(program3.luminance);
+        encoder4.setCount(program3.duration);
+    }
+
+    count1 = oldCount1 = encoder1.getCount();
+    count2 = oldCount2 = encoder2.getCount();
+    count3 = oldCount3 = encoder3.getCount();
+    count4 = oldCount4 = encoder4.getCount();
 }
 
 void countChangeActions() {
@@ -42,6 +49,12 @@ void countChangeActions() {
     for (int i = 0; i < 2; i++) {
         if(cur16[i] != old16[i]) {
             old16[i] = cur16[i];
+            if (program1.active == true) {
+                setMessage(cur8[i], bh);
+            }
+            if (program2.active == true) {
+                setMessage(cur8[i], kh);
+            }
         }
     }
 
@@ -49,6 +62,12 @@ void countChangeActions() {
     for (int i = 0; i < 2; i++) {
         if(cur8[i] != old8[i]) {
             old8[i] = cur8[i];
+            if (program1.active == true) {
+                setMessage(cur8[i], bh);
+            }
+            if (program1.active == true) {
+                setMessage(cur8[i], kh);
+            }
         }
     }
 
@@ -56,49 +75,48 @@ void countChangeActions() {
     // Find the change
     if (count1 != oldCount1) {
         oldCount1 = count1;
-        if (prg[0] == true) {
+        if (program1.active == true) {
             setMessage(count1, bh);
         }
-        if (prg[1] == true) {
+        if (program2.active == true) {
             setMessage(count1, kh);
         }
-        if (prg[2] == true) {
+        if (program3.active == true) {
 
         }
     }
     if (count2 != oldCount2) {
         oldCount2 = count2;
-        if (prg[0] == true) {
+        if (program1.active == true) {
             setMessage(count2, bs);
         }
-        if (prg[1] == true) {
+        if (program2.active == true) {
             setMessage(count2, ks);
         }
-        if (prg[2] == true) {
+        if (program3.active == true) {
 
         }
     }
     if (count3 != oldCount3) {
         oldCount3 = count3;
-        if (prg[0] == true) {
+        if (program1.active == true) {
             setMessage(count3, bl);
         }
-        if (prg[1] == true) {
+        if (program2.active == true) {
             setMessage(count3, kl);
         }
-        if (prg[2] == true) {
-
+        if (program3.active == true) {
         }
     }
     if (count4 != oldCount4) {
         oldCount4 = count4;
-        if (prg[0] == true) {
+        if (program1.active == true) {
             setMessage(count4, fdur);
         }
-        if (prg[1] == true) {
+        if (program2.active == true) {
             setMessage(count4, fdel);
         }
-        if (prg[2] == true) {
+        if (program3.active == true) {
 
         }
     }
@@ -106,25 +124,17 @@ void countChangeActions() {
 
 void buttonChangeActions(bool button1, bool button2, bool button3, bool button4) {
     bool btn[4] = {button1, button2, button3, button4};
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 2; i++) {
         if ((btnDown[i]) && (btn[i] == LOW)) {
             btnDown[i] = !btnDown[i];
 
             if(btnDown[i] == btnDown[0]) {
-                prg[0] = !prg[0];
-                prg[1] = !prg[1];
+                program1.active = !program1.active;
+                program2.active = !program2.active;
             }
             if(btnDown[i] == btnDown[1]) {
-                prg[2] = !prg[2];
-                prg[3] = !prg[3];
-            }
-            if(btnDown[i] == btnDown[2]) {
-                prg[4] = !prg[4];
-                prg[5] = !prg[5];
-            }
-            if(btnDown[i] == btnDown[3]) {
-                prg[6] = !prg[6];
-                prg[7] = !prg[7];
+                program1.active = !program1.active;
+                program1.active = !program1.active;
             }
         }
         if ((btnDown[i] == false) && (btn[i] == HIGH)) {

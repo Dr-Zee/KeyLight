@@ -11,6 +11,10 @@ char bg[] = "Backround Color";
 char ky[] = "Key Color";
 char kskp[] = "Key Skips";
 
+void programDisplay() {
+  //program1.message1 = bh;
+}
+
 void showLogo() {
   display.clearDisplay();
   display.setRotation(2);
@@ -55,16 +59,16 @@ void buttonDisplayController() {
   // Set splash messages on program select
   // Not really working.
   if (btnDown[0] == true) {
-    if (prg[0] == true) {
-      setSplash(bg);
+    if (program1.active == true) {
+      setSplash(program1.splash);
     }
-    if (prg[1] == true) {
-      setSplash(ky);
+    if (program2.active == true) {
+      setSplash(program2.splash);
     }
   }
   if (btnDown[1] == true) {
-    if (prg[3] == true) {
-      setSplash(ks);
+    if (program3.active == true) {
+      setSplash(program3.splash);
     }
   }
 }

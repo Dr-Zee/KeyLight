@@ -62,13 +62,13 @@ ESP32Encoder encoder4;
 uint16_t count1, oldCount1, count4, oldCount4;
 uint8_t  count2, count3, oldCount2, oldCount3;
 
+program program1,
+        program2,
+        program3;
+
 // Encoder Button and program booleans.
 bool    btnDown[4] = {false};
 bool    dataSaved = true;
-
-// Programs
-// DEFAULT - 0 - BG Color Selection
-bool    prg[3] = {true, false, false};
 
 // Store time since last input update
 uint32_t lastInputChange;

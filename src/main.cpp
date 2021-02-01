@@ -23,6 +23,7 @@
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
 #include <OLEDFunctions.h>
+#include <programFunctions.h>
 #include <encoderFunctions.h>
 
 void setup() 
