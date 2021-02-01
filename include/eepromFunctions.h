@@ -1,42 +1,85 @@
 void setMemory() {
+    uint16_t e1 = 0;
+    uint16_t e2 = 0;
+    uint16_t e3 = 0;
+    uint16_t e4 = 0;
+    
+    uint32_t savedBgColor = EEPROM.readULong(0);
+    uint32_t savedKeyColor = EEPROM.readULong(4);
 
-    uint32_t savedBgColor = EEPROM.readULong(1);
-    uint32_t savedKeyColor = EEPROM.readULong(2);
-
-    uint16_t e1 = EEPROM.read(3);
-    uint8_t e2 = EEPROM.read(4);
-    uint8_t e3 = EEPROM.readUInt(5);
-    float e4 = EEPROM.readFloat(6);
+    if (btn1_prg1 == true) {
+        e1 = EEPROM.readUShort(8);
+        e2 = EEPROM.readByte(10);
+        e3 = EEPROM.readByte(11);
+        e4 = EEPROM.readUShort(12);
+    }
+    if(btn1_prg2 == true) {
+        e1 = EEPROM.readUShort(14);
+        e2 = EEPROM.readByte(16);
+        e3 = EEPROM.readByte(17);
+        e4 = EEPROM.readUShort(18);
+    }
 
     if (e1 != count1) {
-        EEPROM.write(3, count1);
-        
-        Serial.print("put count 1: ");
-        Serial.print(EEPROM.readUShort(3));
-        Serial.println("");
+        if (btn1_prg1 == true) {
+            EEPROM.put(8, count1);
+        }
+        else if (btn1_prg1 == true) {
+            EEPROM.put(14, count1);
+        }
     }
-
     if (e2 != count2) {
-        EEPROM.write(4, count2 & 0xFF);
-        Serial.print("put count 2: ");
-        Serial.print(EEPROM.readUInt(4));
-        Serial.println("");
+        if (btn1_prg1 == true) {
+            EEPROM.put(10, count2);
+        }
+        if (btn1_prg2 == true) {
+            EEPROM.put(16, count2);
+        }
+        if (btn2_prg1 == true) {
+            //EEPROM.put(10, count2);
+        }
+        else if (btn2_prg2 == true) {
+            //EEPROM.put(16, count2);
+        }
     }
     if (e3 != count3) {
-        EEPROM.put(5, count3);
-        Serial.print("put count 3: ");
-        Serial.print(EEPROM.readUInt(5));
-        Serial.println("");
+        if (btn1_prg1 == true) {
+            EEPROM.put(12, count4);
+        }
+        if (btn1_prg2 == true) {
+            EEPROM.put(17, count3);
+        }
+        if (btn3_prg1 == true) {
+           // EEPROM.put(11, count3);
+        }
+        else if (btn3_prg2 == true) {
+            // EEPROM.put(17, count3);
+        }
     }
     if (e4 != count4) {
-        EEPROM.put(6, count4);
-        Serial.print("put count 4: ");
-        Serial.print(EEPROM.readFloat(6));
-        Serial.println("");
+        if (btn1_prg1 == true) {
+            EEPROM.put(12, count4);
+        }
+        if (btn4_prg1 == true) {
+            EEPROM.put(12, count4);
+        }
+        else if (btn4_prg2 == true) {
+            EEPROM.put(18, count4);
+        }
     }
-
+    EEPROM.commit();
 }
+
 void readMemory() {
-    bgColor = EEPROM.readULong(1);
-    keyColor = EEPROM.readULong(2);
+    if (btn1_prg1 == true) {
+        bgColor = EEPROM.readULong(0);
+        keyColor = EEPROM.readULong(4);
+        count1 = EEPROM.readUShort(8);
+        count2 = EEPROM.readByte(10);
+        count3 = EEPROM.readByte(11);
+        count4 = EEPROM.readUShort(12);
+    }
+    if (btn2_prg2 == true) {
+
+    }
 }

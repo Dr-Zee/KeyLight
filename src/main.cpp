@@ -29,6 +29,14 @@ void setup()
 {
   Serial.begin(115200);
 
+  EEPROM.begin(EEPROM_SIZE);
+  if (!EEPROM.begin(1000)) {
+    Serial.println("Failed to initialise EEPROM");
+    Serial.println("Restarting...");
+    delay(1000);
+    ESP.restart();
+  }
+
   // Inputs
   // Booleans
   pinMode(e_button1, INPUT);
@@ -48,7 +56,6 @@ void setup()
   // Outputs
   pinMode(LED_PIN, OUTPUT);
   pinMode(PROGRAM_LED_PIN, OUTPUT);
-
 
   bFirst = true;
   vid = pid = 0;
@@ -83,6 +90,7 @@ void loop()
 {
   // Run input program.
   encoderProgram();
+
   // Initialize USB.
   Usb.Task();
   if ( Usb.getUsbTaskState() == USB_STATE_RUNNING ) 

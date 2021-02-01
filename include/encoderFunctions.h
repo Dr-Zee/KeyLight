@@ -1,24 +1,11 @@
-//get rotary encoder speed and control steps based on rotation speed
-//step = 1 << (int(hue.speed / encoderSpeedDivisor));
-
-// Encoders
-
 void initializeEncoders() {
 
     ESP32Encoder::useInternalWeakPullResistors=UP;
 
-    uint16_t e1 = EEPROM.readUShort(3);
-    uint8_t e2 = EEPROM.readUInt(4);
-    uint8_t e3 = EEPROM.readUInt(5);
-    float e4 = EEPROM.readFloat(6);
-    Serial.print("e1 saved value: ");
-    Serial.println(e1);
-    Serial.print("e2 saved value: ");
-    Serial.println(e2);
-    Serial.print("e3 saved value: ");
-    Serial.println(e3);
-    Serial.print("e4 saved value: ");
-    Serial.println(e4);
+    uint16_t e1 = EEPROM.readUShort(8);
+    uint8_t e2 = EEPROM.readUInt(10);
+    uint8_t e3 = EEPROM.readUInt(11);
+    uint16_t e4 = EEPROM.readUShort(13);
 
     // Define encoders.
     encoder1.attachFullQuad(39, 36);
@@ -29,12 +16,11 @@ void initializeEncoders() {
     encoder3.setCount(e3);
     encoder4.attachHalfQuad(25, 33);
     encoder4.setCount(e4);
+
     count1 = oldCount1 = e1;
     count2 = oldCount2 = e2;
     count3 = oldCount3 = e3;
     count4 = oldCount4 = e4;
-
-   
 }
 
 
@@ -54,55 +40,51 @@ void encoderProgram() {
     if ((count1 != oldCount1) || (count2 != oldCount2) || (count3 != oldCount3) || (count4 != oldCount4) || (button1 != 1) || (button2 != 1) || (button3 != 1) || (button4 != 1)) {
         dataSaved = !dataSaved;
 
-        // Prepare the display.
-        display.clearDisplay();
-        display.setCursor(0,0);
-        display.setTextColor(SSD1306_WHITE);
-        display.setTextSize(1);
-
         // Find the change
         if (count1 != oldCount1) {
             oldCount1 = count1;
-            
-            display.println("Background Hue");
-            display.println("");
-            display.setTextSize(2);
-            display.println(count1);
+            if (btn1_prg1 == true) {
+                setMessage(count1, bh);
+            }
+            if (btn1_prg2 == true) {
+                 setMessage(count1, kh);
+            }
         }
         if (count2 != oldCount2) {
             oldCount2 = count2;
-
-            display.println("Background Saturation");
-            display.println("");
-            display.setTextSize(2);
-            display.println(count2);
+            if (btn1_prg1 == true) {
+                setMessage(count2, bs);
+            }
+            if (btn1_prg2 == true) {
+                setMessage(count2, ks);
+            }
         }
         if (count3 != oldCount3) {
             oldCount3 = count3;
-
-            display.println("Background Brightness");
-            display.println("");   
-            display.setTextSize(2);
-            display.println(count3);
+            if (btn1_prg1 == true) {
+                setMessage(count3, bl);
+            }
+            if (btn1_prg2 == true) {
+                setMessage(count3, kl);
+            }
         }
         if (count4 != oldCount4) {
-
-            display.println("Fade Duration");
-            display.println("");
-            display.setTextSize(2);
-            display.print(count4);
-            display.setTextSize(.5);
-            display.println(" seconds");
-
-            if (count4 > 10) {
-                encoder4.setCount(0);
-            }
-            if (count4 < 0) {
-                encoder4.setCount(200);
-            }
             oldCount4 = count4;
+            if (btn1_prg1 == true) {
+                setMessage(count4, fdur);
+            }
+            if (btn1_prg2 == true) {
+               setMessage(count4, fdel);
+            }
+            if (btn4_prg1 == true) {
+                setMessage(count4, fdur);
+            }
+            if (btn4_prg2 == true) {
+                setMessage(count4, fdel);
+            }
+            setMessage(count2, fdur);
         }
-
+        
         if ((btn1_down == false) && (button1 == LOW)) {
             btn1_down = !btn1_down;
 
@@ -144,30 +126,23 @@ void encoderProgram() {
             btn4_down = !btn4_down;
         }
 
-        display.display();
+        //Set button splash screens
+        buttonDisplayController();
+
+        // Start the timer
         lastInputChange = millis();
-
-        for(byte i = 0; i < programstrip.numPixels(); i++) {
-            programstrip.setPixelColor(i, colorProcessor(count1, count2, count3));
-        }
-
-        programstrip.show();
-        strip.show();
     }
-    if (millis() - lastInputChange > 500) {
+    if ((millis() - lastInputChange > 5000) && (dataSaved == false)) {
         // If it's been a while since the last input change,
         // Write values to EEPROM and sleep
-        if (dataSaved == false) {
-            showLogo();
-            setMemory();
-            dataSaved = !dataSaved;
-        }
+        showLogo();
+        setMemory();
+        dataSaved = !dataSaved;
     }
-    if (millis() - lastInputChange > 10000) {
+    if ((millis() - lastInputChange > 10000) && (dataSaved == true)) {
         //clearDisplay();
         // If it's been a while since the last input change,
         // Write values to EEPROM and sleep
-        //clearDisplay();
-        //showLogo();
+        clearDisplay();
     }
 }

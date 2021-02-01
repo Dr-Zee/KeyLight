@@ -44,12 +44,11 @@ ESP32Encoder encoder4;
 #define e_button4 26
 
 // EEPROM size in bytes
-#define EEPROM_SIZE 2000
+#define EEPROM_SIZE 90
 
 //Encoder Counts
-uint16_t count1, oldCount1;
+uint16_t count1, oldCount1, count4, oldCount4;
 uint8_t  count2, count3, oldCount2, oldCount3;
-float   count4, oldCount4;
 
 // Encoder Button and program booleans.
 bool    btn1_down = false;
@@ -82,3 +81,17 @@ bool    btn4_prg2 = false;
 
 // Store time since last input update
 uint32_t lastInputChange;
+
+//Program Strings
+char bh[] = "Background Hue";
+char bs[] = "Background Saturation";
+char bl[] = "Background Luminance";
+char kh[] = "Key Hue";
+char ks[] = "Key Saturation";
+char kl[] = "Key Luminance";
+char fdel[] = "Fade Duration";
+char fdur[] = "Fade Delay";
+char bg[] = "Backround Color";
+char ky[] = "Key Color";
+char fprg[] = "Fade durations";
+char kskp[] = "Key Skips";
