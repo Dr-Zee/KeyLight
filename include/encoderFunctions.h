@@ -127,7 +127,7 @@ void encoderProgram() {
         }
 
         //Set button splash screens
-        buttonDisplayController();
+        //buttonDisplayController();
 
         // Start the timer
         lastInputChange = millis();

@@ -93,5 +93,4 @@ char fdel[] = "Fade Duration";
 char fdur[] = "Fade Delay";
 char bg[] = "Backround Color";
 char ky[] = "Key Color";
-char fprg[] = "Fade durations";
 char kskp[] = "Key Skips";

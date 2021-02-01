@@ -24,7 +24,7 @@ void setMemory() {
         if (btn1_prg1 == true) {
             EEPROM.put(8, count1);
         }
-        else if (btn1_prg1 == true) {
+        else if (btn1_prg2 == true) {
             EEPROM.put(14, count1);
         }
     }
@@ -80,6 +80,9 @@ void readMemory() {
         count4 = EEPROM.readUShort(12);
     }
     if (btn2_prg2 == true) {
-
+        count1 = EEPROM.readUShort(14);
+        count2 = EEPROM.readByte(16);
+        count3 = EEPROM.readByte(17);
+        count4 = EEPROM.readUShort(18);
     }
 }

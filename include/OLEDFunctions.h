@@ -69,5 +69,6 @@ void buttonDisplayController() {
     }
     if (btn4_prg2 == true) {
       setSplash(fdel);
+    }
   }
 }
