@@ -3,7 +3,7 @@ void setDefaultData()
 {
   for (int i = 1; i < 88; i++) 
   {
-
+    
     //the 88th key only has one LED... intentionally.
     if(i == 88) 
     {
@@ -87,12 +87,31 @@ void MIDI_poll()
   }
 }
 
+// Update colors
+void updateColors(uint16_t hue, uint8_t saturation, uint8_t luminance) {
+  if (programs[0].active == true) {
+    for (int i = 1; i < 88; i++) {
+    strip.setPixelColor(i, colorProcessor(hue, saturation, luminance));
+  }
+    // Set BG indicators
+    programstrip.setPixelColor(3, colorProcessor(hue, saturation, luminance));
+    programstrip.setPixelColor(4, colorProcessor(hue, saturation, luminance));
+  }
+  if (programs[1].active == true) {
+
+    // Set Key indicators
+    programstrip.setPixelColor(1, colorProcessor(hue, saturation, luminance));
+    programstrip.setPixelColor(2, colorProcessor(hue, saturation, luminance));
+  }
+  strip.show();
+  programstrip.show();
+}
+
 // Push a color to the keys only once.
 void keyStrikes(byte key) 
 {
   if((keyBuffer[key].isDown == true) & (keyBuffer[key].runOnce == false)) 
   {
-    
     for(int i = 0; i < 2; i++) 
     {
       strip.setPixelColor(keyBuffer[key].keyLight[i], colorProcessor(programs[1].hue, programs[1].saturation, programs[1].luminance));
@@ -118,8 +137,9 @@ void theBigFade()
       if((elapsed >= fadeDelay)) 
       {
         // Run the fade.
-        colorFade(colorProcessor(programs[0].hue, programs[0].saturation, programs[0].luminance), colorProcessor(programs[1].hue, programs[1].saturation, programs[1].luminance), programs[0].duration, programs[1].duration, i);
+        colorFade(prevKeyColor[i], prevBgColor[i], programs[0].duration, programs[1].duration, i);
       }
     }
   }
 }
+

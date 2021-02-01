@@ -33,46 +33,10 @@ void initializeEncoders() {
     count4 = oldCount4 = encoder4.getCount();
 }
 
-void countChangeActions() {
-
+void countChangeActions(uint16_t count1, uint8_t count2, uint8_t count3, uint16_t count4) {
     // Mark new Data
     dataSaved = !dataSaved;
 
-    // 4 arrays since we have multiple datatypes
-    uint8_t old8[4] = {oldCount2, oldCount3};
-    uint8_t cur8[4] = {oldCount2, oldCount3};
-
-    uint16_t old16[4] = {oldCount1, oldCount4};
-    uint16_t cur16[4] = {oldCount1, oldCount4};
-
-    // Loop through the 16 bit types
-    for (int i = 0; i < 2; i++) {
-        if(cur16[i] != old16[i]) {
-            old16[i] = cur16[i];
-            if (programs[0].active == true) {
-                setMessage(cur8[i], bh);
-            }
-            if (programs[1].active == true) {
-                setMessage(cur8[i], kh);
-            }
-        }
-    }
-
-    // Loop through the 8 bit types
-    for (int i = 0; i < 2; i++) {
-        if(cur8[i] != old8[i]) {
-            old8[i] = cur8[i];
-            if (programs[0].active == true) {
-                setMessage(cur8[i], bh);
-            }
-            if (programs[0].active == true) {
-                setMessage(cur8[i], kh);
-            }
-        }
-    }
-
-
-    // Find the change
     if (count1 != oldCount1) {
         oldCount1 = count1;
         if (programs[0].active == true) {
@@ -120,6 +84,7 @@ void countChangeActions() {
 
         }
     }
+    updateColors(count1, count2, count3);
 }
 
 void buttonChangeActions(bool button1, bool button2, bool button3, bool button4) {
@@ -178,7 +143,7 @@ void encoderProgram() {
     if ((count1 != oldCount1) || (count2 != oldCount2) || (count3 != oldCount3) || (count4 != oldCount4) || (button1 != 1) || (button2 != 1) || (button3 != 1) || (button4 != 1)) {
         
         // Manage Encoders
-        countChangeActions();
+        countChangeActions(count1, count2, count3, count4);
 
         // Manage Buttons
         buttonChangeActions(button1, button2, button3, button4);
