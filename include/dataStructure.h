@@ -10,7 +10,6 @@ typedef struct
   uint16_t hue, duration;
   uint8_t saturation, luminance;
   boolean active;
-  char splash[], message1[], message2[], message3[], message4[];
 }program;
 
 typedef struct

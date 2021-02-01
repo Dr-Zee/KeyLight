@@ -8,6 +8,7 @@ void initializeEncoders() {
     encoder3.attachHalfQuad(14, 27);
     encoder4.attachHalfQuad(25, 33);
 
+    // Set the encoders to their previous program states.
     if(programs[0].active == true) {
         encoder1.setCount(programs[0].hue);
         encoder2.setCount(programs[0].saturation);
@@ -20,13 +21,8 @@ void initializeEncoders() {
         encoder3.setCount(programs[1].luminance);
         encoder4.setCount(programs[1].duration);
     }
-    if(programs[2].active == true) {
-        encoder1.setCount(programs[2].hue);
-        encoder2.setCount(programs[2].saturation);
-        encoder3.setCount(programs[2].luminance);
-        encoder4.setCount(programs[2].duration);
-    }
 
+    // Set the comparators to the newly set values.
     count1 = oldCount1 = encoder1.getCount();
     count2 = oldCount2 = encoder2.getCount();
     count3 = oldCount3 = encoder3.getCount();
@@ -37,6 +33,7 @@ void countChangeActions(uint16_t count1, uint8_t count2, uint8_t count3, uint16_
     // Mark new Data
     dataSaved = !dataSaved;
 
+    // Find the change.
     if (count1 != oldCount1) {
         oldCount1 = count1;
         if (programs[0].active == true) {
@@ -44,9 +41,6 @@ void countChangeActions(uint16_t count1, uint8_t count2, uint8_t count3, uint16_
         }
         if (programs[1].active == true) {
             setMessage(count1, kh);
-        }
-        if (programs[2].active == true) {
-
         }
     }
     if (count2 != oldCount2) {
@@ -57,9 +51,6 @@ void countChangeActions(uint16_t count1, uint8_t count2, uint8_t count3, uint16_
         if (programs[1].active == true) {
             setMessage(count2, ks);
         }
-        if (programs[2].active == true) {
-
-        }
     }
     if (count3 != oldCount3) {
         oldCount3 = count3;
@@ -68,8 +59,6 @@ void countChangeActions(uint16_t count1, uint8_t count2, uint8_t count3, uint16_
         }
         if (programs[1].active == true) {
             setMessage(count3, kl);
-        }
-        if (programs[2].active == true) {
         }
     }
     if (count4 != oldCount4) {
@@ -80,46 +69,67 @@ void countChangeActions(uint16_t count1, uint8_t count2, uint8_t count3, uint16_
         if (programs[1].active == true) {
             setMessage(count4, fdel);
         }
-        if (programs[2].active == true) {
-
-        }
     }
-    updateColors(count1, count2, count3);
 }
 
 void buttonChangeActions(bool button1, bool button2, bool button3, bool button4) {
+
+    // A button change means a program change
+    // Put Buttons in an array
     bool btn[4] = {button1, button2, button3, button4};
-    for (int i = 0; i < 2; i++) {
-        if ((btnDown[i]) && (btn[i] == LOW)) {
+
+    // Disable all programs
+    for (int i = 0; i < 4; i++) {
+        programs[i].active = false;
+    }
+    for (int i = 0; i < 4; i++) {
+
+        // If the button is not marked down, but it's down.
+        if ((btnDown[i] == false) && (btn[i] == LOW)) {
             btnDown[i] = !btnDown[i];
 
-            if(btnDown[i] == btnDown[0]) {
-                programs[0].active = !programs[0].active;
-                programs[1].active = !programs[1].active;
-            }
-            if(btnDown[i] == btnDown[1]) {
-                programs[0].active = !programs[0].active;
-                programs[0].active = !programs[0].active;
-            }
+            //Set the active program
+            programs[i].active = true;
         }
-        if ((btnDown[i] == false) && (btn[i] == HIGH)) {
+        // If the button is marked down, but it's up.
+        if ((btnDown[i] == true) && (btn[i] == HIGH)) {
             btnDown[i] = !btnDown[i];
+
+            // Depending on the active program, reset the encoder counts
+            if (programs[0].active = true) {
+                encoder1.setCount(programs[0].hue);
+                encoder2.setCount(programs[0].saturation);
+                encoder3.setCount(programs[0].luminance);
+                encoder4.setCount(programs[0].duration);
+                setSplash(bg);
+            }
+            if (programs[1].active = true) {
+                encoder1.setCount(programs[1].hue);
+                encoder2.setCount(programs[1].saturation);
+                encoder3.setCount(programs[1].luminance);
+                encoder4.setCount(programs[1].duration);
+                setSplash(ky);
+            }
+            if (programs[3].active = true) {
+                setMemory();
+                setSplash(save);
+                dataSaved = !dataSaved;
+                programs[3].active = false;
+                programs[0].active = true;
+            }
         }
     }
 }
+
 
 void displayRest() {
 
     // Execute actions based on the time since last input change.
-    if ((millis() - lastInputChange > 5000) && (dataSaved == false)) {
+    if ((millis() - lastInputChange > LOGO_DELAY) && (dataSaved == false)) {
 
-        // If it's been a while since the last input change,
-        // Write values to EEPROM and sleep
         showLogo();
-        setMemory();
-        dataSaved = !dataSaved;
     }
-    if ((millis() - lastInputChange > 10000) && (dataSaved == true)) {
+    if ((millis() - lastInputChange > SLEEP_DELAY) && (dataSaved == true)) {
 
         // If it's been a while since the last input change
         // Turn off display to avoid burn-in.
@@ -129,10 +139,10 @@ void displayRest() {
 
 void encoderProgram() {
 
-    count1 = encoder1.getCount();
-    count2 = encoder2.getCount();
-    count3 = encoder3.getCount();
-    count4 = encoder4.getCount();
+    count1 = ((encoder1.getCount() / 2) * 200);
+    count2 = (encoder2.getCount() / 2);
+    count3 = (encoder3.getCount() / 2);
+    count4 = (encoder4.getCount() / 2);
 
     bool button1 = digitalRead(e_button1);
     bool button2 = digitalRead(e_button2);
@@ -141,12 +151,18 @@ void encoderProgram() {
 
     //Watch for changes
     if ((count1 != oldCount1) || (count2 != oldCount2) || (count3 != oldCount3) || (count4 != oldCount4) || (button1 != 1) || (button2 != 1) || (button3 != 1) || (button4 != 1)) {
-        
+
+        // Mark new data
+        dataSaved = !dataSaved;
+
         // Manage Encoders
         countChangeActions(count1, count2, count3, count4);
 
         // Manage Buttons
         buttonChangeActions(button1, button2, button3, button4);
+
+        // Update Strips
+        updateColors(count1, count2, count3);
 
         // Reset Change Timer
         lastInputChange = millis();

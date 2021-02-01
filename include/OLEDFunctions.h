@@ -10,6 +10,7 @@ char fdur[] = "Fade Delay";
 char bg[] = "Backround";
 char ky[] = "Keys";
 char kskp[] = "Key Skips";
+char save[] = "Saved";
 
 void showLogo() {
   display.clearDisplay();
@@ -44,6 +45,8 @@ void setSplash(char * message) {
   display.setTextSize(3);
   display.println("");
   display.display();
+  delay(1200);
+  showLogo();
 }
 
 void clearDisplay() {

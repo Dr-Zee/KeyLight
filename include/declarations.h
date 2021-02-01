@@ -58,7 +58,7 @@ ESP32Encoder encoder4;
 uint16_t count1, oldCount1, count4, oldCount4;
 uint8_t  count2, count3, oldCount2, oldCount3;
 
-program programs[3];
+program programs[4];
 
 // EEPROM Addresses. Ordered p1: hslda, p2: hslda p3: hslda
 uint8_t address[15] = {8, 10, 11, 13, 19, 14, 16, 17, 18, 20, 21, 23, 25, 26, 27};
@@ -81,4 +81,5 @@ uint32_t fadeDuration = 900;
 byte WHITE_BALANCE = 0;
 
 // Amount of time before the display returns to the logo.
-uint16_t logoDelay = 4000;
+uint16_t LOGO_DELAY = 4000;
+uint16_t SLEEP_DELAY = 12000;

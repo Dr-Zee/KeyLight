@@ -19,6 +19,7 @@ void keyOffHousekeeping(int i)
   pixelTimers[i].gfunc = 0;
   pixelTimers[i].bfunc = 0;
   pixelTimers[i].wfunc = 0;
+  
   keyBuffer[i].recentlyReleased = false;
   keyBuffer[i].lastReleased = 0;
 }

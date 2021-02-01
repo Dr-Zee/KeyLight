@@ -13,6 +13,8 @@ void setDefaultData()
     keyBuffer[i].keyLight[1] = keyBuffer[i].keyLight[0] + 1;
     keyBuffer[i].isDown = keyBuffer[i].recentlyReleased = keyBuffer[i].runOnce = false;
 
+    // Get EEPROM Values
+    retrieveMemory();
     fadeDuration = programs[0].duration;
     fadeDelay = programs[1].duration;
     prevKeyColor[i] = colorProcessor(programs[0].hue, programs[0].saturation, programs[0].luminance);
@@ -142,4 +144,3 @@ void theBigFade()
     }
   }
 }
-
