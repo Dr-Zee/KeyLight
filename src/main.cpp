@@ -82,14 +82,12 @@ void setup()
   delay(200);
   
   // Initialize lights
-  initializeStrip();
+  initializeProgramStrip();
+  initializeKeyStrip();
 }
 
 void loop()
 {
-  // Run input program.
-  encoderProgram();
-
   // Run USB.
   Usb.Task();
   if ( Usb.getUsbTaskState() == USB_STATE_RUNNING ) 
@@ -109,5 +107,8 @@ void loop()
 
     // Do the big fade.
     theBigFade();
+
+    // Check Inputs.
+    encoderProgram();
   }
 }

@@ -8,23 +8,23 @@ void initializeEncoders() {
     encoder3.attachHalfQuad(14, 27);
     encoder4.attachHalfQuad(25, 33);
 
-    if(program1.active == true) {
-        encoder1.setCount(program1.hue);
-        encoder2.setCount(program1.saturation);
-        encoder3.setCount(program1.luminance);
-        encoder4.setCount(program1.duration);
+    if(programs[0].active == true) {
+        encoder1.setCount(programs[0].hue);
+        encoder2.setCount(programs[0].saturation);
+        encoder3.setCount(programs[0].luminance);
+        encoder4.setCount(programs[0].duration);
     }
-    if(program2.active == true) {
-        encoder1.setCount(program2.hue);
-        encoder2.setCount(program2.saturation);
-        encoder3.setCount(program2.luminance);
-        encoder4.setCount(program2.duration);
+    if(programs[1].active == true) {
+        encoder1.setCount(programs[1].hue);
+        encoder2.setCount(programs[1].saturation);
+        encoder3.setCount(programs[1].luminance);
+        encoder4.setCount(programs[1].duration);
     }
-    if(program3.active == true) {
-        encoder1.setCount(program3.hue);
-        encoder2.setCount(program3.saturation);
-        encoder3.setCount(program3.luminance);
-        encoder4.setCount(program3.duration);
+    if(programs[2].active == true) {
+        encoder1.setCount(programs[2].hue);
+        encoder2.setCount(programs[2].saturation);
+        encoder3.setCount(programs[2].luminance);
+        encoder4.setCount(programs[2].duration);
     }
 
     count1 = oldCount1 = encoder1.getCount();
@@ -49,10 +49,10 @@ void countChangeActions() {
     for (int i = 0; i < 2; i++) {
         if(cur16[i] != old16[i]) {
             old16[i] = cur16[i];
-            if (program1.active == true) {
+            if (programs[0].active == true) {
                 setMessage(cur8[i], bh);
             }
-            if (program2.active == true) {
+            if (programs[1].active == true) {
                 setMessage(cur8[i], kh);
             }
         }
@@ -62,10 +62,10 @@ void countChangeActions() {
     for (int i = 0; i < 2; i++) {
         if(cur8[i] != old8[i]) {
             old8[i] = cur8[i];
-            if (program1.active == true) {
+            if (programs[0].active == true) {
                 setMessage(cur8[i], bh);
             }
-            if (program1.active == true) {
+            if (programs[0].active == true) {
                 setMessage(cur8[i], kh);
             }
         }
@@ -75,48 +75,48 @@ void countChangeActions() {
     // Find the change
     if (count1 != oldCount1) {
         oldCount1 = count1;
-        if (program1.active == true) {
+        if (programs[0].active == true) {
             setMessage(count1, bh);
         }
-        if (program2.active == true) {
+        if (programs[1].active == true) {
             setMessage(count1, kh);
         }
-        if (program3.active == true) {
+        if (programs[2].active == true) {
 
         }
     }
     if (count2 != oldCount2) {
         oldCount2 = count2;
-        if (program1.active == true) {
+        if (programs[0].active == true) {
             setMessage(count2, bs);
         }
-        if (program2.active == true) {
+        if (programs[1].active == true) {
             setMessage(count2, ks);
         }
-        if (program3.active == true) {
+        if (programs[2].active == true) {
 
         }
     }
     if (count3 != oldCount3) {
         oldCount3 = count3;
-        if (program1.active == true) {
+        if (programs[0].active == true) {
             setMessage(count3, bl);
         }
-        if (program2.active == true) {
+        if (programs[1].active == true) {
             setMessage(count3, kl);
         }
-        if (program3.active == true) {
+        if (programs[2].active == true) {
         }
     }
     if (count4 != oldCount4) {
         oldCount4 = count4;
-        if (program1.active == true) {
+        if (programs[0].active == true) {
             setMessage(count4, fdur);
         }
-        if (program2.active == true) {
+        if (programs[1].active == true) {
             setMessage(count4, fdel);
         }
-        if (program3.active == true) {
+        if (programs[2].active == true) {
 
         }
     }
@@ -129,12 +129,12 @@ void buttonChangeActions(bool button1, bool button2, bool button3, bool button4)
             btnDown[i] = !btnDown[i];
 
             if(btnDown[i] == btnDown[0]) {
-                program1.active = !program1.active;
-                program2.active = !program2.active;
+                programs[0].active = !programs[0].active;
+                programs[1].active = !programs[1].active;
             }
             if(btnDown[i] == btnDown[1]) {
-                program1.active = !program1.active;
-                program1.active = !program1.active;
+                programs[0].active = !programs[0].active;
+                programs[0].active = !programs[0].active;
             }
         }
         if ((btnDown[i] == false) && (btn[i] == HIGH)) {

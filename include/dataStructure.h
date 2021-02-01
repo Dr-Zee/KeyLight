@@ -15,7 +15,7 @@ typedef struct
 
 typedef struct
 {
-  float     r, g, b, w;
+  int     r, g, b, w;
 }whiteBalances;
 
 typedef struct

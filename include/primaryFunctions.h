@@ -12,23 +12,37 @@ void setDefaultData()
     keyBuffer[i].keyLight[0] = (i * 2) - 2;
     keyBuffer[i].keyLight[1] = keyBuffer[i].keyLight[0] + 1;
     keyBuffer[i].isDown = keyBuffer[i].recentlyReleased = keyBuffer[i].runOnce = false;
+
+    fadeDuration = programs[0].duration;
+    fadeDelay = programs[1].duration;
+    prevKeyColor[i] = colorProcessor(programs[0].hue, programs[0].saturation, programs[0].luminance);
+    prevBgColor[i] = colorProcessor(programs[1].hue, programs[1].saturation, programs[1].luminance);
   }
 }
 
 // Initialize light strip.
-void initializeStrip() 
+void initializeKeyStrip() 
 {
   strip.begin();
-  programstrip.begin();
   for(int i=0; i < strip.numPixels(); i++) 
   {
-    strip.setPixelColor(i, colorProcessor(count1, count2, count3));
-  }
-  for(int i=0; i < programstrip.numPixels(); i++) 
-  {
-    programstrip.setPixelColor(i, colorProcessor(count1, count2, count3));
+    strip.setPixelColor(i, prevBgColor[i]);
   }
   strip.show();
+}
+
+void initializeProgramStrip() {
+
+  // Initialize Program Strip
+  programstrip.begin();
+
+  // Set BG indicators
+  programstrip.setPixelColor(3, prevBgColor[0]);
+  programstrip.setPixelColor(4, prevBgColor[0]);
+
+  // Set Key indicators
+  programstrip.setPixelColor(1, prevKeyColor[0]);
+  programstrip.setPixelColor(2, prevKeyColor[0]);
   programstrip.show();
 }
 
@@ -81,7 +95,7 @@ void keyStrikes(byte key)
     
     for(int i = 0; i < 2; i++) 
     {
-      strip.setPixelColor(keyBuffer[key].keyLight[i], keyColor);
+      strip.setPixelColor(keyBuffer[key].keyLight[i], colorProcessor(programs[1].hue, programs[1].saturation, programs[1].luminance));
     }
     strip.show();
 
@@ -103,9 +117,8 @@ void theBigFade()
 
       if((elapsed >= fadeDelay)) 
       {
-
         // Run the fade.
-        colorFade(prevBgColor[i], prevKeyColor[i], fadeDuration, fadeDelay, i);
+        colorFade(colorProcessor(programs[0].hue, programs[0].saturation, programs[0].luminance), colorProcessor(programs[1].hue, programs[1].saturation, programs[1].luminance), programs[0].duration, programs[1].duration, i);
       }
     }
   }
