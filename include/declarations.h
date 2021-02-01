@@ -59,38 +59,8 @@ bool    btn4_down = false;
 bool dataSaved = true;
 
 // Programs
-// Key 1
-// DEFAULT - BG Color Selection
-bool    btn1_prg1 = true;
-// Key Color Selection
-bool    btn1_prg2 = false;
-
-// Key 2
-bool    btn2_prg1 = false;
-bool    btn2_prg2 = false;
-
-// Key 3
-bool    btn3_prg1 = false;
-bool    btn3_prg2 = false;
-
-//Key 4
-// Fade duration
-bool    btn4_prg1 = false;
-// Fade Delay
-bool    btn4_prg2 = false;
+// DEFAULT - 0 - BG Color Selection
+bool    prg[8] = {true, false, false, false, false, false, false, false};
 
 // Store time since last input update
 uint32_t lastInputChange;
-
-//Program Strings
-char bh[] = "Background Hue";
-char bs[] = "Background Saturation";
-char bl[] = "Background Luminance";
-char kh[] = "Key Hue";
-char ks[] = "Key Saturation";
-char kl[] = "Key Luminance";
-char fdel[] = "Fade Duration";
-char fdur[] = "Fade Delay";
-char bg[] = "Backround Color";
-char ky[] = "Key Color";
-char kskp[] = "Key Skips";

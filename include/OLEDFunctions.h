@@ -1,3 +1,16 @@
+//Program Strings
+char bh[] = "Background Hue";
+char bs[] = "Background Saturation";
+char bl[] = "Background Luminance";
+char kh[] = "Key Hue";
+char ks[] = "Key Saturation";
+char kl[] = "Key Luminance";
+char fdel[] = "Fade Duration";
+char fdur[] = "Fade Delay";
+char bg[] = "Backround Color";
+char ky[] = "Key Color";
+char kskp[] = "Key Skips";
+
 void showLogo() {
   display.clearDisplay();
   display.setRotation(2);
@@ -40,34 +53,34 @@ void setSplash(char * message) {
 
 void buttonDisplayController() {
   if (btn1_down == true) {
-    if (btn1_prg1 == true) {
+    if (prg[0] == true) {
       setSplash(bg);
     }
-    if (btn1_prg2 == true) {
+    if (prg[1] == true) {
       setSplash(ky);
     }
   }
   if (btn2_down == true) {
-    if (btn2_prg1 == true) {
+    if (prg[2] == true) {
       //setSplash(bg);
     }
-    if (btn2_prg2 == true) {
+    if (prg[3] == true) {
       //setSplash(ky);
     }
   }
   if (btn3_down == true) {
-    if (btn3_prg1 == true) {
+    if (prg[4] == true) {
       //setSplash(bg);
     }
-    if (btn3_prg2 == true) {
+    if (prg[5] == true) {
       //setSplash(ky);
     }
   }
   if (btn4_down == true) {
-    if (btn4_prg1 == true) {
+    if (prg[6] == true) {
       setSplash(fdur);
     }
-    if (btn4_prg2 == true) {
+    if (prg[7] == true) {
       setSplash(fdel);
     }
   }

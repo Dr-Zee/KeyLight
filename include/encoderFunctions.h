@@ -23,6 +23,118 @@ void initializeEncoders() {
     count4 = oldCount4 = e4;
 }
 
+void countChangeListener() {
+
+    // Mark new Data
+    dataSaved = !dataSaved;
+
+    // Find the change
+    if (count1 != oldCount1) {
+        oldCount1 = count1;
+        if (prg[0] == true) {
+            setMessage(count1, bh);
+        }
+        if (prg[1] == true) {
+            setMessage(count1, kh);
+        }
+    }
+    if (count2 != oldCount2) {
+        oldCount2 = count2;
+        if (prg[2] == true) {
+            setMessage(count2, bs);
+        }
+        if (prg[3] == true) {
+            setMessage(count2, ks);
+        }
+    }
+    if (count3 != oldCount3) {
+        oldCount3 = count3;
+        if (prg[0] == true) {
+            setMessage(count3, bl);
+        }
+        if (prg[1] == true) {
+            setMessage(count3, kl);
+        }
+    }
+    if (count4 != oldCount4) {
+        oldCount4 = count4;
+        if (prg[0] == true) {
+            setMessage(count4, fdur);
+        }
+        if (prg[1] == true) {
+            setMessage(count4, fdel);
+        }
+        if (prg[6] == true) {
+            setMessage(count4, fdur);
+        }
+        if (prg[7] == true) {
+            setMessage(count4, fdel);
+        }
+    }
+}
+
+void buttonChangeListener(bool button1, bool button2, bool button3, bool button4) {
+
+    if ((btn1_down == false) && (button1 == LOW)) {
+        btn1_down = !btn1_down;
+
+        // toggle the program.
+        prg[0] = !prg[0];
+        prg[1] = !prg[1];
+    }
+    if ((btn1_down == true) && (button1 == HIGH)) {
+        btn1_down = !btn1_down;
+    }
+    if ((btn2_down == false) && (button2 == LOW)) {
+        btn2_down = !btn2_down;
+
+        // toggle the program.
+        prg[3] = !prg[3];
+        prg[2] = !prg[2];
+    } 
+    if ((btn2_down == true) && (button2 == HIGH)) {
+        btn2_down = !btn2_down;
+    }
+    if ((btn3_down == false) && (button3 == LOW)) {
+        btn3_down = !btn3_down;
+
+        // toggle the program.
+        prg[5] = !prg[5];
+        prg[4] = !prg[4];
+    }
+    if ((btn3_down == true) && (button3 == HIGH)) {
+        btn3_down = !btn3_down;
+    }
+    if ((btn4_down == false) && (button4 == LOW)) {
+        btn4_down = !btn4_down;
+
+        // toggle the program.
+        prg[7] = !prg[7];
+        prg[6] = !prg[6];
+    }
+    if ((btn4_down == true) && (button4 == HIGH)) {
+        btn4_down = !btn4_down;
+    }
+}
+
+void displayRest() {
+
+    // Execute actions based on the time since last input change.
+    if ((millis() - lastInputChange > 5000) && (dataSaved == false)) {
+
+        // If it's been a while since the last input change,
+        // Write values to EEPROM and sleep
+        showLogo();
+        setMemory();
+        dataSaved = !dataSaved;
+    }
+    if ((millis() - lastInputChange > 10000) && (dataSaved == true)) {
+
+        // If it's been a while since the last input change
+        // Turn off display to avoid burn-in.
+        clearDisplay();
+    }
+}
 
 void encoderProgram() {
 
@@ -36,113 +148,10 @@ void encoderProgram() {
     bool button3 = digitalRead(e_button3);
     bool button4 = digitalRead(e_button4);
 
-    // If there is any input change
     if ((count1 != oldCount1) || (count2 != oldCount2) || (count3 != oldCount3) || (count4 != oldCount4) || (button1 != 1) || (button2 != 1) || (button3 != 1) || (button4 != 1)) {
-        dataSaved = !dataSaved;
-
-        // Find the change
-        if (count1 != oldCount1) {
-            oldCount1 = count1;
-            if (btn1_prg1 == true) {
-                setMessage(count1, bh);
-            }
-            if (btn1_prg2 == true) {
-                 setMessage(count1, kh);
-            }
-        }
-        if (count2 != oldCount2) {
-            oldCount2 = count2;
-            if (btn1_prg1 == true) {
-                setMessage(count2, bs);
-            }
-            if (btn1_prg2 == true) {
-                setMessage(count2, ks);
-            }
-        }
-        if (count3 != oldCount3) {
-            oldCount3 = count3;
-            if (btn1_prg1 == true) {
-                setMessage(count3, bl);
-            }
-            if (btn1_prg2 == true) {
-                setMessage(count3, kl);
-            }
-        }
-        if (count4 != oldCount4) {
-            oldCount4 = count4;
-            if (btn1_prg1 == true) {
-                setMessage(count4, fdur);
-            }
-            if (btn1_prg2 == true) {
-               setMessage(count4, fdel);
-            }
-            if (btn4_prg1 == true) {
-                setMessage(count4, fdur);
-            }
-            if (btn4_prg2 == true) {
-                setMessage(count4, fdel);
-            }
-            setMessage(count2, fdur);
-        }
-        
-        if ((btn1_down == false) && (button1 == LOW)) {
-            btn1_down = !btn1_down;
-
-            // toggle the program.
-            btn1_prg2 = !btn1_prg2;
-            btn1_prg1 = !btn1_prg1;
-        }
-        if ((btn1_down == true) && (button1 == HIGH)) {
-            btn1_down = !btn1_down;
-        }
-        if ((btn2_down == false) && (button2 == LOW)) {
-            btn2_down = !btn2_down;
-
-            // toggle the program.
-            btn2_prg2 = !btn2_prg2;
-            btn2_prg1 = !btn2_prg1;
-        } 
-        if ((btn2_down == true) && (button2 == HIGH)) {
-            btn2_down = !btn2_down;
-        }
-        if ((btn3_down == false) && (button3 == LOW)) {
-            btn3_down = !btn3_down;
-
-            // toggle the program.
-            btn3_prg2 = !btn3_prg2;
-            btn3_prg1 = !btn3_prg1;
-        }
-        if ((btn3_down == true) && (button3 == HIGH)) {
-            btn3_down = !btn3_down;
-        }
-        if ((btn4_down == false) && (button4 == LOW)) {
-            btn4_down = !btn4_down;
-
-            // toggle the program.
-            btn4_prg2 = !btn4_prg2;
-            btn4_prg1 = !btn4_prg1;
-        }
-        if ((btn4_down == true) && (button4 == HIGH)) {
-            btn4_down = !btn4_down;
-        }
-
-        //Set button splash screens
-        //buttonDisplayController();
-
-        // Start the timer
+        countChangeListener();
+        buttonChangeListener(button1, button2, button3, button4);
+        displayRest();
         lastInputChange = millis();
-    }
-    if ((millis() - lastInputChange > 5000) && (dataSaved == false)) {
-        // If it's been a while since the last input change,
-        // Write values to EEPROM and sleep
-        showLogo();
-        setMemory();
-        dataSaved = !dataSaved;
-    }
-    if ((millis() - lastInputChange > 10000) && (dataSaved == true)) {
-        //clearDisplay();
-        // If it's been a while since the last input change,
-        // Write values to EEPROM and sleep
-        clearDisplay();
     }
 }
