@@ -52,7 +52,6 @@ void clearDisplay() {
 }
 
 void buttonDisplayController() {
-
   // Set splash messages on program select
   // Not really working.
   if (btnDown[0] == true) {
@@ -64,27 +63,8 @@ void buttonDisplayController() {
     }
   }
   if (btnDown[1] == true) {
-    if (prg[2] == true) {
-      
-    }
     if (prg[3] == true) {
-      
-    }
-  }
-  if (btnDown[2] == true) {
-    if (prg[4] == true) {
-      
-    }
-    if (prg[5] == true) {
-      
-    }
-  }
-  if (btnDown[3] == true) {
-    if (prg[6] == true) {
-      //setSplash(fdur);
-    }
-    if (prg[7] == true) {
-      //setSplash(fdel);
+      setSplash(ks);
     }
   }
 }

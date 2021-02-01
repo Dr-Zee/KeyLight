@@ -74,12 +74,11 @@ void setup()
   // Set default Data.
   setDefaultData();
 
-  // Get USB Data
+  // Initialize USB
   if (Usb.Init() == -1) 
   {
     while (1); //halt
   }
-
   delay(200);
   
   // Initialize lights
@@ -91,7 +90,7 @@ void loop()
   // Run input program.
   encoderProgram();
 
-  // Initialize USB.
+  // Run USB.
   Usb.Task();
   if ( Usb.getUsbTaskState() == USB_STATE_RUNNING ) 
   {

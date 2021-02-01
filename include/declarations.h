@@ -68,7 +68,7 @@ bool    dataSaved = true;
 
 // Programs
 // DEFAULT - 0 - BG Color Selection
-bool    prg[8] = {true, false, false, false, false, false, false, false};
+bool    prg[3] = {true, false, false};
 
 // Store time since last input update
 uint32_t lastInputChange;

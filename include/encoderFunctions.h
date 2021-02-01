@@ -10,10 +10,13 @@ void initializeEncoders() {
     // Define encoders.
     encoder1.attachFullQuad(39, 36);
     encoder1.setCount(e1);
+
     encoder2.attachHalfQuad(35, 34);
     encoder2.setCount(e2);
+
     encoder3.attachHalfQuad(14, 27);
     encoder3.setCount(e3);
+    
     encoder4.attachHalfQuad(25, 33);
     encoder4.setCount(e4);
 
@@ -59,14 +62,20 @@ void countChangeActions() {
         if (prg[1] == true) {
             setMessage(count1, kh);
         }
+        if (prg[2] == true) {
+
+        }
     }
     if (count2 != oldCount2) {
         oldCount2 = count2;
-        if (prg[2] == true) {
+        if (prg[0] == true) {
             setMessage(count2, bs);
         }
-        if (prg[3] == true) {
+        if (prg[1] == true) {
             setMessage(count2, ks);
+        }
+        if (prg[2] == true) {
+
         }
     }
     if (count3 != oldCount3) {
@@ -77,6 +86,9 @@ void countChangeActions() {
         if (prg[1] == true) {
             setMessage(count3, kl);
         }
+        if (prg[2] == true) {
+
+        }
     }
     if (count4 != oldCount4) {
         oldCount4 = count4;
@@ -86,11 +98,8 @@ void countChangeActions() {
         if (prg[1] == true) {
             setMessage(count4, fdel);
         }
-        if (prg[6] == true) {
-            setMessage(count4, fdur);
-        }
-        if (prg[7] == true) {
-            setMessage(count4, fdel);
+        if (prg[2] == true) {
+
         }
     }
 }
