@@ -1,6 +1,8 @@
 // Set default key data.
 void setDefaultData() 
 {
+  retrieveMemory();
+
   for (int i = 1; i < 88; i++) 
   {
     
@@ -14,12 +16,11 @@ void setDefaultData()
     keyBuffer[i].isDown = keyBuffer[i].recentlyReleased = keyBuffer[i].runOnce = false;
 
     // Get EEPROM Values
-    retrieveMemory();
-    fadeDuration = programs[0].duration;
-    fadeDelay = programs[1].duration;
-    prevKeyColor[i] = colorProcessor(programs[0].hue, programs[0].saturation, programs[0].luminance);
-    prevBgColor[i] = colorProcessor(programs[1].hue, programs[1].saturation, programs[1].luminance);
+    prevKeyColor[i] = colorProcessor(programs[1].hue, programs[1].saturation, programs[1].luminance);
+    prevBgColor[i] = colorProcessor(programs[0].hue, programs[0].saturation, programs[0].luminance);
   }
+  fadeDuration = programs[0].duration;
+  fadeDelay = programs[1].duration;
 }
 
 // Initialize light strip.
@@ -28,7 +29,7 @@ void initializeKeyStrip()
   strip.begin();
   for(int i=0; i < strip.numPixels(); i++) 
   {
-    strip.setPixelColor(i, prevBgColor[i]);
+    strip.setPixelColor(i, prevBgColor[0]);
   }
   strip.show();
 }
@@ -95,22 +96,23 @@ void updateColors(uint16_t hue, uint8_t saturation, uint8_t luminance)
 {
   if (programs[0].active == true) 
   {
-    for (int i = 1; i < 88; i++) 
+    for (int i = 1; i < strip.numPixels(); i++) 
     {
       strip.setPixelColor(i, colorProcessor(hue, saturation, luminance));
     }
     // Set BG indicators
-    programstrip.setPixelColor(3, colorProcessor(hue, saturation, luminance));
-    programstrip.setPixelColor(4, colorProcessor(hue, saturation, luminance));
+    programstrip.setPixelColor(0, colorProcessor(hue, saturation, luminance));
+    programstrip.setPixelColor(1, colorProcessor(hue, saturation, luminance));
+    strip.show();
+    programstrip.show();
   }
   if (programs[1].active == true) 
   {
-
     // Set Key indicators
-    programstrip.setPixelColor(1, colorProcessor(hue, saturation, luminance));
     programstrip.setPixelColor(2, colorProcessor(hue, saturation, luminance));
+    programstrip.setPixelColor(3, colorProcessor(hue, saturation, luminance));
+    programstrip.show();
   }
-  strip.show();
   programstrip.show();
 }
 

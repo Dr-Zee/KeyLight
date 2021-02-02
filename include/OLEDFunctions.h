@@ -44,12 +44,9 @@ void setSplash(char * message)
   display.setTextColor(SSD1306_WHITE);
   display.setTextSize(1);
   display.println("");
-  display.println(message);
   display.setTextSize(3);
-  display.println("");
+  display.println(message);
   display.display();
-  delay(1200);
-  showLogo();
 }
 
 void clearDisplay() 

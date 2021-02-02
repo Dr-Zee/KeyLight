@@ -87,6 +87,10 @@ void setup()
 
 void loop()
 {
+  
+  // Check Inputs.
+    encoderProgram();
+
   // Run USB.
   Usb.Task();
   if ( Usb.getUsbTaskState() == USB_STATE_RUNNING ) 
@@ -106,8 +110,5 @@ void loop()
 
     // Do the big fade.
     theBigFade();
-
-    // Check Inputs.
-    encoderProgram();
   }
 }

@@ -62,8 +62,8 @@ ESP32Encoder encoder4;
 #define p_reset -1
 #define e_button1 15
 #define e_button2 13
-#define e_button3 32
-#define e_button4 26
+#define e_button3 26
+#define e_button4 32
 
 // EEPROM size in bytes
 #define EEPROM_SIZE 1024
@@ -72,10 +72,15 @@ ESP32Encoder encoder4;
 uint16_t count1, oldCount1, count4, oldCount4;
 uint8_t  count2, count3, oldCount2, oldCount3;
 
-program programs[4];
+program programs[4] {
+    programs[0].active = true, 
+    programs[1].active = false, 
+    programs[2].active = false, 
+    programs[3].active = false
+    };
 
 // EEPROM Addresses. Ordered p1: hslda, p2: hslda p3: hslda
-uint8_t address[15] = {8, 10, 11, 13, 19, 14, 16, 17, 18, 20, 21, 23, 25, 26, 27};
+uint8_t address[15] = {8, 10, 11, 12, 14, 15, 17, 18, 19, 21, 22, 24, 25, 26};
 
 // Encoder Button and program booleans.
 bool    btnDown[4] = {false};
