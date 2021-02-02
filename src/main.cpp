@@ -59,6 +59,9 @@ void setup()
   bFirst = true;
   vid = pid = 0;
 
+  // Set default Data.
+  setDefaultData();
+
   // Initialize Encoder.
   initializeEncoders();
 
@@ -69,9 +72,6 @@ void setup()
   }
   // Initialize Display.
   showLogo();
-
-  // Set default Data.
-  setDefaultData();
 
   // Initialize USB
   if (Usb.Init() == -1) 

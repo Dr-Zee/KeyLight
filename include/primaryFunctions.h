@@ -18,6 +18,16 @@ void setDefaultData()
     // Get EEPROM Values
     prevKeyColor[i] = colorProcessor(programs[1].hue, programs[1].saturation, programs[1].luminance);
     prevBgColor[i] = colorProcessor(programs[0].hue, programs[0].saturation, programs[0].luminance);
+
+    // Initialize all the fade timers
+    pixelTimers[i].rfunc = 0;
+    pixelTimers[i].gfunc = 0;
+    pixelTimers[i].bfunc = 0;
+    pixelTimers[i].wfunc = 0;
+    rgbwSteps[i].rfunc = 0;
+    rgbwSteps[i].gfunc = 0;
+    rgbwSteps[i].bfunc = 0;
+    rgbwSteps[i].wfunc = 0;
   }
   fadeDuration = programs[0].duration;
   fadeDelay = programs[1].duration;
@@ -99,7 +109,7 @@ void updateColors(uint16_t hue, uint8_t saturation, uint8_t luminance)
     for (int i = 1; i < strip.numPixels(); i++) 
     {
       strip.setPixelColor(i, colorProcessor(hue, saturation, luminance));
-      prevKeyColor[i] = colorProcessor(hue, saturation, luminance);
+      prevBgColor[i] = colorProcessor(hue, saturation, luminance);
     }
     strip.show();
     // Set BG indicators
@@ -150,7 +160,7 @@ void theBigFade()
       if((elapsed >= fadeDelay)) 
       {
         // Run the fade.
-        colorFade(prevKeyColor[i], prevKeyColor[i], programs[0].duration, programs[1].duration, i);
+        colorFade(prevKeyColor[i], prevBgColor[i], programs[0].duration, programs[1].duration, i);
       }
     }
   }
