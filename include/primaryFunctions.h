@@ -33,7 +33,8 @@ void initializeKeyStrip()
   strip.show();
 }
 
-void initializeProgramStrip() {
+void initializeProgramStrip() 
+{
 
   // Initialize Program Strip
   programstrip.begin();
@@ -90,16 +91,20 @@ void MIDI_poll()
 }
 
 // Update colors
-void updateColors(uint16_t hue, uint8_t saturation, uint8_t luminance) {
-  if (programs[0].active == true) {
-    for (int i = 1; i < 88; i++) {
-    strip.setPixelColor(i, colorProcessor(hue, saturation, luminance));
-  }
+void updateColors(uint16_t hue, uint8_t saturation, uint8_t luminance) 
+{
+  if (programs[0].active == true) 
+  {
+    for (int i = 1; i < 88; i++) 
+    {
+      strip.setPixelColor(i, colorProcessor(hue, saturation, luminance));
+    }
     // Set BG indicators
     programstrip.setPixelColor(3, colorProcessor(hue, saturation, luminance));
     programstrip.setPixelColor(4, colorProcessor(hue, saturation, luminance));
   }
-  if (programs[1].active == true) {
+  if (programs[1].active == true) 
+  {
 
     // Set Key indicators
     programstrip.setPixelColor(1, colorProcessor(hue, saturation, luminance));

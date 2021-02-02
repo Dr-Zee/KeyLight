@@ -12,7 +12,8 @@ char ky[] = "Keys";
 char kskp[] = "Key Skips";
 char save[] = "Saved";
 
-void showLogo() {
+void showLogo() 
+{
   display.clearDisplay();
   display.setRotation(2);
   display.setTextColor(SSD1306_WHITE);
@@ -24,7 +25,8 @@ void showLogo() {
   display.display();
 }
 
-void setMessage(uint16_t data, char * message) {
+void setMessage(uint16_t data, char * message) 
+{
   display.clearDisplay();
   display.setCursor(0,0);
   display.setTextColor(SSD1306_WHITE);
@@ -35,7 +37,8 @@ void setMessage(uint16_t data, char * message) {
   display.println(data);
   display.display();
 }
-void setSplash(char * message) {
+void setSplash(char * message) 
+{
   display.clearDisplay();
   display.setCursor(0,0);
   display.setTextColor(SSD1306_WHITE);
@@ -49,7 +52,8 @@ void setSplash(char * message) {
   showLogo();
 }
 
-void clearDisplay() {
+void clearDisplay() 
+{
   display.clearDisplay();
   display.display();
 }
