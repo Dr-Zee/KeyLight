@@ -90,7 +90,7 @@ void countChangeActions()
         }
         if (programs[1].active == true) 
         {
-            programs[1].luminance = count4;
+            programs[1].duration = count4;
             setMessage(count4, fdel);
         }
     }
@@ -103,71 +103,48 @@ void buttonChangeActions(bool button1, bool button2, bool button3, bool button4)
     // Put Buttons in an array
     bool btn[4] = {button1, button2, button3, button4};
 
-    if(btn[0] == LOW) {
-        Serial.print("button0 down:" );
-            Serial.println("");
-    }
-    if(btn[1] == LOW) {
-        Serial.print("button1 down:" ); 
-            Serial.println("");
-    }
-    if(btn[2] == LOW) {
-        Serial.print("button2 down:" );
-            Serial.println("");
-    }
-    if(btn[3] == LOW) {
-        Serial.print("button3 down:" );
-            Serial.println("");
-    }
-
     for (int i = 0; i < 4; i++) 
     {
-
-        // If the button is not marked down, but it's down.
-        if ((btnDown[i] == false) && (btn[i] == LOW)) 
-        {
+        programs[i].active = false;
+    }
+    // If the button is not marked down, but it's down.
+    for (int i = 0; i < 4; i++) {
+        if((btnDown[i] == false) && (btn[i] == false)) {
             btnDown[i] = !btnDown[i];
-            Serial.print("button down:" );
-            Serial.println(btn[i]);
-
-            //Set the active program
-            for (int a = 0; a < 4; a++) 
-            {
-                programs[a].active = false;
-            }
             programs[i].active = true;
         }
-        // If the button is marked down, but it's up.
-        if ((btnDown[i] == true) && (btn[i] == HIGH)) 
+         // If the button is marked down, but it's up.
+        if ((btnDown[i] == true) && (btn[i] == true)) 
         {
-            btnDown[i] = !btnDown[i];
-
-            // Depending on the active program, reset the encoder counts
-            if (programs[0].active == true) 
-            {
-                encoder1.setCount(programs[0].hue);
-                encoder2.setCount(programs[0].saturation);
-                encoder3.setCount(programs[0].luminance);
-                encoder4.setCount(programs[0].duration);
-                setSplash(bg);
-            }
-            if (programs[1].active == true) 
-            {
-                encoder1.setCount(programs[1].hue);
-                encoder2.setCount(programs[1].saturation);
-                encoder3.setCount(programs[1].luminance);
-                encoder4.setCount(programs[1].duration);
-                setSplash(ky);
-            }
-            if (programs[3].active == true) 
-            {
-                setSplash(save);
-                setMemory();
-                dataSaved = !dataSaved;
-                programs[3].active = false;
-                programs[0].active = true;
-            }
+            btnDown[i] = !btnDown[i]; 
         }
+    }
+
+
+    // Depending on the active program, reset the encoder counts
+    if (programs[0].active == true) 
+    {
+        encoder1.setCount(programs[0].hue);
+        encoder2.setCount(programs[0].saturation);
+        encoder3.setCount(programs[0].luminance);
+        encoder4.setCount(programs[0].duration);
+        setSplash(bg);
+    }
+    if (programs[1].active == true) 
+    {
+        encoder1.setCount(programs[1].hue);
+        encoder2.setCount(programs[1].saturation);
+        encoder3.setCount(programs[1].luminance);
+        encoder4.setCount(programs[1].duration);
+        setSplash(ky);
+    }
+    if (programs[3].active == true) 
+    {
+        setSplash(save);
+        setMemory();
+        dataSaved = !dataSaved;
+        programs[3].active = false;
+        programs[0].active = true;
     }
 }
 
@@ -190,7 +167,6 @@ void displayRest()
 
 void encoderProgram() 
 {
-
     count1 = encoder1.getCount();
     count2 = encoder2.getCount();
     count3 = encoder3.getCount();
@@ -201,23 +177,8 @@ void encoderProgram()
     bool button3 = digitalRead(e_button3);
     bool button4 = digitalRead(e_button4);
 
-    // Watch for encoder changes
-    if ((count1 != oldCount1) || (count2 != oldCount2) || (count3 != oldCount3) || (count4 != oldCount4)) 
-    {
-        // Manage Encoders
-        countChangeActions();
-
-        // Update Strips
-        updateColors(count1, count2, count3);
-
-        // Mark new data
-        dataSaved = !dataSaved;
-
-        // Reset Change Timer
-        lastInputChange = millis();
-    }
-    // Or button changes
-    else if ((button1 != 1) || (button2 != 1) || (button3 != 1) || (button4 != 1)) 
+    // Button changes
+    if ((button1 != 1) || (button2 != 1) || (button3 != 1) || (button4 != 1)) 
     {
         // Manage Buttons
         buttonChangeActions(button1, button2, button3, button4);
@@ -230,5 +191,23 @@ void encoderProgram()
 
         // Mark new data
         dataSaved = !dataSaved;
+    }
+    // Watch for encoder changes
+    if ((count1 != oldCount1) || (count2 != oldCount2) || (count3 != oldCount3) || (count4 != oldCount4)) 
+    {
+        // Manage Encoders
+        countChangeActions();
+
+        // Update Strips
+        updateColors(count1, count2, count3);
+
+        // Rest
+        displayRest();
+
+        // Mark new data
+        dataSaved = !dataSaved;
+
+        // Reset Change Timer
+        lastInputChange = millis();
     }
 }

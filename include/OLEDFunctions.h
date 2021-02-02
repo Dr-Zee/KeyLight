@@ -47,6 +47,7 @@ void setSplash(char * message)
   display.setTextSize(3);
   display.println(message);
   display.display();
+  delay(800);
 }
 
 void clearDisplay() 

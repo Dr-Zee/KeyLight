@@ -29,7 +29,7 @@ void initializeKeyStrip()
   strip.begin();
   for(int i=0; i < strip.numPixels(); i++) 
   {
-    strip.setPixelColor(i, prevBgColor[0]);
+    strip.setPixelColor(i, prevBgColor[1]);
   }
   strip.show();
 }
@@ -41,12 +41,12 @@ void initializeProgramStrip()
   programstrip.begin();
 
   // Set BG indicators
-  programstrip.setPixelColor(3, prevBgColor[0]);
-  programstrip.setPixelColor(4, prevBgColor[0]);
+  programstrip.setPixelColor(0, prevBgColor[1]);
+  programstrip.setPixelColor(1, prevBgColor[1]);
 
   // Set Key indicators
-  programstrip.setPixelColor(1, prevKeyColor[0]);
-  programstrip.setPixelColor(2, prevKeyColor[0]);
+  programstrip.setPixelColor(2, prevKeyColor[1]);
+  programstrip.setPixelColor(3, prevKeyColor[1]);
   programstrip.show();
 }
 
@@ -99,21 +99,25 @@ void updateColors(uint16_t hue, uint8_t saturation, uint8_t luminance)
     for (int i = 1; i < strip.numPixels(); i++) 
     {
       strip.setPixelColor(i, colorProcessor(hue, saturation, luminance));
+      prevKeyColor[i] = colorProcessor(hue, saturation, luminance);
     }
+    strip.show();
     // Set BG indicators
     programstrip.setPixelColor(0, colorProcessor(hue, saturation, luminance));
     programstrip.setPixelColor(1, colorProcessor(hue, saturation, luminance));
-    strip.show();
     programstrip.show();
   }
   if (programs[1].active == true) 
   {
+    for (int i = 1; i < strip.numPixels(); i++) 
+    {
+      prevKeyColor[i] = colorProcessor(hue, saturation, luminance);
+    }
     // Set Key indicators
     programstrip.setPixelColor(2, colorProcessor(hue, saturation, luminance));
     programstrip.setPixelColor(3, colorProcessor(hue, saturation, luminance));
     programstrip.show();
   }
-  programstrip.show();
 }
 
 // Push a color to the keys only once.
@@ -146,7 +150,7 @@ void theBigFade()
       if((elapsed >= fadeDelay)) 
       {
         // Run the fade.
-        colorFade(prevKeyColor[i], prevBgColor[i], programs[0].duration, programs[1].duration, i);
+        colorFade(prevKeyColor[i], prevKeyColor[i], programs[0].duration, programs[1].duration, i);
       }
     }
   }

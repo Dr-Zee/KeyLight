@@ -95,5 +95,5 @@ uint32_t fadeDelay = 900;
 uint32_t fadeDuration = 900;
 
 // Amount of time before the display returns to the logo.
-uint16_t LOGO_DELAY = 4000;
+uint16_t LOGO_DELAY = 1200;
 uint16_t SLEEP_DELAY = 12000;
