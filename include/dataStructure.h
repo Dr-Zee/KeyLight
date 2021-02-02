@@ -14,7 +14,7 @@ typedef struct
 
 typedef struct
 {
-  int     r, g, b, w;
+  uint8_t     r, g, b, w;
 }whiteBalances;
 
 typedef struct

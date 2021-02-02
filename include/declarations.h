@@ -9,7 +9,21 @@ timers  pixelTimers[88];
 timers  rgbwSteps[88];
 
 // White Balance Profiles
-whiteBalances whiteBalance[5];
+byte WHITE_BALANCE = 0;
+whiteBalances whiteBalance[5] {
+
+    // Cool Ranch
+    whiteBalance[0].r = 0,
+    whiteBalance[0].g = 20,
+    whiteBalance[0].b = 20,
+    whiteBalance[0].w = 0,
+
+    // Hot & Heavy
+    whiteBalance[1].r = 10,
+    whiteBalance[1].g = 0,
+    whiteBalance[1].b = 30,
+    whiteBalance[1].w = 0
+};
 
 // LEDs
 #define LED_PIN 4
@@ -74,11 +88,6 @@ uint32_t lastInputChange;
 // Set length of delay before fade and length of fade.
 uint32_t fadeDelay = 900;
 uint32_t fadeDuration = 900;
-
-// Choose a white balance profile.
-// 0 = Cool Blue
-// 1 - Hot & Heavy
-byte WHITE_BALANCE = 0;
 
 // Amount of time before the display returns to the logo.
 uint16_t LOGO_DELAY = 4000;

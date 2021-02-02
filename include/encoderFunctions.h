@@ -96,21 +96,21 @@ void buttonChangeActions(bool button1, bool button2, bool button3, bool button4)
             btnDown[i] = !btnDown[i];
 
             // Depending on the active program, reset the encoder counts
-            if (programs[0].active = true) {
+            if (programs[0].active == true) {
                 encoder1.setCount(programs[0].hue);
                 encoder2.setCount(programs[0].saturation);
                 encoder3.setCount(programs[0].luminance);
                 encoder4.setCount(programs[0].duration);
                 setSplash(bg);
             }
-            if (programs[1].active = true) {
+            if (programs[1].active == true) {
                 encoder1.setCount(programs[1].hue);
                 encoder2.setCount(programs[1].saturation);
                 encoder3.setCount(programs[1].luminance);
                 encoder4.setCount(programs[1].duration);
                 setSplash(ky);
             }
-            if (programs[3].active = true) {
+            if (programs[3].active == true) {
                 setMemory();
                 setSplash(save);
                 dataSaved = !dataSaved;
@@ -120,7 +120,6 @@ void buttonChangeActions(bool button1, bool button2, bool button3, bool button4)
         }
     }
 }
-
 
 void displayRest() {
 
