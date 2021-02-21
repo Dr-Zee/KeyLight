@@ -72,7 +72,7 @@ void setEventProperties(byte key, byte event)
   {
     keyBuffer[key].runOnce = keyBuffer[key].recentlyReleased = true;
     keyBuffer[key].isDown = false;
-    keyBuffer[key].lastReleased = millis();
+    keyBuffer[key].lastReleased = esp_timer_get_time();
   }
 }
 
@@ -155,7 +155,7 @@ void theBigFade()
     {
       
       // Time since keyUp
-      uint32_t elapsed = millis() - keyBuffer[i].lastReleased;
+      uint32_t elapsed = esp_timer_get_time() - keyBuffer[i].lastReleased;
 
       if((elapsed >= fadeDelay)) 
       {

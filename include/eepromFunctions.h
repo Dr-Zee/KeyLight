@@ -1,35 +1,15 @@
 void retrieveMemory() 
 {
     programs[0].hue = EEPROM.readUShort(address[0]);
-    Serial.print(EEPROM.readUShort(address[0]));
-    Serial.println(" ");
     programs[0].saturation = EEPROM.readByte(address[1]);
-    Serial.print(EEPROM.readByte(address[1]));
-    Serial.println(" ");
     programs[0].luminance = EEPROM.readByte(address[2]);
-    Serial.print(EEPROM.readByte(address[2]));
-    Serial.println(" ");
     programs[0].duration = EEPROM.readUShort(address[3]);
-    Serial.print(EEPROM.readUShort(address[3]));
-    Serial.println(" ");
     programs[0].active = EEPROM.readBool(address[4]);
-    Serial.print(EEPROM.readBool(address[4]));
-    Serial.println(" ");
     programs[1].hue = EEPROM.readUShort(address[5]);
-    Serial.print(EEPROM.readUShort(address[5]));
-    Serial.println(" ");
     programs[1].saturation = EEPROM.readByte(address[6]);
-    Serial.print(EEPROM.readByte(address[6]));
-    Serial.println(" ");
     programs[1].luminance = EEPROM.readByte(address[7]);
-    Serial.print(EEPROM.readByte(address[7]));
-    Serial.println(" ");
     programs[1].duration = EEPROM.readUShort(address[8]);
-    Serial.print(EEPROM.readUShort(address[8]));
-    Serial.println(" ");
     programs[1].active = EEPROM.readBool(address[9]);
-    Serial.print(EEPROM.readBool(address[9]));
-    Serial.println(" ");
 }
 
 void setMemory() 

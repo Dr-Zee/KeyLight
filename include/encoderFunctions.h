@@ -152,11 +152,11 @@ void displayRest()
 {
 
     // Execute actions based on the time since last input change.
-    if (millis() - lastInputChange > LOGO_DELAY)
+    if (esp_timer_get_time() - lastInputChange > LOGO_DELAY)
     {
         showLogo();
     }
-    if (millis() - lastInputChange > SLEEP_DELAY) 
+    if (esp_timer_get_time() - lastInputChange > SLEEP_DELAY) 
     {
 
         // If it's been a while since the last input change
@@ -187,7 +187,7 @@ void encoderProgram()
         displayRest();
 
          // Reset Change Timer
-        lastInputChange = millis();
+        lastInputChange = esp_timer_get_time();
 
         // Mark new data
         dataSaved = !dataSaved;
@@ -208,6 +208,6 @@ void encoderProgram()
         dataSaved = !dataSaved;
 
         // Reset Change Timer
-        lastInputChange = millis();
+        lastInputChange = esp_timer_get_time();
     }
 }

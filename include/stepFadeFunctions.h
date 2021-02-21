@@ -28,28 +28,28 @@ void colorFade(uint32_t pk, uint32_t pb, uint16_t fdur, uint16_t fdel, byte i)
   {
     
     //if the elapsed time is greater than the step duration
-    if (millis() - pixelTimers[i].rfunc >= rgbwSteps[i].rfunc) 
+    if (esp_timer_get_time() - pixelTimers[i].rfunc >= rgbwSteps[i].rfunc) 
     {
       //increment or decrement the pixel value
       if (r2 < r1) r2++; else if (r2 > r1) r2--;
-        //and reset the pixel timer
-        pixelTimers[i].rfunc = millis();
-      }
-      if (millis() - pixelTimers[i].gfunc >= rgbwSteps[i].gfunc) 
-      {
-        if (g2 < g1) g2++; else if (g2 > g1) g2--;
-        pixelTimers[i].gfunc = millis();
-      }
-      if (millis() - pixelTimers[i].bfunc >= rgbwSteps[i].bfunc) 
-      {
-        if (b2 < b1) b2++; else if (b2 > b1) b2--;
-        pixelTimers[i].bfunc = millis();
-      }
-      if (millis() - pixelTimers[i].wfunc >= rgbwSteps[i].wfunc) 
-      {
-        if (w2 < w1) w2++; else if (w2 > w1) w2--;
-        pixelTimers[i].wfunc = millis();
-      }
+      //and reset the pixel timer
+      pixelTimers[i].rfunc = esp_timer_get_time();
+    }
+    if (esp_timer_get_time() - pixelTimers[i].gfunc >= rgbwSteps[i].gfunc) 
+    {
+      if (g2 < g1) g2++; else if (g2 > g1) g2--;
+      pixelTimers[i].gfunc = esp_timer_get_time();
+    }
+    if (esp_timer_get_time() - pixelTimers[i].bfunc >= rgbwSteps[i].bfunc) 
+    {
+      if (b2 < b1) b2++; else if (b2 > b1) b2--;
+      pixelTimers[i].bfunc = esp_timer_get_time();
+    }
+    if (esp_timer_get_time() - pixelTimers[i].wfunc >= rgbwSteps[i].wfunc) 
+    {
+      if (w2 < w1) w2++; else if (w2 > w1) w2--;
+      pixelTimers[i].wfunc = esp_timer_get_time();
+    }
     
     //Write to the strip
     int index = i;

@@ -87,7 +87,7 @@ void setup()
 
 void loop()
 {
-  
+
   // Check Inputs.
     encoderProgram();
 

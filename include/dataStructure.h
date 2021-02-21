@@ -2,7 +2,7 @@ typedef struct
 {
   byte     keyLight[2];
   boolean  isDown, recentlyReleased, runOnce;
-  uint32_t lastReleased;
+  int64_t lastReleased;
 }keyState;
 
 typedef struct
@@ -19,7 +19,7 @@ typedef struct
 
 typedef struct
 {
-  uint32_t  rfunc, gfunc, bfunc, wfunc;
+  int64_t  rfunc, gfunc, bfunc, wfunc;
 }timers;
 
 //Gamma correction lookup table.

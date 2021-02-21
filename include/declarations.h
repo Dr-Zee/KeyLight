@@ -87,13 +87,13 @@ bool    btnDown[4] = {false};
 bool    dataSaved = true;
 
 // Store time since last input update
-uint32_t lastInputChange;
+int64_t lastInputChange;
 
 // DEPRECATED
 // Set length of delay before fade and length of fade.
-uint32_t fadeDelay = 900;
-uint32_t fadeDuration = 900;
+int64_t fadeDelay = 900;
+int64_t fadeDuration = 900;
 
 // Amount of time before the display returns to the logo.
-uint16_t LOGO_DELAY = 1200;
-uint16_t SLEEP_DELAY = 12000;
+int64_t LOGO_DELAY = 1200;
+int64_t SLEEP_DELAY = 12000;
