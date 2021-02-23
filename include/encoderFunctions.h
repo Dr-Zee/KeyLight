@@ -10,23 +10,19 @@ void initializeEncoders()
     count[3].encoder.attachHalfQuad(25, 33);
 
     // Get the active program and set the encoders using that data
-    int activeProgram = getActiveProgram();
     for (int i = 0; i < 4; i++) {
-        count[i].encoder.setCount(program[activeProgram].val[i]);
-        count[i].oldCount = count[i].count = program[activeProgram].val[i];
+        count[i].encoder.setCount(program[systemData.activeProgram].val[i]);
+        count[i].oldCount = count[i].count = program[systemData.activeProgram].val[i];
     }
 }
 
-
 void countChangeActions(int counter) 
 {
-    int programActive = getActiveProgram();
 
     count[counter].oldCount = count[counter].count;
-    program[programActive].val[counter] = count[counter].count;
+    program[systemData.activeProgram].val[counter] = count[counter].count;
     setMessage(count[counter].count, counter);
 }
-
 
 void buttonChangeManager(bool isLow, int index) 
 {
@@ -35,7 +31,6 @@ void buttonChangeManager(bool isLow, int index)
 
     if((systemData.btnDown[index] == false) && (isLow == false)) {
         systemData.btnDown[index] = !systemData.btnDown[index];
-        setActiveProgram(index);
     }
         // If the button is marked down, but it's up.
     if ((systemData.btnDown[index] == true) && (isLow == true)) 
@@ -43,8 +38,6 @@ void buttonChangeManager(bool isLow, int index)
         systemData.btnDown[index] = !systemData.btnDown[index]; 
     }
 }
-
-
 
 void displayRest() 
 {

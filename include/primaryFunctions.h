@@ -104,7 +104,7 @@ void MIDI_poll()
 // Update colors
 void updateColors(uint16_t hue, uint16_t saturation, uint16_t luminance) 
 {
-  if (program[0].active == true) 
+  if (systemData.activeProgram == 0) 
   {
     for (int i = 1; i < strip.numPixels(); i++) 
     {
@@ -118,7 +118,7 @@ void updateColors(uint16_t hue, uint16_t saturation, uint16_t luminance)
     programstrip.setPixelColor(1, colorProcessor(hue, saturation, luminance));
     programstrip.show();
   }
-  if (program[1].active == true) 
+  if (systemData.activeProgram == 1) 
   {
     for (int i = 1; i < strip.numPixels(); i++) 
     {

@@ -24,23 +24,3 @@ uint16_t encoderConvert(uint16_t count, int i) {
     }
     return count;
 }
-
-int getActiveProgram() {
-    int p = 0;
-    for (int i = 0; i < 4; i++) {
-        if (program[i].active == true) {
-            p = i;
-        }
-    }
-    return p;
-}
-
-void setActiveProgram(byte button) {
-    for (int i = 0; i < 4; i++) {
-        if (i == button) {
-            program[i].active = true;
-        } else {
-            program[i].active = false;
-        }
-    }
-}

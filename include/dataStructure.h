@@ -15,7 +15,6 @@ typedef struct {
 typedef struct
 {
   uint16_t val[4];
-  boolean active;
   char  *splash;
   char  *input[4];
 }programs;
