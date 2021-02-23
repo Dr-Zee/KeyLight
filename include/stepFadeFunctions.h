@@ -69,6 +69,6 @@ void colorFade(uint32_t pk, uint32_t pb, uint16_t fdur, uint16_t fdel, byte i)
     Serial.println("");
     Serial.println("");
     keyOffHousekeeping(i);
-    prevKeyColor[i] = colorProcessor(programs[1].val[0], programs[1].val[1], programs[1].val[2]);
+    prevKeyColor[i] = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
   }
 }

@@ -1,40 +1,34 @@
+// Global data
+master  systemData;
+
+// Encoder Data
+counts  count[4];
+
+// Program Data
+programs program[4];
+
 // Primary key data
 keyState  keyBuffer[88];
 
+// Stored color values
 uint32_t prevKeyColor[88];
 uint32_t prevBgColor[88];
 
-// For tracking fade steps
+// Tracking fade steps
 timers  pixelTimers[88];
 timers  rgbwSteps[88];
 
-// White Balance Profiles
-byte WHITE_BALANCE = 0;
-whiteBalances whiteBalance[5] {
+// White balance profiles
+whiteBalances   whiteBalance[4];
 
-    // Cool Ranch
-    whiteBalance[0].r = 0,
-    whiteBalance[0].g = 20,
-    whiteBalance[0].b = 20,
-    whiteBalance[0].w = 0,
-
-    // Hot & Heavy
-    whiteBalance[1].r = 10,
-    whiteBalance[1].g = 0,
-    whiteBalance[1].b = 30,
-    whiteBalance[1].w = 0
-};
-
-// LEDs
+// Key LEDs
 #define LED_PIN 4
 #define LED_COUNT  176
-
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRBW + NEO_KHZ800);
 
 // Program LEDs
 #define PROGRAM_LED_PIN 2
 #define PROGRAM_LED_COUNT 4
-
 Adafruit_NeoPixel programstrip(PROGRAM_LED_COUNT, PROGRAM_LED_PIN, NEO_GRBW + NEO_KHZ800);
 
 // USB
@@ -52,12 +46,6 @@ byte event, key;
 #define OLED_RESET    -1
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-// Encoders
-ESP32Encoder encoder1;
-ESP32Encoder encoder2;
-ESP32Encoder encoder3;
-ESP32Encoder encoder4;
-
 // Buttons
 #define p_reset -1
 #define e_button1 15
@@ -68,35 +56,7 @@ ESP32Encoder encoder4;
 // EEPROM size in bytes
 #define EEPROM_SIZE 1024
 
-//Encoder Counts
-counts  count[5];
-
-program programs[4] {
-    programs[0].active = true, 
-    programs[1].active = false, 
-    programs[2].active = false, 
-    programs[3].active = false
-    };
-
-// EEPROM Addresses. Ordered p1: hslda, p2: hslda p3: hslda
+// EEPROM Addresses. 
+// Ordered p1: hslda (2, 2, 2, 2, 1), p2: hslda  (2, 2, 2, 2, 1) etc.
 uint8_t address[10] = {1, 3, 5, 7, 8, 10, 12, 14, 16, 17};
-
-// Encoder Button and program booleans.
-bool    btnDown[4] = {false};
-bool    dataSaved = true;
-
-bool    logoDisplayed = true;
-bool    asleep = false;
-
-// Store time since last input update
-int64_t lastInputChange;
-
-// DEPRECATED
-// Set length of delay before fade and length of fade.
-int64_t fadeDelay = 900;
-int64_t fadeDuration = 900;
-
-// Amount of time before the display returns to the logo.
-int64_t LOGO_DELAY = 1200;
-int64_t SLEEP_DELAY = 12000;
 

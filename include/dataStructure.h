@@ -5,13 +5,20 @@ typedef struct
   int64_t lastReleased;
 }keyState;
 
+typedef struct {
+  int64_t lastInputChange = 0;
+  bool    dataSaved = true, logoDisplayed = false, asleep = false, btnDown[4] = {false};
+  int     activeProgram = 0;
+  int64_t logoDelay = 1500, sleepDelay = 12000;
+}master;
+
 typedef struct
 {
   uint16_t val[4];
   boolean active;
   char  *splash;
   char  *input[4];
-}program;
+}programs;
 
 typedef struct {
   ESP32Encoder  encoder;

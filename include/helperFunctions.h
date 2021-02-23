@@ -28,7 +28,7 @@ uint16_t encoderConvert(uint16_t count, int i) {
 int getActiveProgram() {
     int p = 0;
     for (int i = 0; i < 4; i++) {
-        if (programs[i].active == true) {
+        if (program[i].active == true) {
             p = i;
         }
     }
@@ -38,9 +38,9 @@ int getActiveProgram() {
 void setActiveProgram(byte button) {
     for (int i = 0; i < 4; i++) {
         if (i == button) {
-            programs[i].active = true;
+            program[i].active = true;
         } else {
-            programs[i].active = false;
+            program[i].active = false;
         }
     }
 }
