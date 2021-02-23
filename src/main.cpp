@@ -17,11 +17,12 @@
 
 // Functions
 #include <eepromFunctions.h>
+#include <OLEDFunctions.h>
+#include <helperFunctions.h>
 #include <housekeepingFunctions.h>
 #include <colorFunctions.h>
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
-#include <OLEDFunctions.h>
 #include <encoderFunctions.h>
 
 void setup() 
@@ -70,6 +71,7 @@ void setup()
     Serial.println(F("SSD1306 allocation failed"));
     for(;;);
   }
+  
   // Initialize Display.
   showLogo();
 

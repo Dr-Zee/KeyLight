@@ -7,10 +7,16 @@ typedef struct
 
 typedef struct
 {
-  uint16_t hue, duration;
-  uint8_t saturation, luminance;
+  uint16_t val[4];
   boolean active;
+  char  *splash;
+  char  *input[4];
 }program;
+
+typedef struct {
+  ESP32Encoder  encoder;
+  uint16_t count, oldCount;
+} counts;
 
 typedef struct
 {

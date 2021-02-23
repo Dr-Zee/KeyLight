@@ -12,6 +12,9 @@ char ky[] = "Keys";
 char kskp[] = "Key Skips";
 char save[] = "Saved";
 
+char *messages[12] = {bg, ky, save, kskp, ks, kl, fdel, fdur, bg, ky, kskp, save};
+
+
 void showLogo() 
 {
   display.clearDisplay();
@@ -25,7 +28,7 @@ void showLogo()
   display.display();
 }
 
-void setMessage(uint16_t data, char * message) 
+void setMessage(uint16_t data, int message) 
 {
   display.clearDisplay();
   display.setCursor(0,0);
@@ -37,6 +40,7 @@ void setMessage(uint16_t data, char * message)
   display.println(data);
   display.display();
 }
+
 void setSplash(char * message) 
 {
   display.clearDisplay();

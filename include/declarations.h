@@ -69,8 +69,7 @@ ESP32Encoder encoder4;
 #define EEPROM_SIZE 1024
 
 //Encoder Counts
-uint16_t count1, oldCount1, count4, oldCount4;
-uint8_t  count2, count3, oldCount2, oldCount3;
+counts  count[5];
 
 program programs[4] {
     programs[0].active = true, 
@@ -80,11 +79,14 @@ program programs[4] {
     };
 
 // EEPROM Addresses. Ordered p1: hslda, p2: hslda p3: hslda
-uint8_t address[15] = {8, 10, 11, 12, 14, 15, 17, 18, 19, 21, 22, 24, 25, 26};
+uint8_t address[10] = {1, 3, 5, 7, 8, 10, 12, 14, 16, 17};
 
 // Encoder Button and program booleans.
 bool    btnDown[4] = {false};
 bool    dataSaved = true;
+
+bool    logoDisplayed = true;
+bool    asleep = false;
 
 // Store time since last input update
 int64_t lastInputChange;
@@ -97,3 +99,4 @@ int64_t fadeDuration = 900;
 // Amount of time before the display returns to the logo.
 int64_t LOGO_DELAY = 1200;
 int64_t SLEEP_DELAY = 12000;
+

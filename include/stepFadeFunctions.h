@@ -17,7 +17,7 @@ void colorFade(uint32_t pk, uint32_t pb, uint16_t fdur, uint16_t fdel, byte i)
   fdur = fdur * 1000;
   fdel = fdel * 1000;
 
-  //Get the number of steps needed for each pixel transition then divide the fade duration to get step length.
+  //Get the number of steps needed for each pixel transition then divide the fade duration to get step duration.
   if (r1 > r2) rgbwSteps[i].rfunc = fdur / (r1 - r2); else rgbwSteps[i].rfunc = fdur / (r2 - r1);
   if (g1 > g2) rgbwSteps[i].gfunc = fdur / (g1 - g2); else rgbwSteps[i].gfunc = fdur / (g2 - g1);
   if (b1 > b2) rgbwSteps[i].bfunc = fdur / (b1 - b2); else rgbwSteps[i].bfunc = fdur / (b2 - b1);
@@ -28,24 +28,24 @@ void colorFade(uint32_t pk, uint32_t pb, uint16_t fdur, uint16_t fdel, byte i)
   {
     
     //if the elapsed time is greater than the step duration
-    if (esp_timer_get_time() - pixelTimers[i].rfunc >= rgbwSteps[i].rfunc) 
+    if (timeKeeper(pixelTimers[i].rfunc) >= rgbwSteps[i].rfunc) 
     {
       //increment or decrement the pixel value
       if (r2 < r1) r2++; else if (r2 > r1) r2--;
       //and reset the pixel timer
       pixelTimers[i].rfunc = esp_timer_get_time();
     }
-    if (esp_timer_get_time() - pixelTimers[i].gfunc >= rgbwSteps[i].gfunc) 
+    if (timeKeeper(pixelTimers[i].gfunc) >= rgbwSteps[i].gfunc) 
     {
       if (g2 < g1) g2++; else if (g2 > g1) g2--;
       pixelTimers[i].gfunc = esp_timer_get_time();
     }
-    if (esp_timer_get_time() - pixelTimers[i].bfunc >= rgbwSteps[i].bfunc) 
+    if (timeKeeper(pixelTimers[i].bfunc) >= rgbwSteps[i].bfunc) 
     {
       if (b2 < b1) b2++; else if (b2 > b1) b2--;
       pixelTimers[i].bfunc = esp_timer_get_time();
     }
-    if (esp_timer_get_time() - pixelTimers[i].wfunc >= rgbwSteps[i].wfunc) 
+    if (timeKeeper(pixelTimers[i].wfunc) >= rgbwSteps[i].wfunc) 
     {
       if (w2 < w1) w2++; else if (w2 > w1) w2--;
       pixelTimers[i].wfunc = esp_timer_get_time();
@@ -53,13 +53,12 @@ void colorFade(uint32_t pk, uint32_t pb, uint16_t fdur, uint16_t fdel, byte i)
     
     //Write to the strip
     int index = i;
-    for(int i=0; i < 2; i++) 
-    {
-      strip.setPixelColor(keyBuffer[index].keyLight[i], strip.Color(r2, g2, b2, w2));
+  
+    strip.setPixelColor(keyBuffer[index].keyLight[i], strip.Color(r2, g2, b2, w2));
 
-      // Save the new transition value
-      prevKeyColor[i] = strip.Color(r2, g2, b2, w2);
-    }
+    // Save the new transition value
+    prevKeyColor[i] = strip.Color(r2, g2, b2, w2);
+    
     strip.show();
   }
   
@@ -70,6 +69,6 @@ void colorFade(uint32_t pk, uint32_t pb, uint16_t fdur, uint16_t fdel, byte i)
     Serial.println("");
     Serial.println("");
     keyOffHousekeeping(i);
-    prevKeyColor[i] = colorProcessor(programs[1].hue, programs[1].saturation, programs[1].luminance);
+    prevKeyColor[i] = colorProcessor(programs[1].val[0], programs[1].val[1], programs[1].val[2]);
   }
 }

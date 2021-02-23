@@ -11,13 +11,15 @@ void setDefaultData()
     {
       keyBuffer[i].keyLight[0] = keyBuffer[i].keyLight[1] = 176;
     }
+    //set each key's LED light numbers
     keyBuffer[i].keyLight[0] = (i * 2) - 2;
     keyBuffer[i].keyLight[1] = keyBuffer[i].keyLight[0] + 1;
+    //Initialize all key settings to off
     keyBuffer[i].isDown = keyBuffer[i].recentlyReleased = keyBuffer[i].runOnce = false;
 
-    // Get EEPROM Values
-    prevKeyColor[i] = colorProcessor(programs[1].hue, programs[1].saturation, programs[1].luminance);
-    prevBgColor[i] = colorProcessor(programs[0].hue, programs[0].saturation, programs[0].luminance);
+    // set the previous colors from memory
+    prevKeyColor[i] = colorProcessor(programs[1].val[0], programs[1].val[1], programs[1].val[2]);
+    prevBgColor[i] = colorProcessor(programs[0].val[0], programs[0].val[1], programs[0].val[2]);
 
     // Initialize all the fade timers
     pixelTimers[i].rfunc = 0;
@@ -29,8 +31,8 @@ void setDefaultData()
     rgbwSteps[i].bfunc = 0;
     rgbwSteps[i].wfunc = 0;
   }
-  fadeDuration = programs[0].duration;
-  fadeDelay = programs[1].duration;
+  fadeDuration = programs[0].val[3];
+  fadeDelay = programs[1].val[3];
 }
 
 // Initialize light strip.
@@ -39,7 +41,7 @@ void initializeKeyStrip()
   strip.begin();
   for(int i=0; i < strip.numPixels(); i++) 
   {
-    strip.setPixelColor(i, prevBgColor[1]);
+    strip.setPixelColor(i, prevBgColor[i]);
   }
   strip.show();
 }
@@ -102,7 +104,7 @@ void MIDI_poll()
 }
 
 // Update colors
-void updateColors(uint16_t hue, uint8_t saturation, uint8_t luminance) 
+void updateColors(uint16_t hue, uint16_t saturation, uint16_t luminance) 
 {
   if (programs[0].active == true) 
   {
@@ -112,7 +114,8 @@ void updateColors(uint16_t hue, uint8_t saturation, uint8_t luminance)
       prevBgColor[i] = colorProcessor(hue, saturation, luminance);
     }
     strip.show();
-    // Set BG indicators
+
+    // Set Background Program LEDs indicators
     programstrip.setPixelColor(0, colorProcessor(hue, saturation, luminance));
     programstrip.setPixelColor(1, colorProcessor(hue, saturation, luminance));
     programstrip.show();
@@ -123,7 +126,7 @@ void updateColors(uint16_t hue, uint8_t saturation, uint8_t luminance)
     {
       prevKeyColor[i] = colorProcessor(hue, saturation, luminance);
     }
-    // Set Key indicators
+    // Set Key Program LED indicators
     programstrip.setPixelColor(2, colorProcessor(hue, saturation, luminance));
     programstrip.setPixelColor(3, colorProcessor(hue, saturation, luminance));
     programstrip.show();
@@ -137,7 +140,7 @@ void keyStrikes(byte key)
   {
     for(int i = 0; i < 2; i++) 
     {
-      strip.setPixelColor(keyBuffer[key].keyLight[i], colorProcessor(programs[1].hue, programs[1].saturation, programs[1].luminance));
+      strip.setPixelColor(keyBuffer[key].keyLight[i], colorProcessor(programs[1].val[0], programs[1].val[1], programs[1].val[2]));
     }
     strip.show();
 
@@ -155,12 +158,10 @@ void theBigFade()
     {
       
       // Time since keyUp
-      uint32_t elapsed = esp_timer_get_time() - keyBuffer[i].lastReleased;
-
-      if((elapsed >= fadeDelay)) 
+      if((timeKeeper(keyBuffer[i].lastReleased) >= fadeDelay)) 
       {
         // Run the fade.
-        colorFade(prevKeyColor[i], prevBgColor[i], programs[0].duration, programs[1].duration, i);
+        colorFade(prevKeyColor[i], prevBgColor[i], programs[0].val[3], programs[1].val[3], i);
       }
     }
   }
