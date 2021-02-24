@@ -1,6 +1,5 @@
 void retrieveMemory() 
 {
-    systemData.activeProgram = EEPROM.readByte(address[0]);
     // Program 1 values
     program[0].val[0] = EEPROM.readUShort(address[1]);
     program[0].val[1] = EEPROM.readUShort(address[2]);
@@ -12,14 +11,11 @@ void retrieveMemory()
     program[1].val[1] = EEPROM.readUShort(address[6]);
     program[1].val[2] = EEPROM.readUShort(address[7]);
     program[1].val[3] = EEPROM.readUShort(address[8]);
-
 }
 
 void setMemory() 
 {
     // If the saved and current values are different, save the new value.
-    if (systemData.activeProgram != EEPROM.readByte(address[0])) { EEPROM.put(address[0], systemData.activeProgram); }
-
     // Program 1
     if (program[0].val[0] != EEPROM.readUShort(address[1]))  { EEPROM.put(address[1], program[0].val[0]); }
     if (program[0].val[1] != EEPROM.readUShort(address[2]))  { EEPROM.put(address[2], program[0].val[1]); }

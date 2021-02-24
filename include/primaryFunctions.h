@@ -1,7 +1,11 @@
 // Set default key data.
 void setDefaultData() 
 {
+  // Get EEPROM values
   retrieveMemory();
+
+  // Set the OLED program messages in memory
+  setMessages();
 
   for (int i = 1; i < 88; i++) 
   {
@@ -20,16 +24,6 @@ void setDefaultData()
     // set the previous colors from memory
     prevKeyColor[i] = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
     prevBgColor[i] = colorProcessor(program[0].val[0], program[0].val[1], program[0].val[2]);
-
-    // Initialize all the fade timers
-    pixelTimers[i].rfunc = 0;
-    pixelTimers[i].gfunc = 0;
-    pixelTimers[i].bfunc = 0;
-    pixelTimers[i].wfunc = 0;
-    rgbwSteps[i].rfunc = 0;
-    rgbwSteps[i].gfunc = 0;
-    rgbwSteps[i].bfunc = 0;
-    rgbwSteps[i].wfunc = 0;
   }
 }
 

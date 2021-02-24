@@ -1,19 +1,30 @@
-//Program Strings
-char bh[] = "Background Hue";
-char bs[] = "Background Saturation";
-char bl[] = "Background Luminance";
-char kh[] = "Key Hue";
-char ks[] = "Key Saturation";
-char kl[] = "Key Luminance";
-char fdel[] = "Fade Duration";
-char fdur[] = "Fade Delay";
-char bg[] = "Backround";
-char ky[] = "Keys";
-char kskp[] = "Key Skips";
-char save[] = "Saved";
 
-char *messages[12] = {bg, ky, save, kskp, ks, kl, fdel, fdur, bg, ky, kskp, save};
+void setMessages() {
+  program[0].splash = "Background";
+  program[1].splash = "Keys";
+  program[2].splash = "KeySkips";
+  program[3].splash = "Saved";
 
+  program[0].message[0] = "Background Hue";
+  program[0].message[1] = "Background Saturation";
+  program[0].message[2] = "Background Luminance";
+  program[0].message[3] = "Fade Duration";
+
+  program[1].message[0] = "Key Hue";
+  program[1].message[1] = "Key Saturation";
+  program[1].message[2] = "Key Luminance";
+  program[1].message[3] = "Fade Delay";
+
+  program[2].message[0] = "P2 Fly you fools";
+  program[2].message[1] = "P2 you're in P2";
+  program[2].message[2] = "P2 it's p2 you'll get";
+  program[2].message[3] = "P2 for you";
+
+  program[3].message[0] = "P3 that's for me";
+  program[3].message[1] = "P3 what's that about?";
+  program[3].message[2] = "P3 get ready to see.";
+  program[3].message[3] = "P3 that's the trip";
+}
 
 void showLogo() 
 {
@@ -34,14 +45,14 @@ void setMessage(uint16_t data, int message)
   display.setCursor(0,0);
   display.setTextColor(SSD1306_WHITE);
   display.setTextSize(1);
-  display.println(message);
+  display.println(program[systemData.activeProgram].message[message]);
   display.println("");
   display.setTextSize(2);
   display.println(data);
   display.display();
 }
 
-void setSplash(char * message) 
+void setSplash() 
 {
   display.clearDisplay();
   display.setCursor(0,0);
@@ -49,9 +60,9 @@ void setSplash(char * message)
   display.setTextSize(1);
   display.println("");
   display.setTextSize(2);
-  display.println(message);
+  display.println(program[systemData.activeProgram].splash);
   display.display();
-  delay(800);
+  delay(1200);
 }
 
 void clearDisplay() 

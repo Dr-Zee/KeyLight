@@ -15,8 +15,8 @@ typedef struct {
 typedef struct
 {
   uint16_t val[4];
-  char  *splash;
-  char  *input[4];
+  String  splash;
+  String  message[4];
 }programs;
 
 typedef struct {
@@ -31,7 +31,7 @@ typedef struct
 
 typedef struct
 {
-  int64_t  rfunc, gfunc, bfunc, wfunc;
+  int64_t  rfunc = 0, gfunc = 0, bfunc = 0, wfunc = 0;
 }timers;
 
 //Gamma correction lookup table.
@@ -54,3 +54,4 @@ const uint8_t PROGMEM gamma8[] =
   177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
   215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 
   };
+

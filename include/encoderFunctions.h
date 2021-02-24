@@ -18,9 +18,12 @@ void initializeEncoders()
 
 void countChangeActions(int counter) 
 {
-
+    // Update the old count
     count[counter].oldCount = count[counter].count;
+
+    // Set the new value in the program
     program[systemData.activeProgram].val[counter] = count[counter].count;
+
     setMessage(count[counter].count, counter);
 }
 
@@ -30,7 +33,23 @@ void buttonChangeManager(bool isLow, int index)
     // If the button is not marked down, but it's down.
 
     if((systemData.btnDown[index] == false) && (isLow == false)) {
+
+        // Handle the default 0 program nonsense.
+        if ((systemData.activeProgram == 0) && (index == 0)) {
+            systemData.activeProgram = 1;
+        }
+        if ((systemData.activeProgram != 0) && (index == 0)) {
+            systemData.activeProgram = 0;
+        }
+        if (index == 1) {
+            systemData.activeProgram = 2;
+        }
+        if (index == 2) {
+            systemData.activeProgram = 3;
+        }
+
         systemData.btnDown[index] = !systemData.btnDown[index];
+        setSplash();
     }
         // If the button is marked down, but it's up.
     if ((systemData.btnDown[index] == true) && (isLow == true)) 
