@@ -9,7 +9,7 @@ typedef struct {
   int64_t lastInputChange = 0;
   bool    dataSaved = true, logoDisplayed = false, asleep = false, btnDown[4] = {false};
   int     activeProgram = 0;
-  int64_t logoDelay = 1500, sleepDelay = 12000;
+  int64_t logoDelay = 5000, sleepDelay = 25000;
 }master;
 
 typedef struct

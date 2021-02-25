@@ -22,6 +22,7 @@ void setMemory()
     if (program[0].val[2] != EEPROM.readUShort(address[3]))  { EEPROM.put(address[3], program[0].val[2]); }
     if (program[0].val[3] != EEPROM.readUShort(address[4]))  { EEPROM.put(address[4], program[0].val[3]); }
 
+
     // Program 2
     if (program[1].val[0] != EEPROM.readUShort(address[5]))  { EEPROM.put(address[5], program[1].val[0]); }
     if (program[1].val[1] != EEPROM.readUShort(address[6]))  { EEPROM.put(address[6], program[1].val[1]); }

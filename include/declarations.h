@@ -6,6 +6,7 @@ counts  count[4];
 
 // Program Data
 programs program[5];
+bool firstRun = true;
 
 // Primary key data
 keyState  keyBuffer[88];
@@ -49,9 +50,9 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 // Buttons
 #define p_reset -1
 #define e_button1 15
-#define e_button2 13
-#define e_button3 26
-#define e_button4 32
+#define e_button2 32
+#define e_button3 13
+#define e_button4 26
 
 // EEPROM size in bytes
 #define EEPROM_SIZE 1024

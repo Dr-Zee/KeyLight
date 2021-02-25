@@ -11,8 +11,8 @@ void initializeEncoders()
 
     // Get the active program and set the encoders using that data
     for (int i = 0; i < 4; i++) {
-        count[i].encoder.setCount(program[systemData.activeProgram].val[i]);
         count[i].oldCount = count[i].count = program[systemData.activeProgram].val[i];
+        count[i].encoder.setCount(program[systemData.activeProgram].val[i]);
     }
 }
 
@@ -32,36 +32,35 @@ void programSwitcher(bool isLow, int index)
     //  A button change means a program change
     //  If the button is not marked up, but it's down.
     if((systemData.btnDown[index] == false) && (isLow == false)) {
-        
+        Serial.print("Digital read button 0: ");
+        Serial.print(digitalRead(e_button1));
+        Serial.println("");
+        Serial.print("Digital read button 1: ");
+        Serial.print(digitalRead(e_button2));
+        Serial.println("");
+        Serial.print("Digital read button 2: ");
+        Serial.print(digitalRead(e_button3));
+        Serial.println("");
+        Serial.print("Digital read button 3: ");
+        Serial.print(digitalRead(e_button4));
+        Serial.println("");
         //  Toggle the button down state
         systemData.btnDown[index] = !systemData.btnDown[index];
 
+        //  Flip the firstRun flag to exempt the values from conversion.
+   
         //  If the program is 0 and button 0 is pressed, switch to program 1
         //  If the program is not 0 and button 0 is pressed, switch to program 0
-        if ((systemData.activeProgram == 0) && (index == 0)) { systemData.activeProgram = 1; }
-        else if ((systemData.activeProgram != 0) && (index == 0)) { systemData.activeProgram = 0; }
-
-        //  If button 1 is pressed and program 2 is not active, switch to program 2
-        //  If button 1 is pressed and program 2 is active, switch to program 0
-        if ((systemData.activeProgram != 2) && (index == 1)) { systemData.activeProgram = 2; }
-        else if ((systemData.activeProgram == 2) && (index == 1)) { systemData.activeProgram = 0; }
-
-        //  If button 2 is pressed and program 3 is not active, switch to program 3
-        //  If button 2 is pressed and program 3 is active, switch to program 0
-        if ((systemData.activeProgram != 3) && (index == 2)) { systemData.activeProgram = 3; }
-        else if ((systemData.activeProgram == 3) && (index == 2)) { systemData.activeProgram = 0; }
-
-        //  If button 3 is pressed and program 4 is not active, switch to program 4
-        //  If button 3 is pressed and program 4 is active, switch to program 0
-        if ((systemData.activeProgram != 4) && (index == 3)) { systemData.activeProgram = 4; }
-        else if ((systemData.activeProgram == 4) && (index == 3)) { systemData.activeProgram = 0; }
+        if (index == 0) {
+            if (systemData.activeProgram != 0) { systemData.activeProgram = 0;}
+            else { systemData.activeProgram = 1;}
+        }
+        if (index == 1) {
+            if (systemData.activeProgram != 2) { systemData.activeProgram = 2;}
+        }
+        firstRun = !firstRun;
     }
-        // If the button is marked down, but it's up.
-    if ((systemData.btnDown[index] == true) && (isLow == true)) 
-    {
-        //  Toggle the button down state
-        systemData.btnDown[index] = !systemData.btnDown[index]; 
-    }
+   
 }
 
 void displayRest() 
@@ -83,8 +82,21 @@ void displayRest()
 void encoderProgram() 
 {
 
-    for (int i = 0; i < 4; i++) {
-        count[i].count = encoderConvert(count[i].encoder.getCount(), i);
+    int active = systemData.activeProgram;
+    if (firstRun == true) {
+        for (int i = 0; i < 4; i++) {
+
+            // Exempt program dumps from being converted.
+            if ((active == 0) || (active == 1)) {
+                count[i].encoder.setCount(program[active].val[i]);
+                count[i].oldCount = count[i].count = program[active].val[i];
+            }
+        }
+        firstRun = !firstRun;
+    } else {
+        for (int i = 0; i < 4; i++) {
+            count[i].count = encoderConvert(count[i].encoder.getCount(), i);
+        }
     }
 
     bool button[4] = {digitalRead(e_button1), digitalRead(e_button2), digitalRead(e_button3), digitalRead(e_button4)};
@@ -98,9 +110,9 @@ void encoderProgram()
 
             //  Do a program thing
             programAction();
-
-            //  Set the splash screen
-            setSplash();
+        }
+        if ((systemData.btnDown[i] == true) && (button[i] == 1)) {
+            systemData.btnDown[i] = !systemData.btnDown[i];
         }
         // Monitor the Encoders
         if (count[i].count != count[i].oldCount) {
@@ -120,16 +132,5 @@ void encoderProgram()
         }
         // Rest
         displayRest();
-    }
-}
-
-void programAction() {
-    //  If the program is Save, run the save command then switch back to the default program.
-    if (systemData.activeProgram == 2) {
-        setMemory();
-        //  Show the Saved splash
-        setSplash();
-        //  Back to default
-        systemData.activeProgram == 0;
     }
 }
