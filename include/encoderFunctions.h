@@ -27,33 +27,39 @@ void countChangeActions(int counter)
     setMessage(count[counter].count, counter);
 }
 
-void buttonChangeManager(bool isLow, int index) 
+void programSwitcher(bool isLow, int index) 
 {
-    // A button change means a program change
-    // If the button is not marked down, but it's down.
-
+    //  A button change means a program change
+    //  If the button is not marked up, but it's down.
     if((systemData.btnDown[index] == false) && (isLow == false)) {
-
-        // Handle the default 0 program nonsense.
-        if ((systemData.activeProgram == 0) && (index == 0)) {
-            systemData.activeProgram = 1;
-        }
-        if ((systemData.activeProgram != 0) && (index == 0)) {
-            systemData.activeProgram = 0;
-        }
-        if (index == 1) {
-            systemData.activeProgram = 2;
-        }
-        if (index == 2) {
-            systemData.activeProgram = 3;
-        }
-
+        
+        //  Toggle the button down state
         systemData.btnDown[index] = !systemData.btnDown[index];
-        setSplash();
+
+        //  If the program is 0 and button 0 is pressed, switch to program 1
+        //  If the program is not 0 and button 0 is pressed, switch to program 0
+        if ((systemData.activeProgram == 0) && (index == 0)) { systemData.activeProgram = 1; }
+        else if ((systemData.activeProgram != 0) && (index == 0)) { systemData.activeProgram = 0; }
+
+        //  If button 1 is pressed and program 2 is not active, switch to program 2
+        //  If button 1 is pressed and program 2 is active, switch to program 0
+        if ((systemData.activeProgram != 2) && (index == 1)) { systemData.activeProgram = 2; }
+        else if ((systemData.activeProgram == 2) && (index == 1)) { systemData.activeProgram = 0; }
+
+        //  If button 2 is pressed and program 3 is not active, switch to program 3
+        //  If button 2 is pressed and program 3 is active, switch to program 0
+        if ((systemData.activeProgram != 3) && (index == 2)) { systemData.activeProgram = 3; }
+        else if ((systemData.activeProgram == 3) && (index == 2)) { systemData.activeProgram = 0; }
+
+        //  If button 3 is pressed and program 4 is not active, switch to program 4
+        //  If button 3 is pressed and program 4 is active, switch to program 0
+        if ((systemData.activeProgram != 4) && (index == 3)) { systemData.activeProgram = 4; }
+        else if ((systemData.activeProgram == 4) && (index == 3)) { systemData.activeProgram = 0; }
     }
         // If the button is marked down, but it's up.
     if ((systemData.btnDown[index] == true) && (isLow == true)) 
     {
+        //  Toggle the button down state
         systemData.btnDown[index] = !systemData.btnDown[index]; 
     }
 }
@@ -87,8 +93,14 @@ void encoderProgram()
         // Monitor the buttons
         if (button[i] != 1) {
 
-            // if any of the buttons go low
-            buttonChangeManager(button[i], i);
+            //  if any of the buttons go low, switch the program
+            programSwitcher(button[i], i);
+
+            //  Do a program thing
+            programAction();
+
+            //  Set the splash screen
+            setSplash();
         }
         // Monitor the Encoders
         if (count[i].count != count[i].oldCount) {
@@ -108,5 +120,16 @@ void encoderProgram()
         }
         // Rest
         displayRest();
+    }
+}
+
+void programAction() {
+    //  If the program is Save, run the save command then switch back to the default program.
+    if (systemData.activeProgram == 2) {
+        setMemory();
+        //  Show the Saved splash
+        setSplash();
+        //  Back to default
+        systemData.activeProgram == 0;
     }
 }
