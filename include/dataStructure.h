@@ -1,3 +1,12 @@
+typedef struct 
+{
+  int64_t lastInputChange = 0;
+  bool    saved = true, logo = true, asleep = false, btnDown[4] = {false};
+  int     active = 0;
+  ESP32Encoder  encoder[4];
+  int64_t logoDelay = 1000, sleepDelay = 5000;
+}master;
+
 typedef struct
 {
   byte     keyLight[2];
@@ -5,33 +14,23 @@ typedef struct
   int64_t lastReleased;
 }keyState;
 
-typedef struct {
-  int64_t lastInputChange = 0;
-  bool    dataSaved = true, logoDisplayed = false, asleep = false, btnDown[4] = {false};
-  int     activeProgram = 0;
-  int64_t logoDelay = 5000, sleepDelay = 25000;
-}master;
-
 typedef struct
 {
   uint16_t val[4];
+  uint16_t oldVal[4];
   String  splash;
   String  message[4];
 }programs;
 
-typedef struct {
-  ESP32Encoder  encoder;
-  uint16_t count, oldCount;
-} counts;
 
 typedef struct
 {
-  uint8_t     r, g, b, w;
+  uint8_t     w[4];
 }whiteBalances;
 
 typedef struct
 {
-  int64_t  rfunc = 0, gfunc = 0, bfunc = 0, wfunc = 0;
+  int64_t  t[4] = {0};
 }timers;
 
 //Gamma correction lookup table.

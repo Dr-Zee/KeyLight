@@ -39,7 +39,7 @@ uint32_t colorProcessor(uint16_t hue, uint8_t sat, uint8_t val)
   w = smallest;
 
   // White balance the result
-  //r = whiteBalance[0].r + r; g = whiteBalance[0].g + g; b = whiteBalance[0].b + b; w = whiteBalance[0].w + w;
+  //r = whiteBalance[0].w[0] + r; g = whiteBalance[0].w[1] + g; b = whiteBalance[0].w[2] + b; w = whiteBalance[0].w[3] + w;
 
   //Check for negatives.
   if(r < 0) {r = 0;} if (g < 0) {g = 0;} if (b < 0) {b = 0;} if (w < 0) {w = 0;}

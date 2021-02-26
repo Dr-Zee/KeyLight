@@ -92,7 +92,8 @@ void loop()
 
   // Check Inputs.
     encoderProgram();
-
+    // Rest
+    displayRest();
   // Run USB.
   Usb.Task();
   if ( Usb.getUsbTaskState() == USB_STATE_RUNNING ) 

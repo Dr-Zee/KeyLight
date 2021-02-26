@@ -11,14 +11,10 @@ void keyOnHousekeeping(int key)
 }
 void keyOffHousekeeping(int i) 
 {
-  rgbwSteps[i].rfunc = 0;
-  rgbwSteps[i].gfunc = 0;
-  rgbwSteps[i].bfunc = 0;
-  rgbwSteps[i].wfunc = 0;
-  pixelTimers[i].rfunc = 0;
-  pixelTimers[i].gfunc = 0;
-  pixelTimers[i].bfunc = 0;
-  pixelTimers[i].wfunc = 0;
+  for (int j = 0; j < 4; j++) {
+    pixelTimers[i].t[j] = 0;
+    rgbwSteps[i].t[j] = 0;
+  }
   
   keyBuffer[i].recentlyReleased = false;
   keyBuffer[i].lastReleased = 0;

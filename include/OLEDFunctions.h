@@ -45,7 +45,7 @@ void setMessage(uint16_t data, int message)
   display.setCursor(0,0);
   display.setTextColor(SSD1306_WHITE);
   display.setTextSize(1);
-  display.println(program[systemData.activeProgram].message[message]);
+  display.println(program[sys.active].message[message]);
   display.println("");
   display.setTextSize(2);
   display.println(data);
@@ -60,9 +60,9 @@ void setSplash()
   display.setTextSize(1);
   display.println("");
   display.setTextSize(2);
-  display.println(program[systemData.activeProgram].splash);
+  display.println(program[sys.active].splash);
   display.display();
-  delay(1200);
+  delay(2000);
 }
 
 void clearDisplay() 

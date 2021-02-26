@@ -8,25 +8,24 @@ uint16_t encoderConvert(uint16_t encoderCount, int i) {
     if (i == 0) {
 
         //  Hue Multiplier
-        encoderCount = (encoderCount / 2) * 50;
+        encoderCount = (encoderCount / 2) * 60;
     }
     if ((i == 1) || (i == 2)) {
-
-        // Saturation/Luminance multiplier
-
         //  Byte clamp.
         //  Clamp the 16 bit value to 8 bits to remove inappropriate data input.
         //  16 bit value is used for consistency and code simplicity across all encoders.
         
         //  check above 255 in case the encoder rolls past due to a multiplier
-        if ((encoderCount > 255) && (encoderCount < 300)) {
+        if ((encoderCount > 255) && (encoderCount < 2000)) {
+            
             encoderCount = 0;
+            sys.encoder[i].setCount(0);
         }
 
-        // uint16_t rolls over from 0 to 65535
-        // look for any number higher than the 255-300 range to catch if we've passed below 0
-        if ((encoderCount > 300)) {
+        if ((encoderCount > 2000)) {
+ 
             encoderCount = 255;
+            sys.encoder[i].setCount(255);
         }
     } 
     if (i == 3) {
@@ -40,18 +39,18 @@ uint16_t encoderConvert(uint16_t encoderCount, int i) {
 
 void programAction() {
     //  If the program is Save, run the save command then switch back to the default program.
-    if (systemData.activeProgram == 0)  {
+    if (sys.active == 0)  {
         setSplash();
     }
-    if (systemData.activeProgram == 1)  {
+    if (sys.active == 1)  {
         setSplash();
     }
-    if (systemData.activeProgram == 2) {
+    if (sys.active == 2) {
         setMemory();
         //  Show the Saved splash
         setSplash();
         //  Back to default
-        systemData.activeProgram = 0;
+        sys.active = 0;
         setSplash();
     }
 }
