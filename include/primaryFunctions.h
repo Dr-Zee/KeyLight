@@ -102,14 +102,14 @@ void updateColors(uint16_t hue, uint16_t saturation, uint16_t luminance)
   {
     for (int i = 1; i < strip.numPixels(); i++) 
     {
-      strip.setPixelColor(i, colorProcessor(hue, saturation, luminance));
       prevBgColor[i] = colorProcessor(hue, saturation, luminance);
+      strip.setPixelColor(i, colorProcessor(hue, saturation, luminance));
     }
     strip.show();
 
     // Set Background Program LEDs indicators
-    programstrip.setPixelColor(0, colorProcessor(hue, saturation, luminance));
-    programstrip.setPixelColor(1, colorProcessor(hue, saturation, luminance));
+    programstrip.setPixelColor(0, prevBgColor[1]);
+    programstrip.setPixelColor(1, prevBgColor[1]);
     programstrip.show();
   }
   if (sys.active == 1) 
@@ -119,8 +119,8 @@ void updateColors(uint16_t hue, uint16_t saturation, uint16_t luminance)
       prevKeyColor[i] = colorProcessor(hue, saturation, luminance);
     }
     // Set Key Program LED indicators
-    programstrip.setPixelColor(2, colorProcessor(hue, saturation, luminance));
-    programstrip.setPixelColor(3, colorProcessor(hue, saturation, luminance));
+    programstrip.setPixelColor(2, prevKeyColor[1]);
+    programstrip.setPixelColor(3, prevKeyColor[1]);
     programstrip.show();
   }
 }
@@ -132,7 +132,7 @@ void keyStrikes(byte key)
   {
     for(int i = 0; i < 2; i++) 
     {
-      strip.setPixelColor(keyBuffer[key].keyLight[i], colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]));
+      strip.setPixelColor(keyBuffer[key].keyLight[i], prevKeyColor[1]);
     }
     strip.show();
 
@@ -150,7 +150,7 @@ void theBigFade()
     {
       
       // Time since keyUp
-      if((timeKeeper(keyBuffer[i].lastReleased) >= program[1].val[3])) 
+      if(timeKeeper(keyBuffer[i].lastReleased) >= program[1].val[3] * 1000) 
       {
         // Run the fade.
         colorFade(prevKeyColor[i], prevBgColor[i], program[0].val[3], program[1].val[3], i);

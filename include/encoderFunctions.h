@@ -5,9 +5,9 @@ void initializeEncoders()
 
     // Define encoders.
     sys.encoder[0].attachFullQuad(39, 36);
-    sys.encoder[1].attachHalfQuad(35, 34);
-    sys.encoder[2].attachHalfQuad(14, 27);
-    sys.encoder[3].attachHalfQuad(25, 33);
+    sys.encoder[1].attachFullQuad(35, 34);
+    sys.encoder[2].attachFullQuad(14, 27);
+    sys.encoder[3].attachFullQuad(25, 33);
 
     // Get the active program and set the encoders using that data
     for (int i = 0; i < 4; i++) {
@@ -18,6 +18,22 @@ void initializeEncoders()
 
 void countChangeActions(int counter) 
 {
+     if (programChanged == true) {
+        for (int i = 0; i < 4; i++) {
+
+            // Exempt program dumps from being converted.
+            if ((sys.active == 0) || (sys.active == 1)) {
+                sys.encoder[i].setCount(program[sys.active].val[i]);
+                program[sys.active].oldVal[i] = program[sys.active].val[i];
+            }
+        }
+        programChanged = !programChanged;
+    } else {
+        for (int i = 0; i < 4; i++) {
+            program[sys.active].val[i] = encoderConvert(sys.encoder[i].getCount(), i);
+        }
+    }
+
     // Update the old count
     program[sys.active].oldVal[counter] = program[sys.active].val[counter];
 
@@ -47,39 +63,24 @@ void programSwitcher(bool isLow, int index)
 void displayRest() 
 {
 
-    // Execute actions based on the time since last input change.
     if ((sys.logo == false) && (timeKeeper(sys.lastInputChange) > sys.logoDelay) && (timeKeeper(sys.lastInputChange) < sys.sleepDelay))
     {
- 
+        showLogo();
         sys.logo = true;
     }
     if ((timeKeeper(sys.lastInputChange) > sys.sleepDelay) && (sys.logo == true)) 
     {
-        //clearDisplay();
+        clearDisplay();
         sys.logo = false;
     }
 }
 
 void encoderProgram() 
 {
-
-    int active = sys.active;
-    if (programChanged == true) {
+    uint16_t countVal;
         for (int i = 0; i < 4; i++) {
-
-            // Exempt program dumps from being converted.
-            if ((active == 0) || (active == 1)) {
-                sys.encoder[i].setCount(program[active].val[i]);
-                program[active].oldVal[i] = program[active].val[i];
-            }
+            program[sys.active].val[i] = sys.encoder[i].getCount();
         }
-        programChanged = !programChanged;
-    } else {
-        for (int i = 0; i < 4; i++) {
-            program[sys.active].val[i] = encoderConvert(sys.encoder[i].getCount(), i);
-        }
-    }
-
     bool button[4] = {digitalRead(e_button1), digitalRead(e_button2), digitalRead(e_button3), digitalRead(e_button4)};
 
     for (int i = 0; i < 4; i++) {
@@ -91,9 +92,6 @@ void encoderProgram()
 
             //  Do a program thing
             programAction();
-             // Reset Change Timer
-            sys.lastInputChange = esp_timer_get_time();
-            sys.logo = false;
         }
         if ((sys.btnDown[i] == true) && (button[i] == 1)) {
             sys.btnDown[i] = !sys.btnDown[i];
@@ -106,15 +104,22 @@ void encoderProgram()
 
             // Update Strips
             updateColors(program[sys.active].val[0], program[sys.active].val[1], program[sys.active].val[2]);
+        }
+        // Monitoring any changes
+        if ((program[sys.active].val[i] != program[sys.active].oldVal[i]) || (button[i] != 1)) {
 
              // Reset Change Timer
             sys.lastInputChange = esp_timer_get_time();
             sys.logo = false;
         }
-        // Monitoring any changes
-        if ((program[sys.active].val[i] != program[sys.active].oldVal[i]) || (button[i] != 1)) {
+    }
+}
 
-        
-        }
+// Here's the idea, use the encoders for raw input, but only use their data to increment variables.
+//This way the encoder data will never interfere with the program data, and vice vera.
+//Requires a significant rethink.
+void encoderConversion() {
+    if (program[sys.active].val[i] < program[sys.active].oldVal[i]) {
+
     }
 }

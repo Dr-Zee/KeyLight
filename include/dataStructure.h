@@ -4,7 +4,7 @@ typedef struct
   bool    saved = true, logo = true, asleep = false, btnDown[4] = {false};
   int     active = 0;
   ESP32Encoder  encoder[4];
-  int64_t logoDelay = 1000, sleepDelay = 5000;
+  int64_t logoDelay = 3000000, sleepDelay = 10000000;
 }master;
 
 typedef struct
