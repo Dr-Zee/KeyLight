@@ -15,114 +15,37 @@ void initializeEncoders()
         count[i].oldCount = count[i].count;
     }
 }
-void byteClamp(uint16_t count, int i) 
-{
-    if ((i == 1) || (i == 2)) {
-         //  Then, clamp the value to 8 bits
-        if ((count > 255) && (count < 2000)) {
-            program[sys.active].val[i] = 0;
-        }
-        else if (count > 2000) {
-            program[sys.active].val[i] = 255;
-        }
-    }
-    if (i == 0) {
-        //  Then, clamp the value to 16 bits
-        if (count > 65535) {
-            program[sys.active].val[i] = 0;
-        }
-        else if (count < 1) {
-            program[sys.active].val[i] = 65535;
-        }
-    }
-    if (i == 3) {
-        // clamp the fade values to 10 seconds
-        if (count > 10000) {
-            program[sys.active].val[i] = 0;
-        }
-        else if (count < 1) {
-            program[sys.active].val[i] = 10000;
-        }
-    }
-}
 
 void countChangeActions(int i) 
-{
+{   
+    byte multiplier;
 
     if (i == 0) {
-
-        if (count[i].count > count[i].oldCount) {
-            program[sys.active].val[i] = program[sys.active].val[i] + 100;
-        }
-        if (count[i].count < count[i].oldCount) {
-            program[sys.active].val[i] = program[sys.active].val[i] - 100;
-        }
-        byteClamp(program[sys.active].val[i], i);
+        multiplier = 100;
     }
     if ((i == 1) || (i == 2)) {
-
-        if (count[i].count > count[i].oldCount) {
-            program[sys.active].val[i] = program[sys.active].val[i] + 1;
-        }
-        else if (count[i].count < count[i].oldCount) {
-            program[sys.active].val[i] = program[sys.active].val[i] - 1 ;
-        }
-        byteClamp(program[sys.active].val[i], i);
+        multiplier = 1;
     }
     if (i == 3) {
-
-        if (count[i].count > count[i].oldCount) {
-            program[sys.active].val[i] = program[sys.active].val[i] + 50;
-        }
-        if (count[i].count < count[i].oldCount) {
-            program[sys.active].val[i] = program[sys.active].val[i] - 50;
-        }
-        byteClamp(program[sys.active].val[i], i);
+        multiplier = 50;
     }
 
+    if (count[i].count > count[i].oldCount) {
+        program[sys.active].val[i] = program[sys.active].val[i] + multiplier;
+    }
+    if (count[i].count < count[i].oldCount) {
+        program[sys.active].val[i] = program[sys.active].val[i] - multiplier;
+    }
+    byteClamp(program[sys.active].val[i], i);
+    
     // Update the old count
     count[i].oldCount = count[i].count;
     setMessage(program[sys.active].val[i], i);
 }
 
-
-void programSwitcher(bool isLow, int index) 
-{
-    //  A button change means a program change
-    //  If the button is not marked up, but it's down.
-    if((sys.btnDown[index] == false) && (isLow == false)) {
-
-        //  Toggle the button down state
-        sys.btnDown[index] = !sys.btnDown[index];
-
-        if (index == 0) {
-            if (sys.active != 0) { sys.active = 0;}
-            else { sys.active = 1;}
-        }
-        if (index == 1) {
-            if (sys.active != 2) { sys.active = 2;}
-        }
-        programChanged = !programChanged;
-    } 
-}
-
-void displayRest() 
-{
-
-    if ((sys.logo == false) && (timeKeeper(sys.lastInputChange) > sys.logoDelay) && (timeKeeper(sys.lastInputChange) < sys.sleepDelay))
-    {
-        showLogo();
-        sys.logo = true;
-    }
-    if ((timeKeeper(sys.lastInputChange) > sys.sleepDelay) && (sys.logo == true)) 
-    {
-        clearDisplay();
-        sys.logo = false;
-    }
-}
-
 void encoderProgram() 
 {
+    //  Watch the encoders
     for (int i = 0; i < 4; i++) {
         count[i].count = count[i].encoder.getCount();
     }

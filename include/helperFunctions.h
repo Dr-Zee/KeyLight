@@ -2,39 +2,35 @@ int64_t timeKeeper(int64_t timer) {
     return esp_timer_get_time() - timer;
 }
 
-
-
-uint16_t encoderConvert(uint16_t encoderCount, int i) {
-    if (i == 0) {
-
-        //  Hue Multiplier
-        encoderCount = (encoderCount / 2) * 60;
-    }
+void byteClamp(uint16_t count, int i) 
+{
     if ((i == 1) || (i == 2)) {
-        //  Byte clamp.
-        //  Clamp the 16 bit value to 8 bits to remove inappropriate data input.
-        //  16 bit value is used for consistency and code simplicity across all encoders.
-        
-        //  check above 255 in case the encoder rolls past due to a multiplier
-        if ((encoderCount > 255) && (encoderCount < 2000)) {
-            
-            encoderCount = 0;
-            count[i].encoder.setCount(0);
+         //  Clamp the value to 8 bits
+        if ((count > 255) && (count < 2000)) {
+            program[sys.active].val[i] = 0;
         }
-
-        if ((encoderCount > 2000)) {
- 
-            encoderCount = 255;
-            count[i].encoder.setCount(255);
+        else if (count > 2000) {
+            program[sys.active].val[i] = 255;
         }
-    } 
-    if (i == 3) {
-
-        // Duration multiplier
-        encoderCount = (encoderCount / 2) * 200;
     }
-
-    return encoderCount;
+    if (i == 0) {
+        //  Then, clamp the value to 16 bits
+        if (count > 65535) {
+            program[sys.active].val[i] = 0;
+        }
+        else if (count < 1) {
+            program[sys.active].val[i] = 65535;
+        }
+    }
+    if (i == 3) {
+        // clamp the fade values to 10 seconds
+        if (count > 10000) {
+            program[sys.active].val[i] = 0;
+        }
+        else if (count < 1) {
+            program[sys.active].val[i] = 10000;
+        }
+    }
 }
 
 void programAction() {
@@ -53,4 +49,24 @@ void programAction() {
         sys.active = 0;
         setSplash();
     }
+}
+
+void programSwitcher(bool isLow, int index) 
+{
+    //  A button change means a program change
+    //  If the button is not marked up, but it's down.
+    if((sys.btnDown[index] == false) && (isLow == false)) {
+
+        //  Toggle the button down state
+        sys.btnDown[index] = !sys.btnDown[index];
+
+        if (index == 0) {
+            if (sys.active != 0) { sys.active = 0;}
+            else { sys.active = 1;}
+        }
+        if (index == 1) {
+            if (sys.active != 2) { sys.active = 2;}
+        }
+        programChanged = !programChanged;
+    } 
 }
