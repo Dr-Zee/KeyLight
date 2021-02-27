@@ -1,6 +1,9 @@
 // Global data
 master  sys;
 
+// Encoder Data
+counts  count[4];
+
 // Program Data
 programs program[5];
 bool programChanged = false;

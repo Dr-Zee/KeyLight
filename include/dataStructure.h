@@ -3,7 +3,6 @@ typedef struct
   int64_t lastInputChange = 0;
   bool    saved = true, logo = true, asleep = false, btnDown[4] = {false};
   int     active = 0;
-  ESP32Encoder  encoder[4];
   int64_t logoDelay = 3000000, sleepDelay = 10000000;
 }master;
 
@@ -11,13 +10,17 @@ typedef struct
 {
   byte     keyLight[2];
   boolean  isDown, recentlyReleased, runOnce;
-  int64_t lastReleased;
+  int64_t  lastReleased;
 }keyState;
+
+typedef struct {
+  ESP32Encoder  encoder;
+  uint16_t count, oldCount;
+} counts;
 
 typedef struct
 {
   uint16_t val[4];
-  uint16_t oldVal[4];
   String  splash;
   String  message[4];
 }programs;

@@ -19,13 +19,13 @@ uint16_t encoderConvert(uint16_t encoderCount, int i) {
         if ((encoderCount > 255) && (encoderCount < 2000)) {
             
             encoderCount = 0;
-            sys.encoder[i].setCount(0);
+            count[i].encoder.setCount(0);
         }
 
         if ((encoderCount > 2000)) {
  
             encoderCount = 255;
-            sys.encoder[i].setCount(255);
+            count[i].encoder.setCount(255);
         }
     } 
     if (i == 3) {
