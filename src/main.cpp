@@ -71,7 +71,10 @@ void setup()
     Serial.println(F("SSD1306 allocation failed"));
     for(;;);
   }
-  
+
+  //  Initialize lighting task for core 0
+  xTaskCreatePinnedToCore(LEDThreadTasks, "Light Control", 1000, NULL, 1, NULL, 0);
+
   // Initialize Display.
   showLogo();
 
@@ -87,13 +90,13 @@ void setup()
   initializeKeyStrip();
 }
 
+//  Input/Program Manager - Runs on Core 1
+//  Monitors all Inputs, sets global values, controls OLED.
 void loop()
 {
-
   // Check Inputs.
-    encoderProgram();
-    // Rest
-    displayRest();
+  encoderProgram();
+
   // Run USB.
   Usb.Task();
   if ( Usb.getUsbTaskState() == USB_STATE_RUNNING ) 
@@ -102,14 +105,28 @@ void loop()
     // Listen for Midi.
     MIDI_poll();
 
-    // Light the keys.
-    keyStrikes(key);
-
     // Debounce the event.
     if(event != 0) 
     {
      event = 0;
     }
+  }
+    // Rest
+  displayRest();
+}
+
+//  LED/Fade Manager - Runs on Core 0
+//  Updates LEDs
+void LEDThreadTasks( void* ){
+
+  //  Create an infinite loop
+  for(;;) {
+
+    // Light the keys.
+    keyStrikes(key);
+
+    // Update Strips
+    updateColors(program[sys.active].val[0], program[sys.active].val[1], program[sys.active].val[2]);
 
     // Do the big fade.
     theBigFade();

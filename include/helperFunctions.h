@@ -54,16 +54,18 @@ void programAction() {
 void programSwitcher(bool isLow, int index) 
 {
     //  A button change means a program change
-    //  If the button is not marked up, but it's down.
+    //  If the button is not marked down, but it's down.
     if((sys.btnDown[index] == false) && (isLow == false)) {
 
         //  Toggle the button down state
         sys.btnDown[index] = !sys.btnDown[index];
-
+        
+        //  If toggle button 1
         if (index == 0) {
             if (sys.active != 0) { sys.active = 0;}
             else { sys.active = 1;}
         }
+        //  If toggle button 2
         if (index == 1) {
             if (sys.active != 2) { sys.active = 2;}
         }

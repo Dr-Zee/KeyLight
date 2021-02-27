@@ -1,4 +1,3 @@
-
 void setMessages() {
   program[0].splash = "Background";
   program[1].splash = "Keys";

@@ -70,9 +70,6 @@ void encoderProgram()
 
             // If the encoder values change
             countChangeActions(i);
-
-            // Update Strips
-            updateColors(program[sys.active].val[0], program[sys.active].val[1], program[sys.active].val[2]);
         }
         // Monitoring any changes
         if ((count[i].count != count[i].oldCount) || (button[i] != 1)) {

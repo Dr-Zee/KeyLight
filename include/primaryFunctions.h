@@ -153,7 +153,8 @@ void theBigFade()
       if(timeKeeper(keyBuffer[i].lastReleased) >= program[1].val[3] * 1000) 
       {
         // Run the fade.
-        colorFade(prevKeyColor[i], prevBgColor[i], program[0].val[3], program[1].val[3], i);
+        //colorFade(prevKeyColor[i], prevBgColor[i], program[0].val[3], program[1].val[3], i);
+        //strip.setPixelColor(keyBuffer[i].keyLight[i], prevKeyColor[1]);
       }
     }
   }
