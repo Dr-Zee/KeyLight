@@ -60,17 +60,3 @@ void clearDisplay()
   display.clearDisplay();
   display.display();
 }
-
-void displayRest() 
-{
-    if ((sys.logo == false) && (timeKeeper(sys.lastInputChange) > sys.logoDelay) && (timeKeeper(sys.lastInputChange) < sys.sleepDelay))
-    {
-        showLogo();
-        sys.logo = true;
-    }
-    if ((timeKeeper(sys.lastInputChange) > sys.sleepDelay) && (sys.logo == true)) 
-    {
-        clearDisplay();
-        sys.logo = false;
-    }
-}
