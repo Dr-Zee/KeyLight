@@ -48,7 +48,8 @@ uint32_t colorProcessor(uint16_t hue, uint8_t sat, uint8_t val)
   return ((uint32_t)w << 24) | ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
 }
 
-void whiteConvert(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+
+uint32_t whiteConvert(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
 
   int smallest = 0;
   if(r <= g && r <= b) {smallest = r;} else if (g <= r && g <= b)  {smallest = g;} else if (b <= r && b <= g) {smallest = b;}
@@ -60,4 +61,7 @@ void whiteConvert(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
   w = smallest;
 
   if(r < 0) {r = 0;} if (g < 0) {g = 0;} if (b < 0) {b = 0;} if (w < 0) {w = 0;}
+
+    // Pack and return the result.
+    return ((uint32_t)w << 24) | ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
 }

@@ -9,13 +9,16 @@ void setDefaultData()
 
   for (int i = 0; i < 88; i++) 
   {
+
     //set each key's LED light numbers
     keyBuffer[i].keyLight[0] = (i * 2) - 2;
     keyBuffer[i].keyLight[1] = keyBuffer[i].keyLight[0] + 1;
+
     //Initialize all key settings to off
     keyBuffer[i].isDown = keyBuffer[i].recentlyReleased = keyBuffer[i].runOnce = false;
+
     // set the previous colors from memory
-    prevKeyColor[i]  = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
+    fadeStage[i] = prevKeyColor[i]  = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
     prevBgColor[i]   = colorProcessor(program[0].val[0], program[0].val[1], program[0].val[2]);
   }
 }
@@ -121,7 +124,7 @@ void updateValues()
     //  Set the new Key Color
     for (int i = 0; i < 88; i++) 
     {
-      prevKeyColor[i] = color;
+      fadeStage[i] = prevKeyColor[i] = color;
     }
 
     // Set Key Program LED indicators
@@ -135,14 +138,12 @@ void updateValues()
 // Push a color to the keys only once.
 void keyStrikes(int key) 
 {
-
-  if((keyBuffer[key].isDown == true) & (keyBuffer[key].runOnce == false)) 
+  if((keyBuffer[key].isDown == true) && (keyBuffer[key].runOnce == false)) 
   {
-
     for(int i = 0; i < 2; i++) 
     {
-      strip.setPixelColor(keyBuffer[key].keyLight[i], prevKeyColor[key]);
 
+      strip.setPixelColor(keyBuffer[key].keyLight[i], prevKeyColor[key]);
     }
     strip.show();
   }
@@ -154,18 +155,12 @@ void theBigFade()
 {
   for (int i = 0; i < 88; i++) 
   {
-    if(keyBuffer[i].recentlyReleased == true) 
-    {
-      for (int j = 0; j < 2; j++) {
-        strip.setPixelColor(keyBuffer[i].keyLight[j], prevBgColor[i]);
-      }
-      strip.show();
+    if((keyBuffer[i].recentlyReleased == true) && (keyBuffer[i].isDown == false)) 
+    {  
       // Time since keyUp
       if(timeKeeper(keyBuffer[i].lastReleased) >= program[1].val[3] * 1000) 
       {
-        // Run the fade.
-        //colorFade(prevKeyColor[i], prevBgColor[i], program[0].val[3], program[1].val[3], i);
-        //strip.setPixelColor(keyBuffer[i].keyLight[i], prevKeyColor[1]);
+        colorFade(i);
       }
     }
   }

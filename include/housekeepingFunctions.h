@@ -8,14 +8,16 @@ void keyOnHousekeeping(int key)
   //}
   //colorSkips++;
   keyBuffer[key].runOnce = true;
+  //  Set a fresh background color reference in case the key was in mid-fade
+  fadeStage[key] = prevKeyColor[key];
 }
 void keyOffHousekeeping(int i) 
 {
+  fadeStage[i] = prevKeyColor[i];
+  keyBuffer[i].recentlyReleased = false;
+  keyBuffer[i].lastReleased = 0;
   for (int j = 0; j < 4; j++) {
     pixelTimers[i].t[j] = 0;
     rgbwSteps[i].t[j] = 0;
   }
-  
-  keyBuffer[i].recentlyReleased = false;
-  keyBuffer[i].lastReleased = 0;
 }

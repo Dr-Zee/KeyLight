@@ -20,11 +20,11 @@
 #include <declarations.h>
 
 // Functions
+#include <colorFunctions.h>
 #include <eepromFunctions.h>
 #include <OLEDFunctions.h>
 #include <helperFunctions.h>
 #include <housekeepingFunctions.h>
-#include <colorFunctions.h>
 #include <stepFadeFunctions.h>
 #include <primaryFunctions.h>
 #include <encoderFunctions.h>
@@ -34,7 +34,7 @@ void LEDThreadTask( void* ){
   //  Create an infinite loop
   for(;;) {
     //  Do the big fade.
-    theBigFade();
+    //theBigFade();
     vTaskDelay(10);
   }
 }
@@ -87,7 +87,7 @@ void setup()
   }
 
   //  Initialize lighting task for core 0
-  xTaskCreatePinnedToCore(LEDThreadTask, "Light Control", 1000, NULL, 1, NULL, 0);
+  //xTaskCreatePinnedToCore(LEDThreadTask, "Light Control", 1000, NULL, 1, NULL, 0);
 
   //  Initialize Display.
   showLogo();
@@ -111,6 +111,8 @@ void loop()
   // Check Inputs.
   encoderProgram();
 
+  theBigFade();
+  
   // Run USB.
   Usb.Task();
   if ( Usb.getUsbTaskState() == USB_STATE_RUNNING ) 
@@ -128,6 +130,7 @@ void loop()
      event = 0;
     }
   }
+
     // Rest
   displayRest();
 }

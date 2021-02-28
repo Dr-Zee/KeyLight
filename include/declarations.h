@@ -14,6 +14,7 @@ keyState  keyBuffer[88];
 // Stored color values
 uint32_t prevKeyColor[88];
 uint32_t prevBgColor[88];
+uint32_t fadeStage[88];
 
 // Tracking fade steps
 timers  pixelTimers[88];
