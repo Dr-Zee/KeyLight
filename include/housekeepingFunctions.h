@@ -15,9 +15,13 @@ void keyOnHousekeeping(int key)
     pixelTimers[key].t[j] = 0;
     rgbwSteps[key].t[j] = 0;
   }
+  tempTimer = millis();
 }
 void keyOffHousekeeping(int i) 
 {
+  Serial.print("temp timer: ");
+  Serial.print(tempTimer);
+  Serial.println("");
   fadeStage[i] = prevKeyColor[i];
   keyBuffer[i].recentlyReleased = false;
   keyBuffer[i].lastReleased = 0;

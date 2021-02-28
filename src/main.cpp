@@ -6,7 +6,7 @@
 #include <SPI.h>
 //  Flash Memory access
 #include <EEPROM.h>
-
+unsigned long tempTimer = 0;
 //  Libraries
 #include <usbhub.h>
 #include <usbh_midi.h>
@@ -29,17 +29,14 @@
 #include <primaryFunctions.h>
 #include <encoderFunctions.h>
 
+
 //  Fade Manager - Runs on Core 0
 void LEDThreadTask( void* ){
   //  Create an infinite loop
   for(;;) {
+
     //  Do the big fade.
-
-  Serial.print("in the LED Thread task");
-  Serial.println("");
-
-
-    theBigFade();
+   
     vTaskDelay(10);
   }
 }
@@ -133,7 +130,7 @@ void loop()
      event = 0;
     }
   }
-
+ theBigFade();
     // Rest
   displayRest();
 }

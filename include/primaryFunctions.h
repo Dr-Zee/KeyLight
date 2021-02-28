@@ -152,8 +152,7 @@ void keyStrikes(int key)
 // Fade out loop for non-blocking transitions out.
 void theBigFade() 
 {
-  for (int i = 0; i < 88; i++) 
-  {
+ int i = 1;
     if(keyBuffer[i].recentlyReleased == true) 
     {  
       // Time since keyUp
@@ -161,13 +160,14 @@ void theBigFade()
       {
         if (program[0].val[3] < 200) {
           for (int j = 0; j < 2; j++) {
-            strip.setPixelColor(keyBuffer[i].keyLight[j], prevKeyColor[i]);
+            strip.setPixelColor(keyBuffer[i].keyLight[j], prevBgColor[i]);
           }
           strip.show();
+          keyOffHousekeeping(i);
         } else {
           colorFade(i);
         }
       }
     }
-  }
+  
 }

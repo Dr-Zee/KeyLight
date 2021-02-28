@@ -1,8 +1,8 @@
 void colorFade(byte i) 
 {
 
-  uint32_t bg =   prevBgColor[i];
-  uint32_t key =   fadeStage[i];
+  uint32_t bg = prevBgColor[i];
+  uint32_t key = fadeStage[i];
 
   uint16_t fdur = program[0].val[3];
 
@@ -17,6 +17,29 @@ void colorFade(byte i)
   uint8_t b2 = Blue(key);
   uint8_t w2 = White(key);
 
+  Serial.print("f dur: ");
+  Serial.print(fdur);
+  Serial.println("");
+  // Serial.print("r1: ");
+  // Serial.print(r1);
+  //  Serial.print(", g1: ");
+  // Serial.print(g1);
+  //  Serial.print(", b1: ");
+  // Serial.print(b1);
+  //  Serial.print(", w1: ");
+  // Serial.print(w1);
+  // Serial.println("");
+  //   Serial.print("r2: ");
+  // Serial.print(r2);
+  //  Serial.print(", g2: ");
+  // Serial.print(g2);
+  //  Serial.print(", b2: ");
+  // Serial.print(b2);
+  //  Serial.print(", w2: ");
+  // Serial.print(w2);
+  // Serial.println("");
+
+
   //  De-RGBW-ify the values
   r1 = r1 + w1;
   g1 = g1 + w1;
@@ -26,6 +49,7 @@ void colorFade(byte i)
   g2 = g2 + w2;
   b2 = b2 + w2;
 
+  //  Check for overflow
   if (r1 > 255) { r1 = 255; } if (g1 > 255) { g1 = 255; } if (b1 > 255) { b1 = 255; }
   if (r2 > 255) { r2 = 255; } if (g2 > 255) { g2 = 255; } if (b2 > 255) { b2 = 255; }
 
@@ -36,6 +60,17 @@ void colorFade(byte i)
     if (b1 > b2) rgbwSteps[i].t[2] = fdur / (b1 - b2); else rgbwSteps[i].t[2] = fdur / (b2 - b1);
   }
 
+
+  Serial.print("R step duration: ");
+  Serial.print(rgbwSteps[i].t[0]);
+  Serial.println("");
+  Serial.print("G step duration: ");
+  Serial.print(rgbwSteps[i].t[1]);
+  Serial.println("");
+  Serial.print("B step duration: ");
+  Serial.print(rgbwSteps[i].t[2]);
+  Serial.println("");
+
   //if the old and new values are different  
   if((r2 != r1) || (g2 != g1) || (b2 != b1)) 
   {
@@ -43,6 +78,11 @@ void colorFade(byte i)
     //if the elapsed time is greater than the step duration
     if (timeKeeper(pixelTimers[i].t[0]) >= rgbwSteps[i].t[0]) 
     {
+      Serial.print("time since last loop: ");
+      Serial.print(timeKeeper(pixelTimers[i].t[0]));
+      Serial.print(", rgbw step 15ms: ");
+      Serial.print(rgbwSteps[i].t[0]);
+      Serial.println("");
       //increment or decrement the pixel value
       if (r2 < r1) r2++; else if (r2 > r1) r2--;
       //and reset the pixel timer

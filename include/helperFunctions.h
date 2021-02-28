@@ -16,20 +16,14 @@ void byteClamp(uint16_t count, int i)
     }
     if (i == 0) {
         //  Then, clamp the value to 16 bits
-        if (count > 65535) {
+        if (count > 10000) {
             program[sys.active].val[i] = 0;
-        }
-        else if (count < 1) {
-            program[sys.active].val[i] = 65535;
         }
     }
     if (i == 3) {
         // clamp the fade values to 10 seconds
         if (count > 10000) {
             program[sys.active].val[i] = 0;
-        }
-        else if (count < 1) {
-            program[sys.active].val[i] = 10000;
         }
     }
 }
