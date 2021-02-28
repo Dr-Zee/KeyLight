@@ -1,5 +1,5 @@
-int64_t timeKeeper(int64_t timer) {
-    return esp_timer_get_time() - timer;
+unsigned long timeKeeper(unsigned long timer) {
+    return millis() - timer;
 }
 
 //  Checks for and corrects range overflow

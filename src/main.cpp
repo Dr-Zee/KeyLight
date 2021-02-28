@@ -34,7 +34,12 @@ void LEDThreadTask( void* ){
   //  Create an infinite loop
   for(;;) {
     //  Do the big fade.
-    //theBigFade();
+
+  Serial.print("in the LED Thread task");
+  Serial.println("");
+
+
+    theBigFade();
     vTaskDelay(10);
   }
 }
@@ -87,7 +92,7 @@ void setup()
   }
 
   //  Initialize lighting task for core 0
-  //xTaskCreatePinnedToCore(LEDThreadTask, "Light Control", 1000, NULL, 1, NULL, 0);
+  xTaskCreatePinnedToCore(LEDThreadTask, "Light Control", 1000, NULL, 1, NULL, 0);
 
   //  Initialize Display.
   showLogo();
@@ -111,8 +116,6 @@ void loop()
   // Check Inputs.
   encoderProgram();
 
-  theBigFade();
-  
   // Run USB.
   Usb.Task();
   if ( Usb.getUsbTaskState() == USB_STATE_RUNNING ) 

@@ -63,7 +63,7 @@ void setEventProperties(byte key, byte event)
   {
     keyBuffer[key].isDown = false;
     keyBuffer[key].recentlyReleased = keyBuffer[key].runOnce = true;
-    keyBuffer[key].lastReleased = esp_timer_get_time();
+    keyBuffer[key].lastReleased = millis();
   }
 }
 
@@ -142,12 +142,11 @@ void keyStrikes(int key)
   {
     for(int i = 0; i < 2; i++) 
     {
-
       strip.setPixelColor(keyBuffer[key].keyLight[i], prevKeyColor[key]);
     }
     strip.show();
+    keyOnHousekeeping(key);
   }
-  keyOnHousekeeping(key);
 }
 
 // Fade out loop for non-blocking transitions out.
@@ -155,12 +154,19 @@ void theBigFade()
 {
   for (int i = 0; i < 88; i++) 
   {
-    if((keyBuffer[i].recentlyReleased == true) && (keyBuffer[i].isDown == false)) 
+    if(keyBuffer[i].recentlyReleased == true) 
     {  
       // Time since keyUp
-      if(timeKeeper(keyBuffer[i].lastReleased) >= program[1].val[3] * 1000) 
+      if(timeKeeper(keyBuffer[i].lastReleased) >= program[1].val[3]) 
       {
-        colorFade(i);
+        if (program[0].val[3] < 200) {
+          for (int j = 0; j < 2; j++) {
+            strip.setPixelColor(keyBuffer[i].keyLight[j], prevKeyColor[i]);
+          }
+          strip.show();
+        } else {
+          colorFade(i);
+        }
       }
     }
   }

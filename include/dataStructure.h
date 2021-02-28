@@ -1,16 +1,15 @@
 typedef struct 
 {
-  int64_t lastInputChange = 0;
+  unsigned long lastInputChange = 0, logoDelay = 3000000, sleepDelay = 10000000;
   bool    saved = true, logo = true, asleep = false, btnDown[4] = {false};
   int     active = 0;
-  int64_t logoDelay = 3000000, sleepDelay = 10000000;
 }master;
 
 typedef struct
 {
   byte     keyLight[2];
   boolean  isDown, recentlyReleased, runOnce;
-  int64_t  lastReleased;
+  unsigned long  lastReleased;
 }keyState;
 
 typedef struct {
@@ -32,7 +31,7 @@ typedef struct
 
 typedef struct
 {
-  int64_t  t[4] = {0};
+  unsigned long  t[4] = {0};
 }timers;
 
 //Gamma correction lookup table.

@@ -81,7 +81,7 @@ void encoderProgram()
         if ((count[i].count != count[i].oldCount) || (button[i] != 1)) {
 
              // Reset Change Timer
-            sys.lastInputChange = esp_timer_get_time();
+            sys.lastInputChange = millis();
             sys.logo = false;
         }
     }

@@ -4,7 +4,7 @@ void colorFade(byte i)
   uint32_t bg =   prevBgColor[i];
   uint32_t key =   fadeStage[i];
 
-  uint16_t fdur = program[0].val[3] * 1000;
+  uint16_t fdur = program[0].val[3];
 
   // BG Colors
   uint8_t r1 = Red(bg);
@@ -46,29 +46,28 @@ void colorFade(byte i)
       //increment or decrement the pixel value
       if (r2 < r1) r2++; else if (r2 > r1) r2--;
       //and reset the pixel timer
-      pixelTimers[i].t[0] = esp_timer_get_time();
+      pixelTimers[i].t[0] = millis();
     }
     if (timeKeeper(pixelTimers[i].t[1]) >= rgbwSteps[i].t[1]) 
     {
       if (g2 < g1) g2++; else if (g2 > g1) g2--;
-      pixelTimers[i].t[1] = esp_timer_get_time();
+      pixelTimers[i].t[1] = millis();
     }
     if (timeKeeper(pixelTimers[i].t[2]) >= rgbwSteps[i].t[2]) 
     {
       if (b2 < b1) b2++; else if (b2 > b1) b2--;
-      pixelTimers[i].t[2] = esp_timer_get_time();
+      pixelTimers[i].t[2] = millis();
     }
 
     //  Convert back to RGBW
-    fadeStage[i] = whiteConvert(r2, g2, b2, w2);
+    fadeStage[i] = rgbwConvert(r2, g2, b2, w2);
 
     for (int j = 0; j < 2; j++) {
       strip.setPixelColor(keyBuffer[i].keyLight[j], fadeStage[i]);
     }
     strip.show();
-    
   }
-  
+
   //if all the values match
   if ((r2 == r1) && (g2 == g1) && (b2 == b1) && (w2 == w1)) 
   {
