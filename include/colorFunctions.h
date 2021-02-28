@@ -45,7 +45,7 @@ uint32_t colorProcessor(uint16_t hue, uint8_t sat, uint8_t val)
   return ((uint32_t)w << 24) | ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
 }
 
-
+//  As above, but only doing the RGBW convsersion
 uint32_t rgbwConvert(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
 
   int smallest = 0;

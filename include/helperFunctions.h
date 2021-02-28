@@ -1,8 +1,11 @@
+//  Returns the duration since a timer began.
 unsigned long timeKeeper(unsigned long timer) {
     return millis() - timer;
 }
 
-//  Checks for and corrects range overflow
+//  Checks for and corrects range overflow. For code simplicity, all encoders are 16bit,
+//  But we need different number ranges for different encoders, so we set and manage them
+//  manually here.
 void byteClamp(uint16_t count, int i) 
 {
     if ((i == 1) || (i == 2)) {
@@ -66,7 +69,6 @@ void programSwitcher(bool isLow, int index)
         if (index == 1) {
             if (sys.active != 2) { sys.active = 2;}
         }
-        programChanged = !programChanged;
     } 
 }
 
@@ -82,4 +84,47 @@ void displayRest()
         clearDisplay();
         sys.logo = false;
     }
+}
+
+// Updates color values and LEDs when there is an encoder change.
+// Kept in the input loop so it will only fire if there is a change.
+void updateValues() 
+{
+  uint32_t  color;
+
+  if (sys.active == 0) 
+  {
+    color = colorProcessor(program[0].val[0], program[0].val[1], program[0].val[2]);
+    
+    //  Set the new BG Color
+    for (int i = 0; i < 88; i++) 
+    {
+      prevBgColor[i] = color;
+    }
+    for (int i = 0; i < strip.numPixels(); i++) {
+      strip.setPixelColor(i, color);
+    }
+    strip.show();
+
+    // Set Key Program LED indicators
+    for (int i = 0; i < 2; i++) {
+      programstrip.setPixelColor(i, color);
+    }
+    programstrip.show();
+  }
+  if (sys.active == 1) 
+  {
+    color = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
+    //  Set the new Key Color
+    for (int i = 0; i < 88; i++) 
+    {
+      fadeStage[i] = prevKeyColor[i] = color;
+    }
+
+    // Set Key Program LED indicators
+    for (int i = 2; i < 4; i++) {
+      programstrip.setPixelColor(i, color);
+    }
+    programstrip.show();
+  }
 }

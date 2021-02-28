@@ -6,7 +6,6 @@ counts  count[4];
 
 // Program Data
 programs program[5];
-bool programChanged = false;
 
 // Primary key data
 keyState  keyBuffer[88];

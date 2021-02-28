@@ -16,8 +16,10 @@ void initializeEncoders()
     }
 }
 
+//  If there is a count change
 void countChangeActions(int i) 
 {   
+    //  Set a count multiplier based on which encoder.
     byte multiplier;
 
     if (i == 0) {
@@ -30,16 +32,21 @@ void countChangeActions(int i)
         multiplier = 50;
     }
 
+    //  Increment or decrement the program.val[], which are abstractions of the real encoder count.
     if (count[i].count > count[i].oldCount) {
         program[sys.active].val[i] = program[sys.active].val[i] + multiplier;
     }
     if (count[i].count < count[i].oldCount) {
         program[sys.active].val[i] = program[sys.active].val[i] - multiplier;
     }
+
+    //  Clamp the values to specific ranges.
     byteClamp(program[sys.active].val[i], i);
     
-    // Update the old count
+    //  Update the old count
     count[i].oldCount = count[i].count;
+
+    //  Update the OLED
     setMessage(program[sys.active].val[i], i);
 }
 
@@ -53,7 +60,7 @@ void encoderProgram()
         //  Watch the encoders
         count[i].count = count[i].encoder.getCount();
 
-        // Monitor the buttons
+        //  Monitor the buttons
         if (button[i] != 1) {
 
             //  if any of the buttons go low, switch the program
@@ -63,14 +70,14 @@ void encoderProgram()
             programAction();
         }
 
-        //  If the button is marked down, but it's up
+        //  If the button is marked down, but it's up, toggle it
         if ((sys.btnDown[i] == true) && (button[i] == 1)) {
             sys.btnDown[i] = !sys.btnDown[i];
         }
 
-        // Monitor the Encoders
+        //  If the encoder values change
         if (count[i].count != count[i].oldCount) {
-            //  If the encoder values change
+
             countChangeActions(i);
 
             //  Update Color Values
@@ -80,7 +87,7 @@ void encoderProgram()
         //  Monitoring any changes
         if ((count[i].count != count[i].oldCount) || (button[i] != 1)) {
 
-             // Reset Change Timer
+             // Reset Change Timer (sets OLED timeout)
             sys.lastInputChange = millis();
             sys.logo = false;
         }

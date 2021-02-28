@@ -7,6 +7,7 @@
 //  Flash Memory access
 #include <EEPROM.h>
 unsigned long tempTimer = 0;
+
 //  Libraries
 #include <usbhub.h>
 #include <usbh_midi.h>
@@ -89,7 +90,7 @@ void setup()
   }
 
   //  Initialize lighting task for core 0
-  xTaskCreatePinnedToCore(LEDThreadTask, "Light Control", 1000, NULL, 1, NULL, 0);
+  xTaskCreatePinnedToCore(LEDThreadTask, "The Big Fade", 1000, NULL, 1, NULL, 0);
 
   //  Initialize Display.
   showLogo();
@@ -130,7 +131,7 @@ void loop()
      event = 0;
     }
   }
- theBigFade();
-    // Rest
+
+  // Rest
   displayRest();
 }
