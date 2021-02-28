@@ -59,5 +59,5 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // EEPROM Addresses. 
 // Ordered active, P1: hsld (2, 2, 2, 2), p2: hsld  (2, 2, 2, 2) etc.
-uint8_t address[10] = {0, 2, 4, 6, 8, 10, 12, 14, 16};
+uint8_t address[10] = {0, 2, 4, 6, 8, 10, 12, 14};
 

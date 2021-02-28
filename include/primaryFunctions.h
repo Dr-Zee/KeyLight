@@ -7,14 +7,8 @@ void setDefaultData()
   // Set the OLED program messages in memory
   setMessages();
 
-  for (int i = 1; i < 88; i++) 
+  for (int i = 0; i < 88; i++) 
   {
-    
-    //the 88th key only has one LED... intentionally.
-    if(i == 88) 
-    {
-      keyBuffer[i].keyLight[0] = keyBuffer[i].keyLight[1] = 176;
-    }
     //set each key's LED light numbers
     keyBuffer[i].keyLight[0] = (i * 2) - 2;
     keyBuffer[i].keyLight[1] = keyBuffer[i].keyLight[0] + 1;
@@ -22,8 +16,8 @@ void setDefaultData()
     keyBuffer[i].isDown = keyBuffer[i].recentlyReleased = keyBuffer[i].runOnce = false;
 
     // set the previous colors from memory
-    prevKeyColor[i] = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
-    prevBgColor[i] = colorProcessor(program[0].val[0], program[0].val[1], program[0].val[2]);
+    prevKeyColor[i]  = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
+    prevBgColor[i]   = colorProcessor(program[0].val[0], program[0].val[1], program[0].val[2]);
   }
 }
 
@@ -31,9 +25,9 @@ void setDefaultData()
 void initializeKeyStrip() 
 {
   strip.begin();
-  for(int i=0; i < strip.numPixels(); i++) 
+  for(int i = 0; i < strip.numPixels(); i++) 
   {
-    strip.setPixelColor(i, prevBgColor[i]);
+    strip.setPixelColor(i, prevBgColor[1]);
   }
   strip.show();
 }
@@ -44,13 +38,14 @@ void initializeProgramStrip()
   // Initialize Program Strip
   programstrip.begin();
 
-  // Set BG indicators
-  programstrip.setPixelColor(0, prevBgColor[1]);
-  programstrip.setPixelColor(1, prevBgColor[1]);
-
-  // Set Key indicators
-  programstrip.setPixelColor(2, prevKeyColor[1]);
-  programstrip.setPixelColor(3, prevKeyColor[1]);
+  // Set BG and Key colors
+  for(int i = 0; i < 4; i++) {
+    if (i < 2) {
+      programstrip.setPixelColor(i, prevBgColor[1]);
+    } else {
+      programstrip.setPixelColor(i, prevKeyColor[1]);
+    }
+  }
   programstrip.show();
 }
 
@@ -64,8 +59,8 @@ void setEventProperties(byte key, byte event)
   }
   if (event == 8) 
   {
-    keyBuffer[key].runOnce = keyBuffer[key].recentlyReleased = true;
     keyBuffer[key].isDown = false;
+    keyBuffer[key].recentlyReleased = keyBuffer[key].runOnce = true;
     keyBuffer[key].lastReleased = esp_timer_get_time();
   }
 }
@@ -95,60 +90,69 @@ void MIDI_poll()
   }
 }
 
-// Update colors
-void updateColors(uint16_t hue, uint16_t saturation, uint16_t luminance) 
+// Color values and LED colors.
+// Kept in the input loop so it will only fire if there is a change.
+void updateValues() 
 {
+  uint32_t  color = colorProcessor(program[sys.active].val[0], program[sys.active].val[1], program[sys.active].val[2]);
   if (sys.active == 0) 
   {
-    for (int i = 1; i < strip.numPixels(); i++) 
+     // Set Key Program LED indicators
+    for (int i = 0; i < 2; i++) {
+      programstrip.setPixelColor(i, colorProcessor(program[sys.active].val[0], program[sys.active].val[1], program[sys.active].val[2]));
+    }
+    programstrip.show();
+
+    //  Set the new BG Color
+    for (int i = 0; i < strip.numPixels(); i++) 
     {
-      prevBgColor[i] = colorProcessor(hue, saturation, luminance);
-      strip.setPixelColor(i, colorProcessor(hue, saturation, luminance));
+      prevBgColor[i] = color;
+      strip.setPixelColor(i, color);
     }
     strip.show();
-
-    // Set Background Program LEDs indicators
-    programstrip.setPixelColor(0, prevBgColor[1]);
-    programstrip.setPixelColor(1, prevBgColor[1]);
-    programstrip.show();
   }
   if (sys.active == 1) 
   {
-    for (int i = 1; i < strip.numPixels(); i++) 
-    {
-      prevKeyColor[i] = colorProcessor(hue, saturation, luminance);
-    }
     // Set Key Program LED indicators
-    programstrip.setPixelColor(2, prevKeyColor[1]);
-    programstrip.setPixelColor(3, prevKeyColor[1]);
+    for (int i = 2; i < 4; i++) {
+      programstrip.setPixelColor(i, colorProcessor(program[sys.active].val[0], program[sys.active].val[1], program[sys.active].val[2]));
+    }
     programstrip.show();
+
+    //  Set the new Key Color
+    for (int i = 0; i < strip.numPixels(); i++) 
+    {
+      prevKeyColor[i] = color;
+    }
   }
 }
 
 // Push a color to the keys only once.
-void keyStrikes(byte key) 
+void keyStrikes(int key) 
 {
+
   if((keyBuffer[key].isDown == true) & (keyBuffer[key].runOnce == false)) 
   {
     for(int i = 0; i < 2; i++) 
     {
-      strip.setPixelColor(keyBuffer[key].keyLight[i], prevKeyColor[1]);
+      strip.setPixelColor(keyBuffer[key].keyLight[i], prevKeyColor[key]);
     }
     strip.show();
-
-    // Do Housekeeping.
-    keyOnHousekeeping(key);
   }
+  keyOnHousekeeping(key);
 }
 
 // Fade out loop for non-blocking transitions out.
 void theBigFade() 
 {
-  for (int i = 1; i < 88; i++) 
+  for (int i = 0; i < 88; i++) 
   {
     if(keyBuffer[i].recentlyReleased == true) 
     {
-      
+      for (int j = 0; j < 2; j++) {
+        strip.setPixelColor(keyBuffer[i].keyLight[j], prevBgColor[i]);
+      }
+      strip.show();
       // Time since keyUp
       if(timeKeeper(keyBuffer[i].lastReleased) >= program[1].val[3] * 1000) 
       {

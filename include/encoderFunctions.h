@@ -24,7 +24,7 @@ void countChangeActions(int i)
         multiplier = 100;
     }
     if ((i == 1) || (i == 2)) {
-        multiplier = 1;
+        multiplier = 2;
     }
     if (i == 3) {
         multiplier = 50;
@@ -45,14 +45,14 @@ void countChangeActions(int i)
 
 void encoderProgram() 
 {
-    //  Watch the encoders
-    for (int i = 0; i < 4; i++) {
-        count[i].count = count[i].encoder.getCount();
-    }
 
     bool button[4] = {digitalRead(e_button1), digitalRead(e_button2), digitalRead(e_button3), digitalRead(e_button4)};
 
     for (int i = 0; i < 4; i++) {
+
+        //  Watch the encoders
+        count[i].count = count[i].encoder.getCount();
+
         // Monitor the buttons
         if (button[i] != 1) {
 
@@ -62,16 +62,22 @@ void encoderProgram()
             //  Do a program thing
             programAction();
         }
+
+        //  If the button is marked down, but it's up
         if ((sys.btnDown[i] == true) && (button[i] == 1)) {
             sys.btnDown[i] = !sys.btnDown[i];
         }
+
         // Monitor the Encoders
         if (count[i].count != count[i].oldCount) {
-
-            // If the encoder values change
+            //  If the encoder values change
             countChangeActions(i);
+
+            //  Update Color Values
+            updateValues();
         }
-        // Monitoring any changes
+
+        //  Monitoring any changes
         if ((count[i].count != count[i].oldCount) || (button[i] != 1)) {
 
              // Reset Change Timer

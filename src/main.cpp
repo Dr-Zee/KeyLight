@@ -1,9 +1,13 @@
+//  Arduino Compatibility in PlatformIO
 #include <Arduino.h>
+//  SSD1306 OLED I2C
 #include <Wire.h>
+//  USB Host shield 2.0 SPI
 #include <SPI.h>
+//  Flash Memory access
 #include <EEPROM.h>
 
-// Libraries
+//  Libraries
 #include <usbhub.h>
 #include <usbh_midi.h>
 #include <ESP32Encoder.h>
@@ -25,6 +29,17 @@
 #include <primaryFunctions.h>
 #include <encoderFunctions.h>
 
+//  Fade Manager - Runs on Core 0
+void LEDThreadTask( void* ){
+  //  Create an infinite loop
+  for(;;) {
+    //  Do the big fade.
+    theBigFade();
+    vTaskDelay(10);
+  }
+}
+
+//  Initialize
 void setup() 
 {
   Serial.begin(115200);
@@ -37,8 +52,7 @@ void setup()
     ESP.restart();
   }
 
-  // Inputs
-  // Booleans
+  //  Inputs
   pinMode(e_button1, INPUT);
   pinMode(e_button2, INPUT);
   pinMode(e_button3, INPUT);
@@ -53,39 +67,39 @@ void setup()
   pinMode(36, INPUT);
   pinMode(39, INPUT);
 
-  // Outputs
+  //  Outputs
   pinMode(LED_PIN, OUTPUT);
   pinMode(PROGRAM_LED_PIN, OUTPUT);
 
   bFirst = true;
   vid = pid = 0;
 
-  // Set default Data.
+  //  Set default Data.
   setDefaultData();
 
-  // Initialize Encoder.
+  //  Initialize Encoders.
   initializeEncoders();
 
-  // Make sure the display is working.
+  //  Make sure the display is working.
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println(F("SSD1306 allocation failed"));
     for(;;);
   }
 
   //  Initialize lighting task for core 0
-  xTaskCreatePinnedToCore(LEDThreadTasks, "Light Control", 1000, NULL, 1, NULL, 0);
+  xTaskCreatePinnedToCore(LEDThreadTask, "Light Control", 1000, NULL, 1, NULL, 0);
 
-  // Initialize Display.
+  //  Initialize Display.
   showLogo();
 
-  // Initialize USB
+  //  Initialize USB
   if (Usb.Init() == -1) 
   {
     while (1); //halt
   }
   delay(200);
   
-  // Initialize lights
+  //  Initialize lights
   initializeProgramStrip();
   initializeKeyStrip();
 }
@@ -105,6 +119,9 @@ void loop()
     // Listen for Midi.
     MIDI_poll();
 
+     //  Light the keys.
+    keyStrikes(key);
+    
     // Debounce the event.
     if(event != 0) 
     {
@@ -113,22 +130,4 @@ void loop()
   }
     // Rest
   displayRest();
-}
-
-//  LED/Fade Manager - Runs on Core 0
-//  Updates LEDs
-void LEDThreadTasks( void* ){
-
-  //  Create an infinite loop
-  for(;;) {
-
-    // Light the keys.
-    keyStrikes(key);
-
-    // Update Strips
-    updateColors(program[sys.active].val[0], program[sys.active].val[1], program[sys.active].val[2]);
-
-    // Do the big fade.
-    theBigFade();
-  }
 }

@@ -2,6 +2,7 @@ int64_t timeKeeper(int64_t timer) {
     return esp_timer_get_time() - timer;
 }
 
+//  Checks for and corrects range overflow
 void byteClamp(uint16_t count, int i) 
 {
     if ((i == 1) || (i == 2)) {
@@ -34,13 +35,15 @@ void byteClamp(uint16_t count, int i)
 }
 
 void programAction() {
-    //  If the program is Save, run the save command then switch back to the default program.
+    //  BG Program
     if (sys.active == 0)  {
         setSplash();
     }
+    //  Key Program
     if (sys.active == 1)  {
         setSplash();
     }
+    //  Save Program
     if (sys.active == 2) {
         setMemory();
         //  Show the Saved splash
