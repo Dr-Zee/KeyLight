@@ -87,7 +87,7 @@ void encoderProgram()
         //  Monitoring any changes
         if ((count[i].count != count[i].oldCount) || (button[i] != 1)) {
 
-             // Reset Change Timer (sets OLED timeout)
+            // Reset Change Timer (sets OLED timeout)
             sys.lastInputChange = millis();
             sys.logo = false;
         }

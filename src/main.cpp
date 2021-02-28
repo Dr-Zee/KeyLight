@@ -25,9 +25,8 @@ unsigned long tempTimer = 0;
 #include <eepromFunctions.h>
 #include <OLEDFunctions.h>
 #include <helperFunctions.h>
-#include <housekeepingFunctions.h>
 #include <stepFadeFunctions.h>
-#include <primaryFunctions.h>
+#include <systemFunctions.h>
 #include <encoderFunctions.h>
 
 
@@ -37,7 +36,9 @@ void LEDThreadTask( void* ){
   for(;;) {
 
     //  Do the big fade.
-   
+    theBigFade();
+
+    //  Delay keeps watchdog from calling the task idle and rebooting.
     vTaskDelay(10);
   }
 }

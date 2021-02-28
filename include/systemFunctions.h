@@ -23,7 +23,7 @@ void setDefaultData()
   }
 }
 
-// Initialize light strip.
+// Initialize Key strip.
 void initializeKeyStrip() 
 {
   strip.begin();
@@ -34,10 +34,9 @@ void initializeKeyStrip()
   strip.show();
 }
 
+// Initialize Program Strip
 void initializeProgramStrip() 
 {
-
-  // Initialize Program Strip
   programstrip.begin();
 
   // Set BG and Key colors
@@ -92,7 +91,7 @@ void MIDI_poll()
   }
 }
 
-// Push a color to the keys only once.
+// On keydown, Push a color to the keys only once.
 void keyStrikes(int key) 
 {
   if((keyBuffer[key].isDown == true) && (keyBuffer[key].runOnce == false)) 
