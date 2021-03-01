@@ -13,25 +13,23 @@ void colorFade(byte i)
   c[1].b[1] = Green(fadeStage[i]);
   c[1].b[2] = Blue(fadeStage[i]);
   c[1].b[3] = White(fadeStage[i]);
-
-  //  De-RGBW-ify the values
-  c[0].b[0] = c[0].b[0] + c[0].b[3];
-  c[0].b[1] = c[0].b[1] + c[0].b[3];
-  c[0].b[2] = c[0].b[2] + c[0].b[3];
-
-  c[1].b[0] = c[1].b[0] + c[1].b[3];
-  c[1].b[1] = c[1].b[1] + c[1].b[3];
-  c[1].b[2] = c[1].b[2] + c[1].b[3];
+  
+  for(int j = 0; j < 3; j++) {
+     //  De-RGBW-ify the values
+     c[0].b[j] = c[0].b[j] + c[0].b[3];
+     c[1].b[j] = c[1].b[j] + c[1].b[3];
+  }
 
   //  Check for overflow
-  if (c[0].b[0] > 255) { c[0].b[0] = 255; } if (c[0].b[1] > 255) { c[0].b[1] = 255; } if (c[0].b[2] > 255) { c[0].b[2] = 255; }
-  if (c[1].b[0] > 255) { c[1].b[0] = 255; } if (c[1].b[1] > 255) { c[1].b[1] = 255; } if (c[1].b[2] > 255) { c[1].b[2] = 255; }
+  for(int k = 0; k < 2; k++) {
+    if (c[ik].b[0] > 255) { c[k].b[0] = 255; } if (c[k].b[1] > 255) { c[k].b[1] = 255; } if (c[k].b[2] > 255) { c[k].b[2] = 255; }
+  }
 
   //Get the number of steps needed for each pixel transition then divide the fade duration to get step duration.
   if ((rgbwSteps[i].t[0] == 0) && (rgbwSteps[i].t[1] == 0) && (rgbwSteps[i].t[2] == 0)) {
-    if (c[0].b[0] > c[1].b[0]) rgbwSteps[i].t[0] = fdur / (c[0].b[0] - c[1].b[0]); else rgbwSteps[i].t[0] = fdur / (c[1].b[0] - c[0].b[0]);
-    if (c[0].b[1] > c[1].b[1]) rgbwSteps[i].t[1] = fdur / (c[0].b[1] - c[1].b[1]); else rgbwSteps[i].t[1] = fdur / (c[1].b[1] - c[0].b[1]);
-    if (c[0].b[2] > c[1].b[2]) rgbwSteps[i].t[2] = fdur / (c[0].b[2] - c[1].b[2]); else rgbwSteps[i].t[2] = fdur / (c[1].b[2] - c[0].b[2]);
+    for(int l = 0; l < 3; l++) {
+      if (c[0].b[l] > c[1].b[l]) rgbwSteps[l].t[0] = fdur / (c[0].b[l] - c[1].b[l]); else rgbwSteps[l].t[l] = fdur / (c[1].b[l] - c[0].b[l]);
+    }
   }
 
 
@@ -48,7 +46,7 @@ void colorFade(byte i)
         if (rf > 0) {
           //  if the value is low, increment.
           if (c[1].b[j] < c[0].b[j]) {
-            //  Make shore not to overshoot the target.
+            //  Make sure not to overshoot the target.
             if (c[1].b[j] + rf > c[0].b[j]) {
               c[1].b[j] = c[0].b[j];
             } else {
