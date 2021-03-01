@@ -10,6 +10,8 @@ programs program[5];
 // Primary key data
 keyState  keyBuffer[88];
 
+rgbArray    c[2];
+
 // Stored color values
 uint32_t prevKeyColor[88];
 uint32_t prevBgColor[88];

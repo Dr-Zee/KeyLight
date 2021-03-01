@@ -1,139 +1,87 @@
 void colorFade(byte i) 
 {
-
-
-  uint32_t bg = prevBgColor[i];
-  uint32_t key = fadeStage[i];
-
   uint16_t fdur = program[0].val[3];
 
   //  The reference color we're transitioning to.
-  uint8_t r1 = Red(bg);
-  uint8_t g1 = Green(bg);
-  uint8_t b1 = Blue(bg);
-  uint8_t w1 = White(bg);
+  c[0].b[0] = Red(prevBgColor[i]);
+  c[0].b[1] = Green(prevBgColor[i]);
+  c[0].b[2] = Blue(prevBgColor[i]);
+  c[0].b[3] = White(prevBgColor[i]);
 
   //  The color of the current fade step
-  uint8_t r2 = Red(key);
-  uint8_t g2 = Green(key);
-  uint8_t b2 = Blue(key);
-  uint8_t w2 = White(key);
-
+  c[1].b[0] = Red(fadeStage[i]);
+  c[1].b[1] = Green(fadeStage[i]);
+  c[1].b[2] = Blue(fadeStage[i]);
+  c[1].b[3] = White(fadeStage[i]);
 
   //  De-RGBW-ify the values
-  r1 = r1 + w1;
-  g1 = g1 + w1;
-  b1 = b1 + w1;
+  c[0].b[0] = c[0].b[0] + c[0].b[3];
+  c[0].b[1] = c[0].b[1] + c[0].b[3];
+  c[0].b[2] = c[0].b[2] + c[0].b[3];
 
-  r2 = r2 + w2;
-  g2 = g2 + w2;
-  b2 = b2 + w2;
+  c[1].b[0] = c[1].b[0] + c[1].b[3];
+  c[1].b[1] = c[1].b[1] + c[1].b[3];
+  c[1].b[2] = c[1].b[2] + c[1].b[3];
 
   //  Check for overflow
-  if (r1 > 255) { r1 = 255; } if (g1 > 255) { g1 = 255; } if (b1 > 255) { b1 = 255; }
-  if (r2 > 255) { r2 = 255; } if (g2 > 255) { g2 = 255; } if (b2 > 255) { b2 = 255; }
+  if (c[0].b[0] > 255) { c[0].b[0] = 255; } if (c[0].b[1] > 255) { c[0].b[1] = 255; } if (c[0].b[2] > 255) { c[0].b[2] = 255; }
+  if (c[1].b[0] > 255) { c[1].b[0] = 255; } if (c[1].b[1] > 255) { c[1].b[1] = 255; } if (c[1].b[2] > 255) { c[1].b[2] = 255; }
 
   //Get the number of steps needed for each pixel transition then divide the fade duration to get step duration.
   if ((rgbwSteps[i].t[0] == 0) && (rgbwSteps[i].t[1] == 0) && (rgbwSteps[i].t[2] == 0)) {
-    if (r1 > r2) rgbwSteps[i].t[0] = fdur / (r1 - r2); else rgbwSteps[i].t[0] = fdur / (r2 - r1);
-    if (g1 > g2) rgbwSteps[i].t[1] = fdur / (g1 - g2); else rgbwSteps[i].t[1] = fdur / (g2 - g1);
-    if (b1 > b2) rgbwSteps[i].t[2] = fdur / (b1 - b2); else rgbwSteps[i].t[2] = fdur / (b2 - b1);
+    if (c[0].b[0] > c[1].b[0]) rgbwSteps[i].t[0] = fdur / (c[0].b[0] - c[1].b[0]); else rgbwSteps[i].t[0] = fdur / (c[1].b[0] - c[0].b[0]);
+    if (c[0].b[1] > c[1].b[1]) rgbwSteps[i].t[1] = fdur / (c[0].b[1] - c[1].b[1]); else rgbwSteps[i].t[1] = fdur / (c[1].b[1] - c[0].b[1]);
+    if (c[0].b[2] > c[1].b[2]) rgbwSteps[i].t[2] = fdur / (c[0].b[2] - c[1].b[2]); else rgbwSteps[i].t[2] = fdur / (c[1].b[2] - c[0].b[2]);
   }
 
-  //if the old and new values are different  
-  if((r2 != r1) || (g2 != g1) || (b2 != b1)) 
-  {
-    
-    //if the elapsed time is greater than the step duration
-    if (timeKeeper(pixelTimers[i].t[0]) >= rgbwSteps[i].t[0]) 
-    {
-      // Get the number of fade steps that were missed due to slowdown.
-      int rf = round(((timeKeeper(pixelTimers[i].t[0]) - rgbwSteps[i].t[0]) / rgbwSteps[i].t[0]));
 
-      if (rf > 0) {
-        if (r2 < r1) {
-          if (r2 + rf > r1) {
-            r2 = r1;
-          } else {
-            r2 = (r2 + rf);
-          }
-        } else if (r2 > r1)  {
-          if (r2 - rf < r1) {
-            r2 = r1;
-          } else {
-            r2 = (r2 - rf);
-          }
-        }
-      } else {
-        if (r2 < r1) r2++; else if (r2 > r1) r2--;
-      }
-      //and reset the pixel timer
-      pixelTimers[i].t[0] = millis();
-    }
-    if (timeKeeper(pixelTimers[i].t[1]) >= rgbwSteps[i].t[1]) 
-    {
-      // Get the number of fade steps that were missed due to slowdown.
-      int gf = round(((timeKeeper(pixelTimers[i].t[1]) - rgbwSteps[i].t[1]) / rgbwSteps[i].t[1]));
-    
-      if (gf > 0) {
-        if (g2 < g1) {
-          if (g2 + gf > g1) {
-            g2 = g1;
-          } else {
-            g2 = (g2 + gf);
-          }
-        } else if (g2 > g1)  {
-          if (g2 - gf < g1) {
-            g2 = g1;
-          } else {
-            g2 = (g2 - gf);
-          }
-        }
-      } else {
-        if (g2 < g1) g2++; else if (g2 > g1) g2--;
-      }
-      pixelTimers[i].t[1] = millis();
-    }
-    if (timeKeeper(pixelTimers[i].t[2]) >= rgbwSteps[i].t[2]) 
-    {
-      // Get the number of fade steps that were missed due to slowdown.
-      int bf = round(((timeKeeper(pixelTimers[i].t[2]) - rgbwSteps[i].t[2]) / rgbwSteps[i].t[2]));
-      
-      if (bf > 0) {
-        if (b2 < b1) {
-          if (b2 + bf > b1) {
-            b2 = b1;
-          } else {
-            b2 = (b2 + bf);
-          }
-        } else if (b2 > b1)  {
-          if (b2 - bf < b1) {
-            b2 = b1;
-          } else {
-            b2 = (b2 - bf);
-          }
-        }
-      } else {
-        if (b2 < b1) b2++; else if (b2 > b1) b2--;
-      }
-      pixelTimers[i].t[2] = millis();
-    }
+  for (int j = 0; j < 3; j++) {
 
-    //  Convert back to RGBW
-    fadeStage[i] = rgbwConvert(r2, g2, b2, w2);
+    if(c[1].b[j] != c[0].b[j]) {
 
-    for (int j = 0; j < 2; j++) {
-      strip.setPixelColor(keyBuffer[i].keyLight[j], fadeStage[i]);
+      if (timeKeeper(pixelTimers[i].t[j]) >= rgbwSteps[i].t[j]) 
+      {
+        // Get the number of fade steps that may have been missed due to CPU slowdown
+        int rf = round(((timeKeeper(pixelTimers[i].t[j]) - rgbwSteps[i].t[j]) / rgbwSteps[i].t[j]));
+
+        //  If the step duration was missed, get the overflow and skip that many steps to get back up to speed.
+        if (rf > 0) {
+          //  if the value is low, increment.
+          if (c[1].b[j] < c[0].b[j]) {
+            //  Make shore not to overshoot the target.
+            if (c[1].b[j] + rf > c[0].b[j]) {
+              c[1].b[j] = c[0].b[j];
+            } else {
+              c[1].b[j] = (c[1].b[j] + rf);
+            }
+            //  if the value is high, decrement
+          } else if (c[1].b[j] > c[0].b[j])  {
+            if (c[1].b[j] - rf < c[0].b[j]) {
+              c[1].b[j] = c[0].b[j];
+            } else {
+              c[1].b[j] = (c[1].b[j] - rf);
+            }
+          }
+          // Increment normally
+        } else {
+          if (c[1].b[j] < c[0].b[j]) c[1].b[j]++; else if (c[1].b[j] > c[0].b[j]) c[1].b[j]--;
+        }
+        //and reset the pixel timer
+        pixelTimers[i].t[j] = millis();
+      }
     }
-    strip.show();
   }
+  //  Convert back to RGBW
+  fadeStage[i] = rgbwConvert(c[1].b[0], c[1].b[1], c[1].b[2], c[1].b[3]);
 
+  for (int j = 0; j < 2; j++) {
+    strip.setPixelColor(keyBuffer[i].keyLight[j], fadeStage[i]);
+  }
+  strip.show();
+  
   //if all the values match
-  if ((r2 == r1) && (g2 == g1) && (b2 == b1) && (w2 == w1)) 
+  if ((c[1].b[0] == c[0].b[0]) && (c[1].b[1] == c[0].b[1]) && (c[1].b[2] == c[0].b[2]) && (c[1].b[3] == c[0].b[3])) 
   {
-    Serial.print("Fade complete");
-    Serial.println("");
-    Serial.println("");
     keyOffHousekeeping(i);
   }
 }

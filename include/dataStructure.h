@@ -34,6 +34,11 @@ typedef struct
   unsigned long  t[4] = {0};
 }timers;
 
+typedef struct
+{
+  byte b[4] = {0};
+}rgbArray;
+
 //Gamma correction lookup table.
 const uint8_t PROGMEM gamma8[] = 
 {
