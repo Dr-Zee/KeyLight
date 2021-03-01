@@ -51,7 +51,7 @@ void setSplash()
   display.setTextSize(2);
   display.println(program[sys.active].splash);
   display.display();
-  delay(2000);
+  delay(1000);
 }
 
 void clearDisplay() 
