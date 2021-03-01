@@ -1,43 +1,23 @@
 void colorFade(byte i) 
 {
 
+
   uint32_t bg = prevBgColor[i];
   uint32_t key = fadeStage[i];
 
   uint16_t fdur = program[0].val[3];
 
-  // BG Colors
+  //  The reference color we're transitioning to.
   uint8_t r1 = Red(bg);
   uint8_t g1 = Green(bg);
   uint8_t b1 = Blue(bg);
   uint8_t w1 = White(bg);
 
+  //  The color of the current fade step
   uint8_t r2 = Red(key);
   uint8_t g2 = Green(key);
   uint8_t b2 = Blue(key);
   uint8_t w2 = White(key);
-
-  Serial.print("f dur: ");
-  Serial.print(fdur);
-  Serial.println("");
-  // Serial.print("r1: ");
-  // Serial.print(r1);
-  //  Serial.print(", g1: ");
-  // Serial.print(g1);
-  //  Serial.print(", b1: ");
-  // Serial.print(b1);
-  //  Serial.print(", w1: ");
-  // Serial.print(w1);
-  // Serial.println("");
-  //   Serial.print("r2: ");
-  // Serial.print(r2);
-  //  Serial.print(", g2: ");
-  // Serial.print(g2);
-  //  Serial.print(", b2: ");
-  // Serial.print(b2);
-  //  Serial.print(", w2: ");
-  // Serial.print(w2);
-  // Serial.println("");
 
 
   //  De-RGBW-ify the values
@@ -60,17 +40,6 @@ void colorFade(byte i)
     if (b1 > b2) rgbwSteps[i].t[2] = fdur / (b1 - b2); else rgbwSteps[i].t[2] = fdur / (b2 - b1);
   }
 
-
-  Serial.print("R step duration: ");
-  Serial.print(rgbwSteps[i].t[0]);
-  Serial.println("");
-  Serial.print("G step duration: ");
-  Serial.print(rgbwSteps[i].t[1]);
-  Serial.println("");
-  Serial.print("B step duration: ");
-  Serial.print(rgbwSteps[i].t[2]);
-  Serial.println("");
-
   //if the old and new values are different  
   if((r2 != r1) || (g2 != g1) || (b2 != b1)) 
   {
@@ -78,24 +47,75 @@ void colorFade(byte i)
     //if the elapsed time is greater than the step duration
     if (timeKeeper(pixelTimers[i].t[0]) >= rgbwSteps[i].t[0]) 
     {
-      Serial.print("time since last loop: ");
-      Serial.print(timeKeeper(pixelTimers[i].t[0]));
-      Serial.print(", rgbw step 15ms: ");
-      Serial.print(rgbwSteps[i].t[0]);
-      Serial.println("");
-      //increment or decrement the pixel value
-      if (r2 < r1) r2++; else if (r2 > r1) r2--;
+      // Get the number of fade steps that were missed due to slowdown.
+      int rf = round(((timeKeeper(pixelTimers[i].t[0]) - rgbwSteps[i].t[0]) / rgbwSteps[i].t[0]));
+
+      if (rf > 0) {
+        if (r2 < r1) {
+          if (r2 + rf > r1) {
+            r2 = r1;
+          } else {
+            r2 = (r2 + rf);
+          }
+        } else if (r2 > r1)  {
+          if (r2 - rf < r1) {
+            r2 = r1;
+          } else {
+            r2 = (r2 - rf);
+          }
+        }
+      } else {
+        if (r2 < r1) r2++; else if (r2 > r1) r2--;
+      }
       //and reset the pixel timer
       pixelTimers[i].t[0] = millis();
     }
     if (timeKeeper(pixelTimers[i].t[1]) >= rgbwSteps[i].t[1]) 
     {
-      if (g2 < g1) g2++; else if (g2 > g1) g2--;
+      // Get the number of fade steps that were missed due to slowdown.
+      int gf = round(((timeKeeper(pixelTimers[i].t[1]) - rgbwSteps[i].t[1]) / rgbwSteps[i].t[1]));
+    
+      if (gf > 0) {
+        if (g2 < g1) {
+          if (g2 + gf > g1) {
+            g2 = g1;
+          } else {
+            g2 = (g2 + gf);
+          }
+        } else if (g2 > g1)  {
+          if (g2 - gf < g1) {
+            g2 = g1;
+          } else {
+            g2 = (g2 - gf);
+          }
+        }
+      } else {
+        if (g2 < g1) g2++; else if (g2 > g1) g2--;
+      }
       pixelTimers[i].t[1] = millis();
     }
     if (timeKeeper(pixelTimers[i].t[2]) >= rgbwSteps[i].t[2]) 
     {
-      if (b2 < b1) b2++; else if (b2 > b1) b2--;
+      // Get the number of fade steps that were missed due to slowdown.
+      int bf = round(((timeKeeper(pixelTimers[i].t[2]) - rgbwSteps[i].t[2]) / rgbwSteps[i].t[2]));
+      
+      if (bf > 0) {
+        if (b2 < b1) {
+          if (b2 + bf > b1) {
+            b2 = b1;
+          } else {
+            b2 = (b2 + bf);
+          }
+        } else if (b2 > b1)  {
+          if (b2 - bf < b1) {
+            b2 = b1;
+          } else {
+            b2 = (b2 - bf);
+          }
+        }
+      } else {
+        if (b2 < b1) b2++; else if (b2 > b1) b2--;
+      }
       pixelTimers[i].t[2] = millis();
     }
 

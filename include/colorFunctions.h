@@ -16,7 +16,7 @@ uint8_t Blue(uint32_t color)
   return color & 0xFF;
 }
 
-uint32_t colorProcessor(uint16_t hue, uint8_t sat, uint8_t val) 
+uint32_t colorProcessor(uint16_t hue, uint16_t sat, uint16_t val) 
 {
 
   // Get the Gamma corrected, RGB converted, 32bit packed color value from the encoder values

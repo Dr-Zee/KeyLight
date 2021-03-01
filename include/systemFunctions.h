@@ -63,6 +63,9 @@ void setEventProperties(byte key, byte event)
     keyBuffer[key].isDown = false;
     keyBuffer[key].recentlyReleased = keyBuffer[key].runOnce = true;
     keyBuffer[key].lastReleased = millis();
+    for (int i = 0; i < 4; i++) {
+      pixelTimers[key].t[i] = millis() + program[1].val[3];
+    }
   }
 }
 
@@ -115,10 +118,11 @@ void theBigFade()
       // Time since keyUp
       if(timeKeeper(keyBuffer[i].lastReleased) >= program[1].val[3]) 
       {
-        if (program[0].val[3] < 200) {
+        if (program[0].val[3] < 100) {
           for (int j = 0; j < 2; j++) {
-            strip.setPixelColor(keyBuffer[i].keyLight[j], fadeStage[i]);
+            strip.setPixelColor(keyBuffer[i].keyLight[j], prevBgColor[i]);
           }
+          keyOffHousekeeping(i);
           strip.show();
         } else {
           colorFade(i);
