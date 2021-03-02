@@ -10,7 +10,7 @@ programs program[5];
 // Primary key data
 keyState  keyBuffer[88];
 
-rgbArray    c[2];
+rgbArray  c[2];
 
 // Stored color values
 uint32_t prevKeyColor[88];
@@ -64,3 +64,4 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 uint8_t address[17] = {0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32};
 
 bool colorskips = 0;
+uint32_t bgs, ks = 0;

@@ -18,8 +18,10 @@ void setDefaultData()
     keyBuffer[i].isDown = keyBuffer[i].recentlyReleased = keyBuffer[i].runOnce = false;
 
     // set the previous colors from memory
-    fadeStage[i] = prevKeyColor[i]  = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
     prevBgColor[i]   = colorProcessor(program[0].val[0], program[0].val[1], program[0].val[2]);
+    fadeStage[i] = prevKeyColor[i]  = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
+    ks  = colorProcessor(program[3].val[0], program[3].val[1], program[3].val[2]);
+    bgs = colorProcessor(program[4].val[0], program[4].val[1], program[4].val[2]);
   }
 }
 
@@ -39,12 +41,20 @@ void initializeProgramStrip()
 {
   programstrip.begin();
 
-  // Set BG and Key colors
-  for(int i = 0; i < 4; i++) {
-    if (i < 2) {
-      programstrip.setPixelColor(i, prevBgColor[1]);
-    } else {
-      programstrip.setPixelColor(i, prevKeyColor[1]);
+  //  Set all indicators
+  if (colorskips == true) {
+    programstrip.setPixelColor(1, prevBgColor[1]);
+    programstrip.setPixelColor(2, prevKeyColor[1]);
+    programstrip.setPixelColor(3, bgs);
+    programstrip.setPixelColor(0, ks);
+  } else {
+    // Set BG and Key colors
+    for(int i = 0; i < 4; i++) {
+      if (i < 2) {
+        programstrip.setPixelColor(i, prevBgColor[1]);
+      } else {
+        programstrip.setPixelColor(i, prevKeyColor[1]);
+      }
     }
   }
   programstrip.show();
