@@ -2,7 +2,8 @@ void setMessages() {
   program[0].splash = "Background";
   program[1].splash = "Keys";
   program[2].splash = "Saved";
-  //program[3].splash = "Key Skips";
+  program[3].splash = "Key Skips";
+  program[3].splash = "Background Skips";
 
   program[0].message[0] = "Background Hue";
   program[0].message[1] = "Background Saturation";
@@ -13,6 +14,16 @@ void setMessages() {
   program[1].message[1] = "Key Saturation";
   program[1].message[2] = "Key Luminance";
   program[1].message[3] = "Fade Delay";
+
+  program[2].message[0] = "Background Skips Hue";
+  program[2].message[1] = "Background skips Saturation";
+  program[2].message[2] = "Background Skips Luminance";
+  program[2].message[3] = "Background Skips";
+
+  program[3].message[0] = "Key Skip Hue";
+  program[3].message[1] = "Key Skip Saturation";
+  program[3].message[2] = "Key Skip Luminance";
+  program[3].message[3] = "Key Skips";
 }
 
 void showLogo() 
