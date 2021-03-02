@@ -59,6 +59,6 @@ uint32_t rgbwConvert(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
 
   if(r < 0) {r = 0;} if (g < 0) {g = 0;} if (b < 0) {b = 0;} if (w < 0) {w = 0;}
 
-    // Pack and return the result.
-    return ((uint32_t)w << 24) | ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
+  // Pack and return the result.
+  return ((uint32_t)w << 24) | ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
 }

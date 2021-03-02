@@ -101,7 +101,7 @@ void updateValues()
   if (sys.active == 0) 
   {
     color = colorProcessor(program[0].val[0], program[0].val[1], program[0].val[2]);
-    
+
     //  Set the new BG Color
     for (int i = 0; i < 88; i++) 
     {

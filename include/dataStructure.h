@@ -36,7 +36,7 @@ typedef struct
 
 typedef struct
 {
-  float_t b[4] = {0};
+  float b[4] = {0};
 }rgbArray;
 
 //Gamma correction lookup table.
