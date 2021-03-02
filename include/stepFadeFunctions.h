@@ -84,7 +84,7 @@ void colorFade(byte i)
       }
     }
   }
-  
+
   //  Convert back to RGBW
   fadeStage[i] = rgbwConvert(c[1].b[0], c[1].b[1], c[1].b[2], c[1].b[3]);
 
