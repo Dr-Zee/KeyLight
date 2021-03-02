@@ -13,7 +13,7 @@ void byteClamp(uint16_t count, int i)
         if ((count > 255) && (count < 2000)) {
             program[sys.active].val[i] = 0;
         }
-        else if ((count > 2000)) {
+        else if (count > 2000) {
             program[sys.active].val[i] = 255;
         }
     }
