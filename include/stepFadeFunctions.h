@@ -22,7 +22,7 @@ void colorFade(byte i)
 
   //  Check for overflow
   for(int k = 0; k < 2; k++) {
-    if (c[ik].b[0] > 255) { c[k].b[0] = 255; } if (c[k].b[1] > 255) { c[k].b[1] = 255; } if (c[k].b[2] > 255) { c[k].b[2] = 255; }
+    if (c[k].b[0] > 255) { c[k].b[0] = 255; } if (c[k].b[1] > 255) { c[k].b[1] = 255; } if (c[k].b[2] > 255) { c[k].b[2] = 255; }
   }
 
   //Get the number of steps needed for each pixel transition then divide the fade duration to get step duration.
@@ -44,27 +44,34 @@ void colorFade(byte i)
 
         //  If the step duration was missed, get the overflow and skip that many steps to get back up to speed.
         if (rf > 0) {
+
           //  if the value is low, increment.
           if (c[1].b[j] < c[0].b[j]) {
-            //  Make sure not to overshoot the target.
+
+            //  Don't overshoot the target.
             if (c[1].b[j] + rf > c[0].b[j]) {
               c[1].b[j] = c[0].b[j];
             } else {
               c[1].b[j] = (c[1].b[j] + rf);
             }
+
             //  if the value is high, decrement
           } else if (c[1].b[j] > c[0].b[j])  {
+
+            //  Don't undershoot the target.
             if (c[1].b[j] - rf < c[0].b[j]) {
               c[1].b[j] = c[0].b[j];
             } else {
               c[1].b[j] = (c[1].b[j] - rf);
             }
           }
-          // Increment normally
+
+          // If there's no overflow, Increment normally
         } else {
           if (c[1].b[j] < c[0].b[j]) c[1].b[j]++; else if (c[1].b[j] > c[0].b[j]) c[1].b[j]--;
         }
-        //and reset the pixel timer
+
+        //  Reset the pixel timer
         pixelTimers[i].t[j] = millis();
       }
     }
@@ -72,8 +79,8 @@ void colorFade(byte i)
   //  Convert back to RGBW
   fadeStage[i] = rgbwConvert(c[1].b[0], c[1].b[1], c[1].b[2], c[1].b[3]);
 
-  for (int j = 0; j < 2; j++) {
-    strip.setPixelColor(keyBuffer[i].keyLight[j], fadeStage[i]);
+  for (int k = 0; k < 2; k++) {
+    strip.setPixelColor(keyBuffer[i].keyLight[k], gamma8[fadeStage[i]]);
   }
   strip.show();
   
