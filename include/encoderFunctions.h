@@ -22,15 +22,18 @@ void countChangeActions(int i)
     //  Set a count multiplier based on which encoder.
     byte multiplier;
 
-    if (i == 0) {
+    if ((sys.active == 0) || (sys.active == 1)) {
+        if (i == 0) {
         multiplier = 100;
+        }
+        if ((i == 1) || (i == 2)) {
+            multiplier = 2;
+        }
+        if (i == 3) {
+            multiplier = 50;
+        }
     }
-    if ((i == 1) || (i == 2)) {
-        multiplier = 2;
-    }
-    if (i == 3) {
-        multiplier = 50;
-    }
+    
 
     //  Increment or decrement the program.val[], which are abstractions of the real encoder count.
     if (count[i].count > count[i].oldCount) {

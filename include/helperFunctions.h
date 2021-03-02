@@ -13,7 +13,7 @@ void byteClamp(uint16_t count, int i)
         if ((count > 255) && (count < 2000)) {
             program[sys.active].val[i] = 0;
         }
-        else if (count > 2000) {
+        else if ((count > 2000)) {
             program[sys.active].val[i] = 255;
         }
     }
@@ -53,6 +53,14 @@ void programAction() {
         sys.active = 0;
         setSplash();
     }
+    //  Key Program
+    if (sys.active == 3)  {
+        setSplash();
+    }
+    //  Key Program
+    if (sys.active == 4)  {
+        setSplash();
+    }
 }
 
 //  Program toggle logic
@@ -65,14 +73,25 @@ void programSwitcher(bool isLow, int index)
         //  Toggle the button down state
         sys.btnDown[index] = !sys.btnDown[index];
         
-        //  If toggle button 1
+        //  If toggle button 1 - main program
         if (index == 0) {
             if (sys.active != 0) { sys.active = 0;}
             else { sys.active = 1;}
         }
-        //  If toggle button 2
+        //  If toggle button 2 - save
         if (index == 1) {
             if (sys.active != 2) { sys.active = 2;}
+        }
+         //  If toggle button 3 - colorskip program
+        if (index == 2) {
+          if (colorskips == true) {
+            if (sys.active != 3) { sys.active = 3;}
+            if (sys.active == 3) { sys.active = 4;}
+          }
+        }
+         //  If toggle button 4 - colorskip toggle
+        if (index == 3) {
+          colorskips = !colorskips;
         }
     } 
 }
@@ -113,25 +132,53 @@ void updateValues()
     strip.show();
 
     // Set Key Program LED indicators
-    for (int i = 0; i < 2; i++) {
-      programstrip.setPixelColor(i, color);
+    if (colorskips == false) {
+      for (int i = 0; i < 2; i++) {
+        programstrip.setPixelColor(i, color);
+      }
+    } else {
+      programstrip.setPixelColor(0, color);
     }
     programstrip.show();
+
   }
   if (sys.active == 1) 
   {
     color = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
+
     //  Set the new Key Color
     for (int i = 0; i < 88; i++) 
     {
       fadeStage[i] = prevKeyColor[i] = color;
     }
 
-    // Set Key Program LED indicators
-    for (int i = 2; i < 4; i++) {
-      programstrip.setPixelColor(i, color);
+    if (colorskips == false) {
+      for (int i = 2; i < 4; i++) {
+        programstrip.setPixelColor(i, color);
+      }
+    } else {
+      programstrip.setPixelColor(2, color);
     }
     programstrip.show();
+
+  }
+  if (sys.active == 2) 
+  {
+    color = colorProcessor(program[2].val[0], program[2].val[1], program[2].val[2]);
+    // Set Key Program LED indicators
+    if (colorskips == true) {
+      programstrip.setPixelColor(1, color);
+      programstrip.show();
+    }
+  }
+  if (sys.active == 3) 
+  {
+    color = colorProcessor(program[3].val[0], program[3].val[1], program[3].val[2]);
+    // Set Key Program LED indicators
+    if (colorskips == true) {
+      programstrip.setPixelColor(3, color);
+      programstrip.show();
+    }
   }
 }
 
