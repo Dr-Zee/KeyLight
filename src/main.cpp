@@ -6,7 +6,6 @@
 #include <SPI.h>
 //  Flash Memory access
 #include <EEPROM.h>
-unsigned long tempTimer = 0;
 
 //  Libraries
 #include <usbhub.h>
