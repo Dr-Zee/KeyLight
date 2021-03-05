@@ -18,12 +18,12 @@ void setMessages() {
   program[3].message[0] = "Bg Skip Hue";
   program[3].message[1] = "Bg Skip Saturation";
   program[3].message[2] = "Bg Skip Luminance";
-  program[3].message[3] = "Background skip steps";
+  program[3].message[3] = "Chance of BG Skips";
 
   program[4].message[0] = "Key Skip Hue";
   program[4].message[1] = "Key Skip Saturation";
   program[4].message[2] = "Key Skip Luminance";
-  program[4].message[3] = "Key skip steps";
+  program[4].message[3] = "Chance of Key Skips";
 }
 
 void showLogo() 
@@ -41,6 +41,8 @@ void showLogo()
 
 void setMessage(uint16_t data, int message) 
 {
+  float duration;
+
   display.clearDisplay();
   display.setCursor(0,0);
   display.setTextColor(SSD1306_WHITE);
@@ -48,7 +50,24 @@ void setMessage(uint16_t data, int message)
   display.println(program[sys.active].message[message]);
   display.println("");
   display.setTextSize(2);
-  display.println(data);
+
+  //  convert duration count to float
+  if (((sys.active == 0) || (sys.active == 1)) && (message == 3)) {
+    duration = (float) data / 1000.0;
+    display.print(duration, 1);
+    display.setTextSize(1);
+    display.println(" seconds");
+  }
+  //  display keyskip percentages
+  else if (((sys.active == 3) || (sys.active == 4)) && (message == 3)) {
+    display.print(data);
+    display.print("%");
+    display.setTextSize(1);
+    display.println(" chance");
+  }
+  else {
+    display.print(data);
+  }
   display.display();
 }
 
@@ -70,9 +89,9 @@ void colorSkipSplash()
   display.clearDisplay();
   display.setCursor(0,0);
   display.setTextColor(SSD1306_WHITE);
-  display.setTextSize(1);
+  display.setTextSize(1.5);
   display.println("Colorskips");
-  display.setTextSize(2);
+  display.setTextSize(1.5);
   if (colorskips == true) {
     display.println("On");
   } else {

@@ -4,10 +4,10 @@ void initializeEncoders()
     ESP32Encoder::useInternalWeakPullResistors=UP;
 
     // Define encoders.
-    count[0].encoder.attachFullQuad(39, 36);
-    count[1].encoder.attachFullQuad(35, 34);
-    count[2].encoder.attachFullQuad(14, 27);
-    count[3].encoder.attachFullQuad(25, 33);
+    count[0].encoder.attachSingleEdge(39, 36);
+    count[1].encoder.attachSingleEdge(35, 34);
+    count[2].encoder.attachSingleEdge(14, 27);
+    count[3].encoder.attachSingleEdge(25, 33);
 
     // Get the active program and set the encoders using that data
     for (int i = 0; i < 4; i++) {
@@ -20,16 +20,19 @@ void initializeEncoders()
 void countChangeActions(int i) 
 {   
     //  Set a count multiplier based on which encoder.
-    byte multiplier;
+    uint16_t multiplier = 1;
 
     if (i == 0) {
-    multiplier = 100;
+        multiplier = 100;
     }
     if ((i == 1) || (i == 2)) {
-        multiplier = 2;
+        multiplier = 5;
     }
     if (i == 3) {
-        multiplier = 50;
+        multiplier = 80;
+        if ((sys.active == 3) || (sys.active == 4)) {
+            multiplier = 5;
+        }
     }
     
     //  Increment or decrement the program.val[], which are abstractions of the real encoder count.
@@ -81,7 +84,8 @@ void encoderProgram()
             countChangeActions(i);
 
             //  Update Color Values
-            updateValues();
+            updateProgramLEDs();
+            updateStrip();
         }
 
         //  Monitoring any changes

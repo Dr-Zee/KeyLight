@@ -19,7 +19,7 @@ void byteClamp(uint16_t count, int i)
   }
   if (i == 0) {
     //  Then, clamp the value to 16 bits
-    if (count > 65535) {
+    if (count > 65534) {
       program[sys.active].val[i] = 0;
     }
     else if (count < 1) {
@@ -30,6 +30,14 @@ void byteClamp(uint16_t count, int i)
     // clamp the fade values to 10 seconds
     if (count > 10000) {
       program[sys.active].val[i] = 0;
+    }
+    if ((sys.active == 3) || (sys.active == 4)) {
+      if ((count > 100) && (count < 1000)) {
+        program[sys.active].val[i] = 0;
+      }
+      if (count > 2000) {
+        program[sys.active].val[i] = 100;
+      }
     }
   }
 }
@@ -103,7 +111,7 @@ void programSwitcher(bool isLow, int index)
         programstrip.show();
       }
       colorSkipSplash();
-      delay(1000);
+      delay(500);
       if (colorskips == true) sys.active = 3;
       if (colorskips == false) sys.active = 0;
     }
@@ -125,27 +133,102 @@ void displayRest()
   }
 }
 
+void updateStrip() 
+{
+  uint32_t  bgcolor  = colorProcessor(program[0].val[0], program[0].val[1], program[0].val[2]);
+  uint32_t  keycolor = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
+  uint32_t  bgskip   = colorProcessor(program[3].val[0], program[3].val[1], program[3].val[2]);
+  uint32_t  keyskip  = colorProcessor(program[4].val[0], program[4].val[1], program[4].val[2]);
+
+  //  If BG or BG Skips
+  if ((sys.active == 0) || (sys.active == 3)) 
+  {
+
+    // If ColorSkips
+    if (colorskips == true) 
+    {
+
+      for (int i = 0; i < 88; i++) 
+      {
+        int bgSkip = random(1, 101);
+
+        //  If the random value between 1-100 is greater than the percentage selected in the program
+        if (bgSkip < program[3].val[3]) 
+        {
+          prevBgColor[i] = bgskip; 
+        }
+        else 
+        {
+          prevBgColor[i] = bgcolor; 
+        }
+
+        for(int j = 0; j < 2; j++) 
+        {
+          strip.setPixelColor(keyBuffer[i].keyLight[j], prevBgColor[i]);
+        }
+
+        strip.show();
+      }
+    } 
+    else 
+    {
+      //  Set the new BG Color
+      for (int i = 0; i < strip.numPixels(); i++) 
+      {
+        strip.setPixelColor(i, prevBgColor[i]);
+        if (i < 88) { 
+          prevBgColor[i] = bgcolor; 
+        }
+      }
+    }
+    strip.show();
+  }
+  //  If Keys or Keyskips
+  if ((sys.active == 1) || (sys.active == 4))
+  {
+    if (colorskips == true) 
+    {
+      for (int i = 0; i < 88; i++)  
+      {
+        
+        int keySkip = random(1, 101);
+        int probability = program[4].val[3];
+
+        //  If the random value between 1-100 is greater than the percentage selected in the program
+        if (keySkip < probability) 
+        {
+          fadeStage[i] = prevKeyColor[i] = keyskip; 
+        }
+        else {
+          fadeStage[i] = prevKeyColor[i] = keycolor;
+        }
+      }
+    }
+    else 
+    {
+      //  Set the new BG Color
+      for (int i = 0; i < 88; i++) 
+      {
+        fadeStage[i] = prevKeyColor[i] = keycolor;
+      }
+    }
+  }
+}
+
+
+
+
 // Updates color values and LEDs when there is an encoder change.
 // Kept in the input loop so it will only fire if there is a change.
-void updateValues() 
+void updateProgramLEDs() 
 {
-  uint32_t  color;
+  uint32_t  color     = colorProcessor(program[0].val[0], program[0].val[1], program[0].val[2]);
+  uint32_t  keycolor  = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
+  uint32_t  bgskips   = colorProcessor(program[3].val[0], program[3].val[1], program[3].val[2]);
+  uint32_t  keyskips  = colorProcessor(program[4].val[0], program[4].val[1], program[4].val[2]);
 
   if (sys.active == 0) 
   {
-    color = colorProcessor(program[0].val[0], program[0].val[1], program[0].val[2]);
-
-    //  Set the new BG Color
-    for (int i = 0; i < 88; i++) 
-    {
-      prevBgColor[i] = color;
-    }
-
-    for (int i = 0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, color);
-    }
-    strip.show();
-
     // Set Key Program LED indicators
     if (colorskips == false) {
       for (int i = 0; i < 2; i++) {
@@ -154,48 +237,33 @@ void updateValues()
     } else {
       programstrip.setPixelColor(1, color);
     }
-    programstrip.show();
-
   }
   if (sys.active == 1) 
   {
-    color = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
-
-    //  Set the new Key Color
-    for (int i = 0; i < 88; i++) 
-    {
-      fadeStage[i] = prevKeyColor[i] = color;
-    }
-
     // Set Key Program LED indicators
     if (colorskips == false) {
       for (int i = 2; i < 4; i++) {
-        programstrip.setPixelColor(i, color);
+        programstrip.setPixelColor(i, keycolor);
       }
     } else {
-      programstrip.setPixelColor(2, color);
+      programstrip.setPixelColor(2, keycolor);
     }
-    programstrip.show();
-
   }
   if (sys.active == 3) 
   {
-    color = colorProcessor(program[3].val[0], program[3].val[1], program[3].val[2]);
     // Set BG Program LED indicators
     if (colorskips == true) {
-      programstrip.setPixelColor(0, color);
-      programstrip.show();
+      programstrip.setPixelColor(0, bgskips);
     }
   }
   if (sys.active == 4) 
   {
-    color = colorProcessor(program[4].val[0], program[4].val[1], program[4].val[2]);
     // Set Key Program LED indicators
     if (colorskips == true) {
-      programstrip.setPixelColor(3, color);
-      programstrip.show();
+      programstrip.setPixelColor(3, keyskips);
     }
   }
+  programstrip.show();
 }
 
 // keyOn and keyOff housekeeping tasks.

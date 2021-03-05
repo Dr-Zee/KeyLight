@@ -9,6 +9,34 @@ void setDefaultData()
 
   for (int i = 0; i < 88; i++) 
   {
+    if (colorskips == true) {
+
+      int skip = random(1, 101);
+      int bgchance = program[3].val[3];
+      int keychance = program[4].val[3];
+
+      //  If the random value between 1-100 is greater than the percentage selected in the program
+      if (skip < bgchance) 
+      {
+        prevBgColor[i] = bgs; 
+      }
+      else
+      {
+        prevBgColor[i] = colorProcessor(program[0].val[0], program[0].val[1], program[0].val[2]);
+      }
+      if (skip < keychance) {
+        fadeStage[i] = prevKeyColor[i] = ks;
+      }
+      else 
+      {
+        fadeStage[i] = prevKeyColor[i]  = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
+      }
+    }
+    else {
+      fadeStage[i] = prevKeyColor[i]  = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
+      prevBgColor[i] = colorProcessor(program[0].val[0], program[0].val[1], program[0].val[2]);
+    }
+    
 
     //set each key's LED light numbers
     keyBuffer[i].keyLight[0] = (i * 2) - 2;
@@ -18,8 +46,6 @@ void setDefaultData()
     keyBuffer[i].isDown = keyBuffer[i].recentlyReleased = keyBuffer[i].runOnce = false;
 
     // set the previous colors from memory
-    prevBgColor[i]   = colorProcessor(program[0].val[0], program[0].val[1], program[0].val[2]);
-    fadeStage[i] = prevKeyColor[i]  = colorProcessor(program[1].val[0], program[1].val[1], program[1].val[2]);
     ks  = colorProcessor(program[3].val[0], program[3].val[1], program[3].val[2]);
     bgs = colorProcessor(program[4].val[0], program[4].val[1], program[4].val[2]);
   }
@@ -29,9 +55,20 @@ void setDefaultData()
 void initializeKeyStrip() 
 {
   strip.begin();
-  for(int i = 0; i < strip.numPixels(); i++) 
-  {
-    strip.setPixelColor(i, prevBgColor[1]);
+
+  if (colorskips == true) {
+    for(int i = 0; i < 88; i++) 
+    {
+      for (int j = 0; j < 2; j++) {
+        strip.setPixelColor(keyBuffer[i].keyLight[j], prevBgColor[i]);
+      }
+    }
+  }
+  else {
+    for(int i = 0; i < strip.numPixels(); i++) 
+      {
+        strip.setPixelColor(i, prevBgColor[i]);
+      }
   }
   strip.show();
 }
